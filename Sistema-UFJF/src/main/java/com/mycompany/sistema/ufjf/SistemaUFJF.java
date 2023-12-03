@@ -7,6 +7,6 @@ package com.mycompany.sistema.ufjf;
 public class SistemaUFJF {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.out.println("Hello World! teste -");
     }
 }
