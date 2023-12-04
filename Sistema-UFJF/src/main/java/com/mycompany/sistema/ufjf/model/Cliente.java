@@ -6,56 +6,59 @@ package com.mycompany.sistema.ufjf.model;
 
 import java.util.Random;
 
+
+
 /**
  *
- * @author sihuanb
+ * @author josemiguel
  */
-public class Entregador extends Usuario {
+public class Cliente extends Usuario {
     
     private String nome;
-    private int identificadorEntregador;
+    private int identificadorCliente;
     private Cpf cpf;
-    private Email email;
+    private int quantidadeDePedidos;
     private Telefone numeroDeTelefone;
-    private int quantidadeDeEntregas;
-    private int identificadorVeiculo;
-    
+    private Email email;
 
-    public Entregador(String nome,Cpf cpf, Email email, Telefone numeroDeTelefone, String usuario, String senha) {
+    public Cliente(String nome, Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha) {
         super(usuario, senha);
         this.nome = nome;
-        this.identificadorEntregador = criaIdentificador();
+        this.identificadorCliente = criaIdentificador();
         this.cpf = cpf;
-        this.email = email;
+        this.quantidadeDePedidos = 0;
         this.numeroDeTelefone = numeroDeTelefone;
-        this.quantidadeDeEntregas = 0;
-        this.identificadorVeiculo = criaIdentificador();
+        this.email = email;
     }
-
     
-
- 
-    
-     //retorna identifacor aleatorio (mas ainda não esta armazenando os que ja foram criados - usar a persistencia)
-    public int criaIdentificador() {
-        Random random = new Random();
-        return random.nextInt(9000) + 1000;
-    }
-
-    public int retornaCodigoIdentificador() {
-        return identificadorEntregador;
-    }
-
+    //Verifica se os dados não estão com excessão e salva-os
     @Override
     public boolean validaInformacoes(String usuario, String senha) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    //Acredito que verifica se os dados esão no json e se sim, faz login, se não, não faz
     @Override
     public int fazLogin(String usuario, String senha) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     
+    public int retornaCodigoIdentificador(){
+        return this.identificadorCliente;
+    }
+   
+    public void verPedidos(){
+        System.out.println("Número de pedidos do cliente " + this.nome + " é : " + this.quantidadeDePedidos);
+    }
+
+    //Cria um numero aleatorio de identificador e falta salá-lo no json
+    public int criaIdentificador(){
+        Random random = new Random();
+        return random.nextInt(9000) + 1000;
+    }
+
+    
+
     
 }

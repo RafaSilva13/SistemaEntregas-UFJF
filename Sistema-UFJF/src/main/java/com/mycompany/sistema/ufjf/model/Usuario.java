@@ -17,6 +17,6 @@ abstract class Usuario {
         this.senha = senha;
     }
     
-    public abstract boolean validaInformacoes();
-    public abstract int fazLogin();
+    public abstract boolean validaInformacoes(String usuario, String senha);
+    public abstract int fazLogin(String usuario, String senha);
 }
