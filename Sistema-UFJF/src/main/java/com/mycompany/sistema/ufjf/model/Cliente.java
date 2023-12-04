@@ -30,16 +30,11 @@ public class Cliente extends Usuario {
         this.numeroDeTelefone = numeroDeTelefone;
         this.email = email;
     }
-    
-    //Verifica se os dados não estão com excessão e salva-os
-    @Override
-    public boolean validaInformacoes(String usuario, String senha) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+     
 
     //Acredito que verifica se os dados esão no json e se sim, faz login, se não, não faz
     @Override
-    public int fazLogin(String usuario, String senha) {
+    public boolean fazLogin(String usuario, String senha) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
