@@ -6,6 +6,7 @@ package com.mycompany.sistema.ufjf;
  */
 import com.mycompany.sistema.ufjf.exeptions.*;
 import com.mycompany.sistema.ufjf.model.*;
+import com.mycompany.sistema.ufjf.view.TelaLogin;
 
 public class SistemaUFJF {
 
@@ -26,5 +27,8 @@ public class SistemaUFJF {
 //        
         //VeiculoEntrega carro = new VeiculoEntrega("hwi-2233", "uno", 222, "21/01/1009");
         //System.out.println(carro.exibirInfos());
+        
+        TelaLogin tela = new TelaLogin();
+        tela.exibirTelaLogin();
     }
 }
