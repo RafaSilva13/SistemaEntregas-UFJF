@@ -20,7 +20,7 @@ public class Entregador extends Usuario {
     private int quantidadeDeEntregas;
     private int identificadorVeiculo;
     
-
+    //JOSE MIGUEL: é preciso mudar de Cf, Email, Telefone para String, olha a classe Cliente dps
     public Entregador(String nome,Cpf cpf, Email email, Telefone numeroDeTelefone, String usuario, String senha) {
         super(usuario, senha);
         this.nome = nome;

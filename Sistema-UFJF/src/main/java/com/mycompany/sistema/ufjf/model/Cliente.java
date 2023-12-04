@@ -4,6 +4,9 @@
  */
 package com.mycompany.sistema.ufjf.model;
 
+import com.mycompany.sistema.ufjf.exeptions.CpfExeption;
+import com.mycompany.sistema.ufjf.exeptions.EmailException;
+import com.mycompany.sistema.ufjf.exeptions.TelefoneException;
 import java.util.Random;
 
 
@@ -21,14 +24,20 @@ public class Cliente extends Usuario {
     private Telefone numeroDeTelefone;
     private Email email;
 
-    public Cliente(String nome, Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha) {
+    public Cliente(String nome, String cpf, String numeroDeTelefone, String email, String usuario, String senha) throws CpfExeption, TelefoneException, EmailException{
         super(usuario, senha);
         this.nome = nome;
         this.identificadorCliente = criaIdentificador();
-        this.cpf = cpf;
         this.quantidadeDePedidos = 0;
-        this.numeroDeTelefone = numeroDeTelefone;
-        this.email = email;
+        
+        Cpf cpfAux = new Cpf();
+        this.cpf = cpfAux.parser(cpf);
+        
+        Telefone telefoneAux = new Telefone();
+        this.numeroDeTelefone = telefoneAux.parser(numeroDeTelefone);
+            
+        this.email = new Email(email);
+        
     }
      
 

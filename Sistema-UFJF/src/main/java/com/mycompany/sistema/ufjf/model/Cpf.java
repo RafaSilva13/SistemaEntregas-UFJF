@@ -17,6 +17,8 @@ public class Cpf {
         this.cPFString = cPFString;
         this.cPFSemPontos = cPFSemPontos;
     }
+    
+    public Cpf(){}
 
     @Override
     public String toString() {

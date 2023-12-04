@@ -21,6 +21,8 @@ public class Email {
     public Email(String email) throws EmailException {
         setEmail(email);
     }
+    
+    public Email(){}
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
