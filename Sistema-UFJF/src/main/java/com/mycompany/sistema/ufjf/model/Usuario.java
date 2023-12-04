@@ -8,6 +8,15 @@ package com.mycompany.sistema.ufjf.model;
  *
  * @author sihuanb
  */
-public class Usuario {
+abstract class Usuario {
+    protected String usuario;
+    protected String senha;
+
+    public Usuario(String usuario, String senha) {
+        this.usuario = usuario;
+        this.senha = senha;
+    }
     
+    public abstract boolean validaInformacoes();
+    public abstract int fazLogin();
 }

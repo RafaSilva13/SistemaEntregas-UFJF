@@ -6,10 +6,12 @@ package com.mycompany.sistema.ufjf.model;
 
 import com.mycompany.sistema.ufjf.exeptions.*;
 
+
 /**
  *
  * @author sihuanb
  */
+//o identificador gera aleatoriamente na classe entregador
 public class VeiculoEntrega {
     private int identificador;
     private String placa;
@@ -17,7 +19,7 @@ public class VeiculoEntrega {
     private float capacidadeCarga;
     private Data anoDeFabricacao;
 
-    public VeiculoEntrega(String placa, String modelo, float capacidadeCarga, String DataDeFabricacao) throws DataExeption, VeiculoEntregaException {
+    public VeiculoEntrega(int identificador, String placa, String modelo, float capacidadeCarga, String DataDeFabricacao) throws DataExeption, VeiculoEntregaException {
         
         if (!validaInformacaoes(capacidadeCarga)) {
             throw new VeiculoEntregaException();
@@ -27,6 +29,7 @@ public class VeiculoEntrega {
         this.modelo = modelo;
         this.capacidadeCarga = capacidadeCarga;
         this.anoDeFabricacao = Data.parser(DataDeFabricacao);
+        this.identificador = identificador;
     }
 
     public int retornaCodigoIdentificador() {
@@ -42,6 +45,4 @@ public class VeiculoEntrega {
     public String exibirInfos() {
         return "VeiculoEntrega{" + "identificador=" + identificador + ", placa=" + placa + ", modelo=" + modelo + ", capacidadeCarga=" + capacidadeCarga + ", anoDeFabricacao=" + anoDeFabricacao + '}';
     }
-    
-    
 }
