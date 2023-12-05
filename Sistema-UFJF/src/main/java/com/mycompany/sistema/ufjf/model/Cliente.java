@@ -4,9 +4,6 @@
  */
 package com.mycompany.sistema.ufjf.model;
 
-import com.mycompany.sistema.ufjf.exeptions.CpfExeption;
-import com.mycompany.sistema.ufjf.exeptions.EmailException;
-import com.mycompany.sistema.ufjf.exeptions.TelefoneException;
 import java.util.Random;
 
 
@@ -24,19 +21,14 @@ public class Cliente extends Usuario {
     private Telefone numeroDeTelefone;
     private Email email;
 
-    public Cliente(String nome, String cpf, String numeroDeTelefone, String email, String usuario, String senha) throws CpfExeption, TelefoneException, EmailException{
+    public Cliente(String nome, Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha){
         super(usuario, senha);
         this.nome = nome;
         this.identificadorCliente = criaIdentificador();
         this.quantidadeDePedidos = 0;
-        
-        Cpf cpfAux = new Cpf();
-        this.cpf = cpfAux.parser(cpf);
-        
-        Telefone telefoneAux = new Telefone();
-        this.numeroDeTelefone = telefoneAux.parser(numeroDeTelefone);
-            
-        this.email = new Email(email);
+        this.cpf = cpf;
+        this.numeroDeTelefone = numeroDeTelefone;
+        this.email = email;
         
     }
      
@@ -61,7 +53,54 @@ public class Cliente extends Usuario {
         Random random = new Random();
         return random.nextInt(9000) + 1000;
     }
+    
+    //GETTERS
+    public String getNome() {
+        return nome;
+    }
 
+    public Cpf getCpf() {
+        return cpf;
+    }
+
+    public int getQuantidadeDePedidos() {
+        return quantidadeDePedidos;
+    }
+
+    public Telefone getNumeroDeTelefone() {
+        return numeroDeTelefone;
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    //SETTERS
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setIdentificadorCliente(int identificadorCliente) {
+        this.identificadorCliente = identificadorCliente;
+    }
+
+    public void setCpf(Cpf cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setQuantidadeDePedidos(int quantidadeDePedidos) {
+        this.quantidadeDePedidos = quantidadeDePedidos;
+    }
+
+    public void setNumeroDeTelefone(Telefone numeroDeTelefone) {
+        this.numeroDeTelefone = numeroDeTelefone;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+  
     
 
     

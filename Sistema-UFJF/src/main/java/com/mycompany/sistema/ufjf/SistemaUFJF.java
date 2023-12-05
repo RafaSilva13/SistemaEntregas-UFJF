@@ -11,6 +11,8 @@ public class SistemaUFJF {
 
     public static void main(String[] args) throws DataExeption, CpfExeption, EmailException, TelefoneException, VeiculoEntregaException {
         System.out.println("Hello World!");
+       
+        
 //        Data data = Data.parser("21/01/1111");
 //        System.out.println(data.toString());
 //        
