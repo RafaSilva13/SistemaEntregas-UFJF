@@ -6,7 +6,7 @@ import com.mycompany.sistema.ufjf.eventos.BotaoLoginAdministrador;
 import com.mycompany.sistema.ufjf.eventos.BotaoLoginCliente;
 import com.mycompany.sistema.ufjf.eventos.BotaoLoginEntregador;
 //import com.mycompany.sistema.model.Cliente;
-//import com.mycompany.sistema.model.Entregador;
+import com.mycompany.sistema.ufjf.model.Entregador;
 import com.mycompany.sistema.ufjf.model.Email;
 import com.mycompany.sistema.ufjf.model.Telefone;
 import com.mycompany.sistema.ufjf.model.Cpf;
@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,6 +40,10 @@ public class TelaLogin {
     // JTextField Login
     private JTextField tfUsuario;
     private JTextField tfSenha;
+   
+    // JTextField Cadastro
+    private JTextField tfUsuarioCadastro;
+    private JTextField tfSenhaCadastro;
     
     // JTextField Clientes
     private JTextField tfNomeCliente;
@@ -58,10 +63,10 @@ public class TelaLogin {
     private JTextField tfCapacidadeCarga;
     private JTextField tfAnoFabricacao;
     
-//    // JLists
+    // JLists
 //    private JList<Cliente> jlClientes;
-//    private JList<Entregador> jlEntregadores;
-//    
+    private JList<Entregador> jlEntregadores;
+    
     public void exibirTelaLogin() {
         
         // Cria uma nova janela
@@ -248,20 +253,42 @@ public class TelaLogin {
         // Cria um painel para conter a área de nome
         JPanel areaNomeCliente = new JPanel();
         areaNomeCliente.setBorder(BorderFactory.createTitledBorder("Nome"));
-        tfNomeCliente = new JTextField(18);
+        tfNomeCliente = new JTextField(12);
         areaNomeCliente.add(tfNomeCliente);
         
         // Cria um painel para conter a área de email
         JPanel areaEmailCliente = new JPanel();
         areaEmailCliente.setBorder(BorderFactory.createTitledBorder("Email"));
-        tfEmailCliente = new JTextField(18);
+        tfEmailCliente = new JTextField(12);
         areaEmailCliente.add(tfEmailCliente);
         
         // Adicina nome e email ao painel
         panelEsquerdo.add(areaNomeCliente);
         panelEsquerdo.add(areaEmailCliente);
         
-// -----------------------------------------------------------------------------               
+// -----------------------------------------------------------------------------              
+
+        // Cria um painel para conter as áreas de nome
+        JPanel panelCentral = new JPanel();
+        panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
+
+        // Cria um painel para conter a área de usuario
+        JPanel areaUsuarioCliente = new JPanel();
+        areaUsuarioCliente.setBorder(BorderFactory.createTitledBorder("Usuario"));
+        tfUsuarioCadastro = new JTextField(12);
+        areaUsuarioCliente.add(tfUsuarioCadastro);
+        
+        // Cria um painel para conter a área de senha
+        JPanel areaSenhaCliente = new JPanel();
+        areaSenhaCliente.setBorder(BorderFactory.createTitledBorder("Senha"));
+        tfSenhaCadastro = new JTextField(12);
+        areaSenhaCliente.add(tfSenhaCadastro);
+        
+        // Adicina usuario e senha ao painel
+        panelCentral.add(areaUsuarioCliente);
+        panelCentral.add(areaSenhaCliente);
+
+// -----------------------------------------------------------------------------                           
 
         // Cria um painel para conter as áreas de telefone e cpf
         JPanel panelDireito = new JPanel();
@@ -270,13 +297,13 @@ public class TelaLogin {
         // Cria um painel para conter a área de telefone
         JPanel areaTelefoneCliente = new JPanel();
         areaTelefoneCliente.setBorder(BorderFactory.createTitledBorder("Telefone"));
-        tfTelefoneCliente = new JTextField(18);
+        tfTelefoneCliente = new JTextField(12);
         areaTelefoneCliente.add(tfTelefoneCliente);
 
         // Cria um painel para conter a área de cpf
         JPanel areaCpfCliente = new JPanel();
         areaCpfCliente.setBorder(BorderFactory.createTitledBorder("Cpf"));
-        tfCpfCliente = new JTextField(18);
+        tfCpfCliente = new JTextField(12);
         areaCpfCliente.add(tfCpfCliente);
 
         // Adicina telefone e cpf ao painel
@@ -300,6 +327,7 @@ public class TelaLogin {
         // Adiciona paineis de componentes ao painel da area de cadastro
         areaCadastro.add(areaTextoCadastro, BorderLayout.NORTH);
         areaCadastro.add(panelEsquerdo, BorderLayout.WEST);
+        areaCadastro.add(panelCentral, BorderLayout.CENTER);
         areaCadastro.add(panelDireito, BorderLayout.EAST);
         areaCadastro.add(painelBotaoCadastro, BorderLayout.SOUTH);
         
@@ -338,19 +366,41 @@ public class TelaLogin {
         // Cria um painel para conter a área de nome
         JPanel areaNomeEntregador = new JPanel();
         areaNomeEntregador.setBorder(BorderFactory.createTitledBorder("Nome"));
-        tfNomeEntregador = new JTextField(18);
+        tfNomeEntregador = new JTextField(12);
         areaNomeEntregador.add(tfNomeEntregador);
         
         // Cria um painel para conter a área de email
         JPanel areaEmailEntregador = new JPanel();
         areaEmailEntregador.setBorder(BorderFactory.createTitledBorder("Email"));
-        tfEmailEntregador = new JTextField(18);
+        tfEmailEntregador = new JTextField(12);
         areaEmailEntregador.add(tfEmailEntregador);
         
         // Adicina nome e email ao painel
         panelEsquerdo.add(areaNomeEntregador);
         panelEsquerdo.add(areaEmailEntregador);
         
+// -----------------------------------------------------------------------------              
+
+        // Cria um painel para conter as áreas de nome
+        JPanel panelCentral = new JPanel();
+        panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
+
+        // Cria um painel para conter a área de usuario
+        JPanel areaUsuarioEntregador = new JPanel();
+        areaUsuarioEntregador.setBorder(BorderFactory.createTitledBorder("Usuario"));
+        tfUsuarioCadastro = new JTextField(12);
+        areaUsuarioEntregador.add(tfUsuarioCadastro);
+        
+        // Cria um painel para conter a área de senha
+        JPanel areaSenhaEntregador = new JPanel();
+        areaSenhaEntregador.setBorder(BorderFactory.createTitledBorder("Senha"));
+        tfSenhaCadastro = new JTextField(12);
+        areaSenhaEntregador.add(tfSenhaCadastro);
+        
+        // Adicina usuario e senha ao painel
+        panelCentral.add(areaUsuarioEntregador);
+        panelCentral.add(areaSenhaEntregador);
+
 // -----------------------------------------------------------------------------               
 
         // Cria um painel para conter as áreas de telefone e cpf
@@ -360,13 +410,13 @@ public class TelaLogin {
         // Cria um painel para conter a área de telefone
         JPanel areaTelefoneEntregador = new JPanel();
         areaTelefoneEntregador.setBorder(BorderFactory.createTitledBorder("Telefone"));
-        tfTelefoneEntregador = new JTextField(18);
+        tfTelefoneEntregador = new JTextField(12);
         areaTelefoneEntregador.add(tfTelefoneEntregador);
 
         // Cria um painel para conter a área de cpf
         JPanel areaCpfEntregador = new JPanel();
         areaCpfEntregador.setBorder(BorderFactory.createTitledBorder("Cpf"));
-        tfCpfEntregador = new JTextField(18);
+        tfCpfEntregador = new JTextField(12);
         areaCpfEntregador.add(tfCpfEntregador);
 
         // Adicina telefone e cpf ao painel
@@ -391,6 +441,7 @@ public class TelaLogin {
         // Adiciona paineis de componentes ao painel da area de cadastro
         areaCadastro.add(areaTextoCadastro, BorderLayout.NORTH);
         areaCadastro.add(panelEsquerdo, BorderLayout.WEST);
+        areaCadastro.add(panelCentral, BorderLayout.CENTER);
         areaCadastro.add(panelDireito, BorderLayout.EAST);
         areaCadastro.add(painelBotaoCadastro, BorderLayout.SOUTH);
         
@@ -432,7 +483,7 @@ public class TelaLogin {
         areaUsuario.setBorder(BorderFactory.createTitledBorder("Usuário"));
         
         // Input de usuario
-        tfUsuario = new JTextField(18);
+        tfUsuario = new JTextField(15);
 
         // Adiciona Input na Area
         areaUsuario.add(tfUsuario);
@@ -446,7 +497,7 @@ public class TelaLogin {
         areaSenha.setBorder(BorderFactory.createTitledBorder("Senha"));
         
         // Input de usuario
-        tfSenha = new JTextField(18);
+        tfSenha = new JTextField(15);
 
         // Adiciona Input na Area
         areaSenha.add(tfSenha);
@@ -477,10 +528,10 @@ public class TelaLogin {
 //    
 //    public void addEntregador(){
 //
-//        DefaultListModel<Entregador> model = (DefaultListModel<Cliente>).jlEntregadores.getModel();;
+//        DefaultListModel<Entregador> model = (DefaultListModel<Entregador>).jlEntregadores.getModel();
 //        
 //        try {
-//            model.addElement(new Entregador(tfNomeEntregador.getText(), new Telefone(tfTelefoneEntregador.getText()), new Email(tfEmailEntregador.getText()), new Cpf(tfCpfEntregador.getText())));
+//            model.addElement(new Entregador(tfNomeEntregador.getText(), new Cpf(tfCpfEntregador.getText()), new Email(tfEmailEntregador.getText()),  new Telefone(tfTelefoneEntregador.getText()), 0, ));
 //        } catch (EmailException e) {
 //            JOptionPane.showMessageDialog(tela, "O email " + tfEmailEntregador.getText() +" é invalido!");
 //        } catch (TelefoneException e) {
