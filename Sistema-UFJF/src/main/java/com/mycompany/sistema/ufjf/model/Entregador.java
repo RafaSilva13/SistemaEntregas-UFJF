@@ -20,27 +20,20 @@ public class Entregador extends Usuario {
     private int quantidadeDeEntregas;
     private int identificadorVeiculo;
     
-
-    public Entregador(String nome,Cpf cpf, Email email, Telefone numeroDeTelefone, int quantidadeDeEntregas, String usuario, String senha) {
+    public Entregador(String nome,Cpf cpf, Email email, Telefone numeroDeTelefone, String usuario, String senha) {
         super(usuario, senha);
         this.nome = nome;
         this.identificadorEntregador = criaIdentificador();
         this.cpf = cpf;
         this.email = email;
         this.numeroDeTelefone = numeroDeTelefone;
-        this.quantidadeDeEntregas = quantidadeDeEntregas;
+        this.quantidadeDeEntregas = 0;
         this.identificadorVeiculo = criaIdentificador();
     }
 
-    @Override
-    public boolean validaInformacoes() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 
-    @Override
-    public int fazLogin() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+ 
     
      //retorna identifacor aleatorio (mas ainda não esta armazenando os que ja foram criados - usar a persistencia)
     public int criaIdentificador() {
@@ -50,6 +43,12 @@ public class Entregador extends Usuario {
 
     public int retornaCodigoIdentificador() {
         return identificadorEntregador;
+    }
+
+
+    @Override
+    public boolean fazLogin(String usuario, String senha) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     
