@@ -23,3 +23,16 @@ Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/view/TelaEntregador.class
 Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/view/TelaLogin.class
 Sistema-UFJF/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 Sistema-UFJF/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+Sistema-UFJF/target/Sistema-UFJF-1.0.jar
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/eventos/OpcaoDadosGeraisAdministrador.class
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/eventos/OpcaoMeusDadosCliente.class
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/eventos/OpcaoMeusDadosEntregador.class
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/eventos/OpcaoPedidosAdministrador.class
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/eventos/OpcaoPedidosCliente.class
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/eventos/SelecionarContatoCliente.class
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/eventos/SelecionarContatoEntregador.class
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/model/Cliente.class
+Sistema-UFJF/target/classes/com/mycompany/sistema/ufjf/view/TelaAdministrador$1.class
+Sistema-UFJF/target/maven-archiver/pom.properties
+Sistema-UFJF/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+Sistema-UFJF/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
