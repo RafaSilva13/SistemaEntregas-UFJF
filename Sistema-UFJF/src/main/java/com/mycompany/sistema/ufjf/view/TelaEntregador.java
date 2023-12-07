@@ -224,104 +224,12 @@ public class TelaEntregador {
         
 // -----------------------------------------------------------------------------          
 
-        // Cria uma subpasta para Dados do Veículo
-        JPanel painelDadosVeiculo = new JPanel();
-        painelDadosVeiculo.setLayout(new BoxLayout(painelDadosVeiculo, BoxLayout.Y_AXIS));
-    
-// -----------------------------------------------------------------------------               
-        
-        // Cria JPanel do texto e o texto
-        JPanel areaTextoDadosVeiculo = new JPanel();
-        JLabel textoDadosVeiculo = new JLabel("Dados Veículo");
-        
-        // Define a fonte do texto com um tamanho específico
-        textoDadosVeiculo.setFont(fonte);
-        
-        // Define borda superior e inferior do texto
-        textoDadosVeiculo.setBorder(new EmptyBorder(10, 0, 12, 0));
-        textoDadosVeiculo.setHorizontalTextPosition (JLabel.CENTER);
-
-        // Adiciona texto a areaDeTexto
-        areaTextoDadosVeiculo.add(textoDadosVeiculo);
-        
-        // Adiciona area de texto a area de login
-        painelDadosVeiculo.add(areaTextoDadosVeiculo);
-
-// -----------------------------------------------------------------------------               
-            
-        // Area de visualização de placa
-        JPanel areaPlacaMeusDados = new JPanel();
-        
-        // Titulo da Area
-        areaPlacaMeusDados.setBorder(BorderFactory.createTitledBorder("Placa"));
-        
-        // Label de placa
-        tfPlacaVeiculo = new JLabel();
-
-        // Adiciona Label na Area
-        areaPlacaMeusDados.add(tfPlacaVeiculo);
-
-        painelDadosVeiculo.add(areaPlacaMeusDados);
-
-// -----------------------------------------------------------------------------               
-
-        // Area de visualização de modelo
-        JPanel areaModeloVeiculoMeusDados = new JPanel();
-        
-        // Titulo da Area
-        areaModeloVeiculoMeusDados.setBorder(BorderFactory.createTitledBorder("Modelo"));
-        
-        // Label de modelo
-        tfModeloVeiculo = new JLabel();
-
-        // Adiciona Label na Area
-        areaModeloVeiculoMeusDados.add(tfModeloVeiculo);
-
-        painelDadosVeiculo.add(areaModeloVeiculoMeusDados);
-
-// -----------------------------------------------------------------------------               
-
-        // Area de visualização de capacidade de carga
-        JPanel areaCapacidadeCargaMeusDados = new JPanel();
-        
-        // Titulo da Area
-        areaCapacidadeCargaMeusDados.setBorder(BorderFactory.createTitledBorder("Capacidade de Carga"));
-        
-        // Label de capacidade de carga
-        tfCapacidadeCargaVeiculo = new JLabel();
-
-        // Adiciona Label na Area
-        areaCapacidadeCargaMeusDados.add(tfCapacidadeCargaVeiculo);
-
-        painelDadosVeiculo.add(areaCapacidadeCargaMeusDados);
-
-// -----------------------------------------------------------------------------               
-
-        // Area de visualização do ano de fabricação
-        JPanel arealAnoFabricacaoMeusDados = new JPanel();
-        
-        // Titulo da Area
-        arealAnoFabricacaoMeusDados.setBorder(BorderFactory.createTitledBorder("Ano de Fabricação"));
-        
-        // Label do ano de fabricação
-        lblAnoFabricacaoVeiculo = new JLabel();
-
-        // Adiciona Label na Area
-        arealAnoFabricacaoMeusDados.add(lblAnoFabricacaoVeiculo);
-
-        painelDadosVeiculo.add(arealAnoFabricacaoMeusDados);
-
-// -----------------------------------------------------------------------------               
-
         JPanel areaPainelMeusDados = new JPanel();
         
         areaDadosPessoais.setSize(500, HEIGHT);
-
-        painelDadosVeiculo.setSize(350, HEIGHT);
         
         // Adiciona paineis ao painel atual    
-        areaPainelMeusDados.add(areaDadosPessoais, BorderLayout.WEST);
-        areaPainelMeusDados.add(painelDadosVeiculo,BorderLayout.EAST);
+        areaPainelMeusDados.add(areaDadosPessoais, BorderLayout.CENTER);
         
         // Adiciona o painelMeusDados ao painel principal
         principal.add(areaPainelMeusDados);

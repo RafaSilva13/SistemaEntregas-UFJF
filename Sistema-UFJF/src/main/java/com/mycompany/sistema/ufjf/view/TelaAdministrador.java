@@ -43,7 +43,7 @@ public class TelaAdministrador {
 
     private JList<Cliente> jlCliente;
     private JList<Entregador> jlEntregador;
-    private JList<Entregas> jlPedidos;
+    private JList<Cliente> jlPedidos;
     
     public void exibirTelaAdministrador() {
 
@@ -287,7 +287,7 @@ public class TelaAdministrador {
         painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         painel.setLayout(new BorderLayout());
         
-        DefaultListModel<Entregas> model = new DefaultListModel<>();
+        DefaultListModel<Cliente> model = new DefaultListModel<>();
         jlPedidos = new JList<>(model);
 
         painel.add(new JScrollPane(jlPedidos), BorderLayout.CENTER);

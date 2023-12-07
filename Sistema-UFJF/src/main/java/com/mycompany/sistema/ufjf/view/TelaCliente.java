@@ -3,18 +3,24 @@ package com.mycompany.sistema.ufjf.view;
 import com.mycompany.sistema.ufjf.eventos.AdicionarCliente;
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosCliente;
+import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosCliente;
+import com.mycompany.sistema.ufjf.model.Cliente;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -34,6 +40,8 @@ public class TelaCliente {
     private JTextField tfSenhaCliente;
     private JLabel tfCpfCliente;
 
+    private JList<Cliente> jlPedidos;
+    
     public void exibirTelaClientes() {
         
         // Cria uma nova janela
@@ -77,6 +85,7 @@ public class TelaCliente {
         item1.addActionListener(new OpcaoMeusDadosCliente(this));
 
         JMenuItem item2 = new JMenuItem("Pedidos");
+        item2.addActionListener(new OpcaoPedidosCliente(this));
 
         JMenuItem item3 = new JMenuItem("Sair");
         item3.addActionListener(new BotaoSairParaLogin(tela, new TelaLogin()));
@@ -225,5 +234,34 @@ public class TelaCliente {
     private void salvarAlteracoes() {
         // Lógica para salvar as alterações aqui
         // Você pode acessar os valores dos campos usando, por exemplo, tfNomeCliente.getText()
+    }
+    
+    public void exibirPedidosCliente() {
+        
+        // Remoção o painelUsuarioDadosUsuario atual
+        principal.removeAll();
+        
+        JPanel areaPedidos  = new JPanel();
+        areaPedidos.setLayout(new BorderLayout());
+        
+        JPanel painel = new JPanel();
+        painel.setBorder(BorderFactory.createTitledBorder("Entregas"));
+        painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        painel.setLayout(new BorderLayout());
+        
+        DefaultListModel<Cliente> model = new DefaultListModel<>();
+        jlPedidos = new JList<>(model);
+
+        painel.add(new JScrollPane(jlPedidos), BorderLayout.CENTER);
+        
+        areaPedidos.add(painel, BorderLayout.CENTER);
+
+        // Adiciona os pedidos a janela
+        principal.add(areaPedidos);
+        
+        // Atualiza tela
+        principal.revalidate();
+        principal.repaint();
+        
     }
 }
