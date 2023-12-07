@@ -100,6 +100,11 @@ public class Cliente extends Usuario {
     public void setEmail(Email email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Cliente{" + "nome=" + nome + ", identificadorCliente=" + identificadorCliente + ", cpf=" + cpf + ", numeroDeTelefone=" + numeroDeTelefone + ", email=" + email + '}';
+    }
   
     
 

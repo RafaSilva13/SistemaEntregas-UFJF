@@ -8,7 +8,7 @@ import java.util.Random;
 
 /**
  *
- * @author sihuanb
+ * @author josemiguel
  */
 public class Entregador extends Usuario {
     
@@ -18,7 +18,6 @@ public class Entregador extends Usuario {
     private Email email;
     private Telefone numeroDeTelefone;
     private int quantidadeDeEntregas;
-    private int identificadorVeiculo;
     
     public Entregador(String nome,Cpf cpf, Email email, Telefone numeroDeTelefone, String usuario, String senha) {
         super(usuario, senha);
@@ -28,12 +27,7 @@ public class Entregador extends Usuario {
         this.email = email;
         this.numeroDeTelefone = numeroDeTelefone;
         this.quantidadeDeEntregas = 0;
-        this.identificadorVeiculo = criaIdentificador();
     }
-
-    
-
- 
     
      //retorna identifacor aleatorio (mas ainda não esta armazenando os que ja foram criados - usar a persistencia)
     public int criaIdentificador() {
@@ -44,11 +38,24 @@ public class Entregador extends Usuario {
     public int retornaCodigoIdentificador() {
         return identificadorEntregador;
     }
+    
+    public void listarPedidosEntregues(){
+        //PUXA AS ENTREGAS DA CLASSE ENTREGA
+    }
+     
+    public void verificarQuantidadeDeEntregas(){
+        System.out.println("Quantidade de entregas feitas por " + this.nome + " é : " + this.quantidadeDeEntregas);
+    }
 
 
     @Override
     public boolean fazLogin(String usuario, String senha) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String toString() {
+        return "Entregador{" + "nome=" + nome + ", identificadorEntregador=" + identificadorEntregador + ", numeroDeTelefone=" + numeroDeTelefone + '}';
     }
     
     
