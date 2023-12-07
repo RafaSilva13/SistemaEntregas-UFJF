@@ -11,7 +11,7 @@ package com.mycompany.sistema.ufjf.exeptions;
 public class VeiculoEntregaException extends Exception{
 
     public VeiculoEntregaException() {
-        super("Veículo de entrega fora dos padões de capacidade");
+        super("Veículo de entrega fora dos padrões de capacidade");
     }
 
     public VeiculoEntregaException(String message) {
