@@ -8,7 +8,7 @@ import java.util.Random;
 
 /**
  *
- * @author sihuanb
+ * @author josemiguel
  */
 public class Entregador extends Usuario {
     
