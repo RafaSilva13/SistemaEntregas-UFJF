@@ -7,11 +7,9 @@ import javax.swing.JFrame;
 
 public class OpcaoMeusDadosEntregador implements ActionListener {
 
-    private final JFrame tela;
     private final TelaEntregador telaEntregador;
 
-    public OpcaoMeusDadosEntregador(JFrame tela, TelaEntregador telaEntregador) {
-        this.tela = tela;
+    public OpcaoMeusDadosEntregador(TelaEntregador telaEntregador) {
         this.telaEntregador = telaEntregador;
     }
 

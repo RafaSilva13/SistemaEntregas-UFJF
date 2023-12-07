@@ -1,12 +1,29 @@
 package com.mycompany.sistema.ufjf.view;
 
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
+import com.mycompany.sistema.ufjf.eventos.OpcaoDadosGeraisAdministrador;
+import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosAdministrador;
+import com.mycompany.sistema.ufjf.eventos.SelecionarContatoCliente;
+import com.mycompany.sistema.ufjf.eventos.SelecionarContatoEntregador;
+import com.mycompany.sistema.ufjf.model.Cliente;
+import com.mycompany.sistema.ufjf.model.Entregador;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class TelaAdministrador {
 
@@ -14,7 +31,20 @@ public class TelaAdministrador {
     private JPanel principal;
     private final int WIDTH = 800;
     private final int HEIGHT = 400;
+    private final int V_GAP = 10;
+    private final int H_GAP = 5;
 
+    private JTextField tfNome;
+    private JTextField tfUsuario;
+    private JTextField tfEmail;
+    private JTextField tfTelefone;
+    private JTextField tfCpf;
+    public String selectedItem = "";
+
+    private JList<Cliente> jlCliente;
+    private JList<Entregador> jlEntregador;
+    private JList<Entregas> jlPedidos;
+    
     public void exibirTelaAdministrador() {
 
         // Cria uma nova janela
@@ -28,18 +58,20 @@ public class TelaAdministrador {
 
         principal = new JPanel();
         principal.setLayout(new BorderLayout());
+        
+        this.exibirDadosGerais();
 
-        // Adiciona o painel geral a janela
+        // Adiciona o painelUsuarioDadosUsuario geral a janela
         tela.add(principal);
 
-        // Define o tamanho do painel geral e sua posição como central
+        // Define o tamanho do painelUsuarioDadosUsuario geral e sua posição como central
         tela.setSize(WIDTH, HEIGHT);
         tela.setLocationRelativeTo(null);
         
         // Bloqueia o redimensionamento da janela
         tela.setResizable(false);
         
-        // Deixa o painel visível
+        // Deixa o painelUsuarioDadosUsuario visível
         tela.setVisible(true);
     }
     
@@ -52,7 +84,11 @@ public class TelaAdministrador {
         JMenu menu = new JMenu("Opções");
         
         JMenuItem item1 = new JMenuItem("Dados Gerais");
+        item1.addActionListener(new OpcaoDadosGeraisAdministrador(this));
+        
         JMenuItem item2 = new JMenuItem("Pedidos");
+        item2.addActionListener(new OpcaoPedidosAdministrador(this));
+        
         JMenuItem item3 = new JMenuItem("Sair");
         item3.addActionListener(new BotaoSairParaLogin(tela, new TelaLogin()));
 
@@ -66,6 +102,204 @@ public class TelaAdministrador {
         menuBar.add(menu);
         
         return menuBar;
+    }
+    
+    public void exibirDadosGerais () {
+        
+        // Remoção o painelUsuarioDadosUsuario atual
+        principal.removeAll();
+        
+        JPanel areaDadosGerais = new JPanel();
+        areaDadosGerais.setLayout(new BorderLayout());
+        areaDadosGerais.setPreferredSize(new Dimension(500, 200));
+       
+//------------------------------------------------------------------------------
+
+        String[] menuItems = {"Clientes", "Entregadores"};
+
+        JPanel painelTipoUsuario = new JPanel();
+        painelTipoUsuario.setBorder(BorderFactory.createTitledBorder("Tipo Usuário"));
+        painelTipoUsuario.setPreferredSize(new Dimension(WIDTH/4, HEIGHT));
+        painelTipoUsuario.setLayout(new BorderLayout());
+        
+        // Criando um DefaultListModel e adicionando os itens
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (String item : menuItems) {
+            listModel.addElement(item);
+        }
+
+        
+        // Criando a JList com o DefaultListModel
+        JList<String> menuList = new JList<>(listModel);
+
+        painelTipoUsuario.add(new JScrollPane(menuList), BorderLayout.CENTER);
+        
+//------------------------------------------------------------------------------
+
+        JPanel painelUsuario = new JPanel();
+        painelUsuario.setBorder(BorderFactory.createTitledBorder("Usuários"));
+        painelUsuario.setPreferredSize(new Dimension(WIDTH/4, HEIGHT));
+        painelUsuario.setLayout(new BorderLayout());
+        
+//------------------------------------------------------------------------------
+       
+        menuList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    selectedItem = menuList.getSelectedValue();
+                    exibirDadosGerais();
+                }
+            }
+        });
+        
+        if (selectedItem != null && selectedItem != "") {
+            if (selectedItem.equals("Clientes")) {
+                DefaultListModel<Cliente> model = new DefaultListModel<>();
+                jlCliente = new JList<>(model);
+                jlCliente.addListSelectionListener(new SelecionarContatoCliente(this));
+
+                painelUsuario.add(new JScrollPane(jlCliente), BorderLayout.CENTER);
+
+            } else if (selectedItem.equals("Entregadores")) {
+                DefaultListModel<Entregador> model = new DefaultListModel<>();
+                jlEntregador = new JList<>(model);
+                jlEntregador.addListSelectionListener(new SelecionarContatoEntregador(this));
+
+                painelUsuario.add(new JScrollPane(jlEntregador), BorderLayout.CENTER);
+            }
+        }
+
+//------------------------------------------------------------------------------
+
+        JPanel painelUsuarioDadosUsuario = new JPanel();
+        painelUsuarioDadosUsuario.setPreferredSize(new Dimension(WIDTH/3, HEIGHT));
+        painelUsuarioDadosUsuario.setBorder(BorderFactory.createTitledBorder("Dados Usuário"));
+
+        JPanel formulario = new JPanel();
+        JPanel painelUsuarioDadosUsuarioLabel = new JPanel();
+        painelUsuarioDadosUsuarioLabel.setLayout(new GridLayout(0, 1, H_GAP,V_GAP));
+        painelUsuarioDadosUsuarioLabel.add(new JLabel("Nome:"));
+        painelUsuarioDadosUsuarioLabel.add(new JLabel("Usuário:"));
+        painelUsuarioDadosUsuarioLabel.add(new JLabel("Email:"));
+        painelUsuarioDadosUsuarioLabel.add(new JLabel("CPF:"));
+        painelUsuarioDadosUsuarioLabel.add(new JLabel("Telefone:"));
+
+//------------------------------------------------------------------------------
+        
+        JPanel painelUsuarioDadosUsuarioField = new JPanel();
+        painelUsuarioDadosUsuarioField.setLayout(new GridLayout(0,1, H_GAP,V_GAP));
+        
+        tfNome = new JTextField(15);
+        tfUsuario = new JTextField(15);
+        tfEmail = new JTextField(15);
+        tfCpf = new JTextField(15);
+        tfTelefone = new JTextField(15);
+        
+        tfNome.setEditable(false);
+        tfUsuario.setEditable(false);
+        tfEmail.setEditable(false);
+        tfCpf.setEditable(false);
+        tfTelefone.setEditable(false);
+
+//------------------------------------------------------------------------------
+        
+        painelUsuarioDadosUsuarioField.add(tfNome);
+        painelUsuarioDadosUsuarioField.add(tfUsuario);
+        painelUsuarioDadosUsuarioField.add(tfEmail);
+        painelUsuarioDadosUsuarioField.add(tfCpf);
+        painelUsuarioDadosUsuarioField.add(tfTelefone);
+        
+//------------------------------------------------------------------------------
+        formulario.add(painelUsuarioDadosUsuarioLabel);
+        formulario.add(painelUsuarioDadosUsuarioField);
+
+        painelUsuarioDadosUsuario.setLayout(new BorderLayout());
+        painelUsuarioDadosUsuario.add(formulario, BorderLayout.CENTER);
+
+//------------------------------------------------------------------------------
+        
+        JButton btnRemover = new JButton("Remover");
+//        btnRemover.addActionListener(new RemoverContato(this));
+
+        JPanel botoes = new JPanel();
+        botoes.add(btnRemover);
+
+        painelUsuarioDadosUsuario.add(botoes, BorderLayout.SOUTH);
+        
+//------------------------------------------------------------------------------
+        
+        areaDadosGerais.add(painelTipoUsuario, BorderLayout.WEST);
+        areaDadosGerais.add(painelUsuario, BorderLayout.CENTER);
+        areaDadosGerais.add(painelUsuarioDadosUsuario, BorderLayout.EAST);
+        
+        // Adiciona os dados gerais a janela
+        principal.add(areaDadosGerais);
+        
+        // Atualiza tela
+        principal.revalidate();
+        principal.repaint();
+        
+    }
+    
+    public void atualizarFormularioCliente(){
+        int selectedIndex = jlCliente.getSelectedIndex();
+
+        if(selectedIndex != -1){
+
+            DefaultListModel<Cliente> model = (DefaultListModel<Cliente>)jlCliente.getModel();
+            Cliente cliente = model.get(selectedIndex);
+            
+            tfNome.setText(cliente.getNome());
+            tfUsuario.setText(cliente.getUsuario());
+            tfEmail.setText(cliente.getEmail().toString());
+            tfTelefone.setText(cliente.getNumeroDeTelefone().toString());
+            tfCpf.setText(cliente.getCpf().toString());
+        }
+    }
+    
+    public void atualizarFormularioEntregador(){
+        int selectedIndex = jlEntregador.getSelectedIndex();
+
+        if(selectedIndex != -1){
+
+            DefaultListModel<Entregador> model = (DefaultListModel<Entregador>)jlEntregador.getModel();
+            Entregador entregador = model.get(selectedIndex);
+            
+            tfNome.setText(entregador.getNome());
+            tfUsuario.setText(entregador.getUsuario());
+            tfEmail.setText(entregador.getEmail().toString());
+            tfTelefone.setText(entregador.getNumeroDeTelefone().toString());
+            tfCpf.setText(entregador.getCpf().toString());
+        }
+    }
+    
+    public void exibirPedidosAdministrador () {
+        
+        // Remoção o painelUsuarioDadosUsuario atual
+        principal.removeAll();
+        
+        JPanel areaPedidos  = new JPanel();
+        areaPedidos.setLayout(new BorderLayout());
+        
+        JPanel painel = new JPanel();
+        painel.setBorder(BorderFactory.createTitledBorder("Entregas"));
+        painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        painel.setLayout(new BorderLayout());
+        
+        DefaultListModel<Entregas> model = new DefaultListModel<>();
+        jlPedidos = new JList<>(model);
+
+        painel.add(new JScrollPane(jlPedidos), BorderLayout.CENTER);
+        
+        areaPedidos.add(painel, BorderLayout.CENTER);
+
+        // Adiciona os pedidos a janela
+        principal.add(areaPedidos);
+        
+        // Atualiza tela
+        principal.revalidate();
+        principal.repaint();
     }
 }
 

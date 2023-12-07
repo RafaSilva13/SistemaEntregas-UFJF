@@ -89,7 +89,7 @@ public class TelaEntregador {
         JMenu menu = new JMenu("Opções");
 
         JMenuItem item1 = new JMenuItem("Meus dados");
-        item1.addActionListener(new OpcaoMeusDadosEntregador(tela, this));
+        item1.addActionListener(new OpcaoMeusDadosEntregador(this));
 
         JMenuItem item2 = new JMenuItem("Entregas");
 

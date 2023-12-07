@@ -60,6 +60,9 @@ public class TelaCliente {
         
         // Deixa o painel visível
         tela.setVisible(true);
+        
+        principal.revalidate();
+        principal.repaint();
     }
     
     private JMenuBar criaBarraDeOpcoes() {
@@ -71,7 +74,7 @@ public class TelaCliente {
         JMenu menu = new JMenu("Opções");
 
         JMenuItem item1 = new JMenuItem("Meus dados");
-        item1.addActionListener(new OpcaoMeusDadosCliente(tela, this));
+        item1.addActionListener(new OpcaoMeusDadosCliente(this));
 
         JMenuItem item2 = new JMenuItem("Pedidos");
 
@@ -90,7 +93,7 @@ public class TelaCliente {
         return menuBar;
     }
     
-        public void exibePainelMeusDados() {
+    public void exibePainelMeusDados() {
         
         // Remoção o painel atual
         principal.removeAll();

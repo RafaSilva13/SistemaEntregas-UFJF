@@ -7,11 +7,9 @@ import javax.swing.JFrame;
 
 public class OpcaoMeusDadosCliente implements ActionListener {
 
-    private final JFrame tela;
     private final TelaCliente telaCliente;
 
-    public OpcaoMeusDadosCliente(JFrame tela, TelaCliente telaCliente) {
-        this.tela = tela;
+    public OpcaoMeusDadosCliente(TelaCliente telaCliente) {
         this.telaCliente = telaCliente;
     }
 
