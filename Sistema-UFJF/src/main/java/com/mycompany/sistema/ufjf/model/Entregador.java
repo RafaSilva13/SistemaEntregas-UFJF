@@ -52,6 +52,11 @@ public class Entregador extends Usuario {
     public boolean fazLogin(String usuario, String senha) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public String toString() {
+        return "Entregador{" + "nome=" + nome + ", identificadorEntregador=" + identificadorEntregador + ", numeroDeTelefone=" + numeroDeTelefone + '}';
+    }
     
     
     
