@@ -6,6 +6,7 @@ import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosAdministrador;
 import com.mycompany.sistema.ufjf.eventos.SelecionarContatoCliente;
 import com.mycompany.sistema.ufjf.eventos.SelecionarContatoEntregador;
 import com.mycompany.sistema.ufjf.model.Cliente;
+import com.mycompany.sistema.ufjf.model.Entrega;
 import com.mycompany.sistema.ufjf.model.Entregador;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -43,7 +44,7 @@ public class TelaAdministrador {
 
     private JList<Cliente> jlCliente;
     private JList<Entregador> jlEntregador;
-    private JList<Cliente> jlPedidos;
+    private JList<Entrega> jlPedidos;
     
     public void exibirTelaAdministrador() {
 
@@ -287,7 +288,7 @@ public class TelaAdministrador {
         painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         painel.setLayout(new BorderLayout());
         
-        DefaultListModel<Cliente> model = new DefaultListModel<>();
+        DefaultListModel<Entrega> model = new DefaultListModel<>();
         jlPedidos = new JList<>(model);
 
         painel.add(new JScrollPane(jlPedidos), BorderLayout.CENTER);

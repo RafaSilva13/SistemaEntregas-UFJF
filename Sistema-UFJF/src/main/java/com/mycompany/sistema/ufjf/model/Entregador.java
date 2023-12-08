@@ -28,8 +28,50 @@ public class Entregador extends Usuario {
         this.numeroDeTelefone = numeroDeTelefone;
         this.quantidadeDeEntregas = 0;
     }
+
+    // Getters
+    public String getNome() {
+        return nome;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public Cpf getCpf() {
+        return cpf;
+    }
+
+    public Telefone getNumeroDeTelefone() {
+        return numeroDeTelefone;
+    }
+
+    // Setters
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setCpf(Cpf cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+
+    public void setNumeroDeTelefone(Telefone numeroDeTelefone) {
+        this.numeroDeTelefone = numeroDeTelefone;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
     
-     //retorna identifacor aleatorio (mas ainda não esta armazenando os que ja foram criados - usar a persistencia)
+    //retorna identifacor aleatorio (mas ainda não esta armazenando os que ja foram criados - usar a persistencia)
     public int criaIdentificador() {
         Random random = new Random();
         return random.nextInt(9000) + 1000;

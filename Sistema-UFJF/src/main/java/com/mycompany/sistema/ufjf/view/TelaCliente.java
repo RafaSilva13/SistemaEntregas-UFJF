@@ -5,6 +5,7 @@ import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosCliente;
 import com.mycompany.sistema.ufjf.model.Cliente;
+import com.mycompany.sistema.ufjf.model.Entrega;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -40,7 +41,7 @@ public class TelaCliente {
     private JTextField tfSenhaCliente;
     private JLabel tfCpfCliente;
 
-    private JList<Cliente> jlPedidos;
+    private JList<Entrega> jlPedidos;
     
     public void exibirTelaClientes() {
         
@@ -249,7 +250,7 @@ public class TelaCliente {
         painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         painel.setLayout(new BorderLayout());
         
-        DefaultListModel<Cliente> model = new DefaultListModel<>();
+        DefaultListModel<Entrega> model = new DefaultListModel<>();
         jlPedidos = new JList<>(model);
 
         painel.add(new JScrollPane(jlPedidos), BorderLayout.CENTER);

@@ -31,14 +31,12 @@ public class Cliente extends Usuario {
         this.email = email;
         
     }
-     
 
     //Acredito que verifica se os dados esão no json e se sim, faz login, se não, não faz
     @Override
     public boolean fazLogin(String usuario, String senha) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
     
     public int retornaCodigoIdentificador(){
         return this.identificadorCliente;
@@ -59,6 +57,10 @@ public class Cliente extends Usuario {
         return nome;
     }
 
+    public String getUsuario() {
+        return usuario;
+    }
+    
     public Cpf getCpf() {
         return cpf;
     }
@@ -79,6 +81,10 @@ public class Cliente extends Usuario {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public void setIdentificadorCliente(int identificadorCliente) {
