@@ -8,13 +8,13 @@ package com.mycompany.sistema.ufjf.exeptions;
  *
  * @author sihuanb
  */
-public class CpfExeption extends Exception {
+public class CpfException extends Exception {
 
-    public CpfExeption() {
+    public CpfException() {
         super("CPF não válido!");
     }
 
-    public CpfExeption(String message) {
+    public CpfException(String message) {
         super(message);
     }
     

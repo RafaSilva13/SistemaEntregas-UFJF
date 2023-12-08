@@ -1,28 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.sistema.ufjf.model;
 
 import java.util.Random;
 
-/**
- *
- * @author josemiguel
- */
 public class Entregador extends Usuario {
     
-    private String nome;
     private int identificadorEntregador;
+    private String nome;
     private Cpf cpf;
     private Email email;
     private Telefone numeroDeTelefone;
     private int quantidadeDeEntregas;
     
+    public void Entregador() {
+    }
+    
     public Entregador(String nome,Cpf cpf, Email email, Telefone numeroDeTelefone, String usuario, String senha) {
         super(usuario, senha);
         this.nome = nome;
-        this.identificadorEntregador = criaIdentificador();
+        this.identificadorEntregador = 2;
         this.cpf = cpf;
         this.email = email;
         this.numeroDeTelefone = numeroDeTelefone;
@@ -70,13 +65,7 @@ public class Entregador extends Usuario {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-    
-    //retorna identifacor aleatorio (mas ainda não esta armazenando os que ja foram criados - usar a persistencia)
-    public int criaIdentificador() {
-        Random random = new Random();
-        return random.nextInt(9000) + 1000;
-    }
-
+     
     public int retornaCodigoIdentificador() {
         return identificadorEntregador;
     }

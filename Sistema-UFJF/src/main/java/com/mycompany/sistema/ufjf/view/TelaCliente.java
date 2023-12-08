@@ -4,12 +4,20 @@ import com.mycompany.sistema.ufjf.eventos.AdicionarCliente;
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosCliente;
+import com.mycompany.sistema.ufjf.exeptions.CpfException;
+import com.mycompany.sistema.ufjf.exeptions.EmailException;
+import com.mycompany.sistema.ufjf.exeptions.TelefoneException;
 import com.mycompany.sistema.ufjf.model.Cliente;
+import com.mycompany.sistema.ufjf.model.Cpf;
+import com.mycompany.sistema.ufjf.model.Email;
 import com.mycompany.sistema.ufjf.model.Entrega;
+import com.mycompany.sistema.ufjf.model.Telefone;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -20,6 +28,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -42,6 +51,7 @@ public class TelaCliente {
     private JLabel tfCpfCliente;
 
     private JList<Entrega> jlPedidos;
+    private JList<Cliente> jlCliente;
     
     public void exibirTelaClientes() {
         
@@ -56,6 +66,8 @@ public class TelaCliente {
 
         principal = new JPanel();
         principal.setLayout(new BorderLayout());
+        
+        this.exibirPedidosCliente();
         
         // Adiciona o painel geral a janela
         tela.add(principal);
@@ -232,9 +244,44 @@ public class TelaCliente {
         principal.repaint();
     }
         
-    private void salvarAlteracoes() {
-        // Lógica para salvar as alterações aqui
-        // Você pode acessar os valores dos campos usando, por exemplo, tfNomeCliente.getText()
+    public void salvarAlteracoes(){
+
+        int selectedIndex = jlCliente.getSelectedIndex();
+
+        if(selectedIndex != -1){
+
+            DefaultListModel<Cliente> model = (DefaultListModel<Cliente>)jlCliente.getModel();
+
+            Cliente cliente = model.get(selectedIndex);
+
+            model.remove(selectedIndex);
+
+            try {
+                cliente.setNome(tfNomeCliente.getText());
+                cliente.setUsuario(tfEmailCliente.getText());
+                cliente.setEmail(new Email(tfUsuarioCliente.getText()));
+                
+                Cpf cpf = new Cpf();
+                cpf.parser(tfCpfCliente.getText());
+                cliente.setCpf(cpf);
+                
+                Telefone telefone = new Telefone();
+                telefone.parser(tfTelefoneCliente.getText());
+                cliente.setNumeroDeTelefone(telefone);
+                
+                model.add(selectedIndex, cliente);
+            } catch (EmailException e) {
+                JOptionPane.showMessageDialog(tela, "O email " + tfEmailCliente.getText() +" é invalido!");
+            } catch (TelefoneException e) {
+                JOptionPane.showMessageDialog(tela, "O telefone " + tfTelefoneCliente.getText() +" é invalido!");
+            } catch (CpfException e) {
+                JOptionPane.showMessageDialog(tela, "O CPF " + tfCpfCliente.getText() +" é invalido!");
+            }
+        }
+
+
+        tela.pack();
+
     }
     
     public void exibirPedidosCliente() {
@@ -265,4 +312,18 @@ public class TelaCliente {
         principal.repaint();
         
     }
+    
+    public List<Entrega> listaEntregas(Cliente clienteAtual){
+        DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlPedidos.getModel();
+        List<Entrega> minhaEntregas = new ArrayList<>();
+
+        for (int i = 0; i < model.size(); i++) {
+            if (model.equals(clienteAtual)) {
+                minhaEntregas.add(model.get(i));
+            }
+        }
+
+        return minhaEntregas;
+    }
+
 }

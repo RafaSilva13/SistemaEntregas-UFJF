@@ -14,6 +14,6 @@ public class AdicionarCliente implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//        tela.addCliente();
+        tela.addCliente();
     }
 }

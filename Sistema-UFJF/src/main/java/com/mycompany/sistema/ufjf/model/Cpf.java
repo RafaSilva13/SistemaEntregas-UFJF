@@ -4,7 +4,7 @@
  */
 package com.mycompany.sistema.ufjf.model;
 
-import com.mycompany.sistema.ufjf.exeptions.CpfExeption;
+import com.mycompany.sistema.ufjf.exeptions.CpfException;
 /**
  *
  * @author sihuanb
@@ -25,9 +25,7 @@ public class Cpf {
         return "Cpf{" + "cPFString=" + cPFString + ", cPFSemPontos=" + cPFSemPontos + '}';
     }
     
-    
-    
-    public static Cpf parser(String cpf1) throws CpfExeption {
+    public static Cpf parser(String cpf1) throws CpfException {
         
         String cpf = cpf1.replaceAll("[^0-9]", "");
         
@@ -35,8 +33,7 @@ public class Cpf {
         if (11 == cpf.length()) {
             return new Cpf(cpf1, cpf);
         } else {
-            throw new CpfExeption("Cpf não válido!");
+            throw new CpfException("Cpf não válido!");
         }
-
     }
 }

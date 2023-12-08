@@ -5,6 +5,11 @@ import com.mycompany.sistema.ufjf.eventos.AdicionarEntregador;
 import com.mycompany.sistema.ufjf.eventos.BotaoLoginAdministrador;
 import com.mycompany.sistema.ufjf.eventos.BotaoLoginCliente;
 import com.mycompany.sistema.ufjf.eventos.BotaoLoginEntregador;
+import com.mycompany.sistema.ufjf.eventos.GerenciaClientes;
+import com.mycompany.sistema.ufjf.eventos.GerenciaEntregadores;
+import com.mycompany.sistema.ufjf.exeptions.CpfException;
+import com.mycompany.sistema.ufjf.exeptions.EmailException;
+import com.mycompany.sistema.ufjf.exeptions.TelefoneException;
 import com.mycompany.sistema.ufjf.model.Cliente;
 import com.mycompany.sistema.ufjf.model.Entregador;
 import com.mycompany.sistema.ufjf.model.Email;
@@ -14,6 +19,8 @@ import com.mycompany.sistema.ufjf.model.Cpf;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -42,8 +49,12 @@ public class TelaLogin {
     private JTextField tfSenha;
    
     // JTextField Cadastro
-    private JTextField tfUsuarioCadastro;
-    private JTextField tfSenhaCadastro;
+    private JTextField tfUsuarioCadastroCliente;
+    private JTextField tfSenhaCadastroCliente;
+   
+    // JTextField Cadastro Entregador
+    private JTextField tfUsuarioCadastroEntregador;
+    private JTextField tfSenhaCadastroEntregador;
     
     // JTextField Clientes
     private JTextField tfNomeCliente;
@@ -64,13 +75,15 @@ public class TelaLogin {
     private JTextField tfAnoFabricacao;
     
     // JLists
-//    private JList<Cliente> jlClientes;
+    private JList<Cliente> jlClientes;
     private JList<Entregador> jlEntregadores;
     
     public void exibirTelaLogin() {
         
         // Cria uma nova janela
         tela = new JFrame("Sistema de Entregas");
+        tela.addWindowListener(new GerenciaClientes(this));
+        tela.addWindowListener(new GerenciaEntregadores(this));
         
         // Define o excerramento do programa ao fechar a janela
         tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -79,13 +92,19 @@ public class TelaLogin {
         principal = new JPanel();
         principal.setLayout(new BorderLayout());
 
+        DefaultListModel<Cliente> modelCliente = new DefaultListModel<>();
+        jlClientes = new JList<>(modelCliente);
+        
+        DefaultListModel<Entregador> modelEntregador = new DefaultListModel<>();
+        jlEntregadores = new JList<>(modelEntregador);
+        
         // Inicia a barra superior de seleção de tipo de login com as opções
         barraLogin = new JTabbedPane();
         barraLogin.addTab("Administrador", criarPainelEntradaAdministrador());
         barraLogin.addTab("Cliente", criarPainelEntradaCliente());
         barraLogin.addTab("Entregador", criarPainelEntradaEntregador());
         barraLogin.setBorder(BorderFactory.createRaisedBevelBorder());
-
+        
         // Adiciona a barra superior ao painel geral
         principal.add(barraLogin);
        
@@ -156,7 +175,7 @@ public class TelaLogin {
         
         // Cria botao de Login
         JButton botaoLogin = new JButton("Entrar");
-        
+                
         // Abre tela cliente
         botaoLogin.addActionListener(new BotaoLoginCliente(tela, new TelaCliente()));
 
@@ -197,7 +216,7 @@ public class TelaLogin {
         
         // Cria botao de Login
         JButton botaoLogin = new JButton("Entrar");
-        
+                
         // Abre tela entregador
         botaoLogin.addActionListener(new BotaoLoginEntregador(tela, new TelaEntregador()));
         
@@ -275,8 +294,8 @@ public class TelaLogin {
         // Cria um painel para conter a área de usuario
         JPanel areaUsuarioCliente = new JPanel();
         areaUsuarioCliente.setBorder(BorderFactory.createTitledBorder("Usuario"));
-        tfUsuarioCadastro = new JTextField(12);
-        areaUsuarioCliente.add(tfUsuarioCadastro);
+        tfUsuarioCadastroCliente = new JTextField(12);
+        areaUsuarioCliente.add(tfUsuarioCadastroCliente);
         
         // Cria um painel para conter a área de telefone
         JPanel areaTelefoneCliente = new JPanel();
@@ -297,8 +316,8 @@ public class TelaLogin {
         // Cria um painel para conter a área de senha
         JPanel areaSenhaCliente = new JPanel();
         areaSenhaCliente.setBorder(BorderFactory.createTitledBorder("Senha"));
-        tfSenhaCadastro = new JTextField(12);
-        areaSenhaCliente.add(tfSenhaCadastro);
+        tfSenhaCadastroCliente = new JTextField(12);
+        areaSenhaCliente.add(tfSenhaCadastroCliente);
 
         // Cria um painel para conter a área de email
         JPanel areaEmailCliente = new JPanel();
@@ -388,8 +407,8 @@ public class TelaLogin {
         // Cria um painel para conter a área de usuario
         JPanel areaUsuarioEntregador = new JPanel();
         areaUsuarioEntregador.setBorder(BorderFactory.createTitledBorder("Usuario"));
-        tfUsuarioCadastro = new JTextField(12);
-        areaUsuarioEntregador.add(tfUsuarioCadastro);
+        tfUsuarioCadastroEntregador = new JTextField(12);
+        areaUsuarioEntregador.add(tfUsuarioCadastroEntregador);
         
         // Cria um painel para conter a área de telefone
         JPanel areaTelefoneEntregador = new JPanel();
@@ -410,8 +429,8 @@ public class TelaLogin {
         // Cria um painel para conter a área de senha
         JPanel areaSenhaEntregador = new JPanel();
         areaSenhaEntregador.setBorder(BorderFactory.createTitledBorder("Senha"));
-        tfSenhaCadastro = new JTextField(12);
-        areaSenhaEntregador.add(tfSenhaCadastro);
+        tfSenhaCadastroEntregador = new JTextField(12);
+        areaSenhaEntregador.add(tfSenhaCadastroEntregador);
 
         // Cria um painel para conter a área de email
         JPanel areaEmailEntregador = new JPanel();
@@ -510,33 +529,126 @@ public class TelaLogin {
         return areaLogin;
     }
     
-//    public void addCliente(){
-//
-//        DefaultListModel<Cliente> model = (DefaultListModel<Cliente>).jlClientes.getModel();;
-//        
-//        try {
-//            model.addElement(new Cliente(tfNomeCliente.getText(), new Cpf(tfCpfCliente.getText()), new Telefone(tfTelefoneCliente.getText()), new Email(tfEmailCliente.getText()), tfUsuario.getText(), tfSenha.getText()));
-//        } catch (EmailException e) {
-//            JOptionPane.showMessageDialog(tela, "O email " + tfEmailCliente.getText() +" é invalido!");
-//        } catch (TelefoneException e) {
-//            JOptionPane.showMessageDialog(tela, "O telefone " + tfTelefoneCliente.getText() +" é invalido!");
-//        } catch (CpfException e) {
-//            JOptionPane.showMessageDialog(tela, "O CPF " + tfCpfCliente.getText() +" é invalido!");
-//        }
-//    }
-//    
-//    public void addEntregador(){
-//
-//        DefaultListModel<Entregador> model = (DefaultListModel<Entregador>).jlEntregadores.getModel();
-//        
-//        try {
-//            model.addElement(new Entregador(tfNomeEntregador.getText(), new Cpf(tfCpfEntregador.getText()), new Email(tfEmailEntregador.getText()),  new Telefone(tfTelefoneEntregador.getText()), 0, ));
-//        } catch (EmailException e) {
-//            JOptionPane.showMessageDialog(tela, "O email " + tfEmailEntregador.getText() +" é invalido!");
-//        } catch (TelefoneException e) {
-//            JOptionPane.showMessageDialog(tela, "O telefone " + tfTelefoneEntregador.getText() +" é invalido!");
-//        } catch (CpfException e) {
-//            JOptionPane.showMessageDialog(tela, "O CPF " + tfCpfEntregador.getText() +" é invalido!");
-//        }
-//    }
+    public void addCliente() {
+
+        DefaultListModel<Cliente> modelClientes = (DefaultListModel<Cliente>)jlClientes.getModel();
+        
+        try {
+            if (tfNomeCliente.getText().length() != 0 && tfUsuarioCadastroCliente.getText().length() != 0 && tfEmailCliente.getText().length() != 0 && tfTelefoneCliente.getText().length() != 0 && tfCpfCliente.getText().length() != 0 && tfSenhaCadastroCliente.getText().length() != 0) {
+                Cpf cpf = new Cpf();
+                cpf.parser(tfCpfCliente.getText());
+                
+                System.out.println(cpf);
+
+                Telefone telefone = new Telefone();
+                telefone.parser(tfTelefoneCliente.getText());
+                
+                System.out.println(telefone);
+
+                Cliente novoCliente = new Cliente(tfNomeCliente.getText(), cpf, telefone, new Email(tfEmailCliente.getText()), tfUsuarioCadastroCliente.getText(), tfSenhaCadastroCliente.getText());
+
+                System.out.println(novoCliente);
+                System.out.println(modelClientes);
+                
+                // Verifica se o cliente já existe no model
+                if (!verificaJaCadastrado(modelClientes, novoCliente)) {
+                    modelClientes.addElement(novoCliente);
+                } else {
+                    JOptionPane.showMessageDialog(tela, "Cliente já existe!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(tela, "Preencha todos os campos!");
+            }
+        } catch (EmailException e) {
+            JOptionPane.showMessageDialog(tela, "O email " + tfEmailCliente.getText() +" é invalido!");
+        } catch (TelefoneException e) {
+            JOptionPane.showMessageDialog(tela, "O telefone " + tfTelefoneCliente.getText() +" é invalido!");
+        } catch (CpfException e) {
+            JOptionPane.showMessageDialog(tela, "O CPF " + tfCpfCliente.getText() +" é invalido!");
+        }
+    }
+    
+    public void carregaClientes(List<Cliente> clientes){
+
+        DefaultListModel<Cliente> modelClientes = (DefaultListModel<Cliente>)jlClientes.getModel();
+
+        for (Cliente c: clientes) {
+            modelClientes.addElement(c);
+        }
+    }
+    
+    public List<Cliente> listaClientes(){
+        DefaultListModel<Cliente> modelClientes = (DefaultListModel<Cliente>)jlClientes.getModel();
+        List<Cliente> clientes = new ArrayList<>();
+
+        for (int i = 0; i < modelClientes.size(); i++) {
+            clientes.add(modelClientes.get(i));
+        }
+
+        return clientes;
+    }
+
+    public void addEntregador(){
+
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregadores.getModel();
+        
+        try {
+            if (tfNomeEntregador.getText().length() != 0 && tfUsuarioCadastroEntregador.getText().length() != 0 && tfEmailEntregador.getText().length() != 0 && tfTelefoneEntregador.getText().length() != 0 && tfCpfEntregador.getText().length() != 0 && tfSenhaCadastroEntregador.getText().length() != 0) {
+
+                Cpf cpf = new Cpf();
+                cpf.parser(tfCpfEntregador.getText());
+
+                Telefone telefone = new Telefone();
+                telefone.parser(tfTelefoneEntregador.getText());
+
+                Entregador novoEntregador = new Entregador(tfNomeEntregador.getText(), cpf, new Email(tfEmailEntregador.getText()), telefone, tfUsuarioCadastroEntregador.getText(), tfSenhaCadastroEntregador.getText());
+
+                // Verifica se o entregador já existe no model
+                if (!verificaJaCadastrado(modelEntregador, novoEntregador)) {
+                    modelEntregador.addElement(novoEntregador);
+                } else {
+                    JOptionPane.showMessageDialog(tela, "Cliente já existe!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(tela, "Preencha todos os campos!");
+            }
+        } catch (EmailException e) {
+            JOptionPane.showMessageDialog(tela, "O email " + tfEmailEntregador.getText() +" é invalido!");
+        } catch (TelefoneException e) {
+            JOptionPane.showMessageDialog(tela, "O telefone " + tfTelefoneEntregador.getText() +" é invalido!");
+        } catch (CpfException e) {
+            JOptionPane.showMessageDialog(tela, "O CPF " + tfCpfEntregador.getText() +" é invalido!");
+        }
+    }
+    
+    public void carregaEntregadores(List<Entregador> entregador){
+
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregadores.getModel();
+
+        for (Entregador e: entregador) {
+            modelEntregador.addElement(e);
+        }
+    }
+    
+    public List<Entregador> listaEntregadores(){
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregadores.getModel();
+        List<Entregador> entregadores = new ArrayList<>();
+
+        for (int i = 0; i < modelEntregador.size(); i++) {
+            entregadores.add(modelEntregador.get(i));
+        }
+
+        return entregadores;
+    }
+    
+    private static <T> boolean verificaJaCadastrado(DefaultListModel<T> model, T usuario) {
+        for (int i = 0; i < model.getSize(); i++) {
+            T clienteExistente = model.getElementAt(i);
+            
+            if (clienteExistente.equals(usuario)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,16 +1,12 @@
 package com.mycompany.sistema.ufjf;
 
-/**
- *
- * @author rafael.pereira
- */
 import com.mycompany.sistema.ufjf.exeptions.*;
 import com.mycompany.sistema.ufjf.model.*;
 import com.mycompany.sistema.ufjf.view.TelaLogin;
 
 public class SistemaUFJF {
 
-    public static void main(String[] args) throws DataExeption, CpfExeption, EmailException, TelefoneException {
+    public static void main(String[] args) throws DataExeption, CpfException, EmailException, TelefoneException {
         System.out.println("Hello World!");
        
         

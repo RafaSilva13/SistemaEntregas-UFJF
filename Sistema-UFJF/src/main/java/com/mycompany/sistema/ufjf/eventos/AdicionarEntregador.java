@@ -14,6 +14,6 @@ public class AdicionarEntregador implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//        tela.addEntregador();
+        tela.addEntregador();
     }
 }
