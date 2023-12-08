@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.sistema.ufjf.model;
 
 import java.util.List;
 import java.util.Random;
 
-/**
- *
- * @author josemiguel
- */
 public class Entrega {
+    
     private int identificadorEntrega;
     private Entregador entregador;
     private Cliente cliente;
@@ -30,8 +23,6 @@ public class Entrega {
         this.pacotes = pacotes;
     }
     
-    
-        
     private double retornaValorEntrega(){
         int distanciaKm = verificaEndereco();
         double valorFinal = distanciaKm * 0.25; //Ex: se distancia == 200 Km, valor = 50,00
@@ -63,7 +54,6 @@ public class Entrega {
         this.entregador = entregador;
     }
 
-    
     //GETTERS E SETTERS
     public int getIdentificadorEntrega() {
         return identificadorEntrega;

@@ -53,7 +53,11 @@ public class TelaCliente {
     private JList<Entrega> jlPedidos;
     private JList<Cliente> jlCliente;
     
-    public void exibirTelaClientes() {
+    private Cliente usuarioLogado;
+
+    public void exibirTelaClientes(Cliente cliente) {
+        
+        this.usuarioLogado = cliente;
         
         // Cria uma nova janela
         tela = new JFrame("Area Cliente");
@@ -116,7 +120,7 @@ public class TelaCliente {
     }
     
     public void exibePainelMeusDados() {
-        
+                
         // Remoção o painel atual
         principal.removeAll();
 

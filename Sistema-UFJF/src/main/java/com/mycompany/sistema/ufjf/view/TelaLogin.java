@@ -44,10 +44,18 @@ public class TelaLogin {
     private final int V_GAP = 10;
     private final int H_GAP = 5;
     
-    // JTextField Login
-    private JTextField tfUsuario;
-    private JTextField tfSenha;
+    // JTextField Login Clientes
+    private JTextField tfUsuarioClientes;
+    private JTextField tfSenhaClientes;
+    
+    // JTextField Login Entregadores
+    private JTextField tfUsuarioEntregador;
+    private JTextField tfSenhaEntregador;
    
+    // JTextField Login Administrador
+    private JTextField tfUsuarioAdministrador;
+    private JTextField tfSenhaAdministrador;
+    
     // JTextField Cadastro
     private JTextField tfUsuarioCadastroCliente;
     private JTextField tfSenhaCadastroCliente;
@@ -68,12 +76,6 @@ public class TelaLogin {
     private JTextField tfTelefoneEntregador;
     private JTextField tfCpfEntregador;
 
-    // JTextField Veiculo Entrega
-    private JTextField tfPlaca;
-    private JTextField tfModelo;
-    private JTextField tfCapacidadeCarga;
-    private JTextField tfAnoFabricacao;
-    
     // JLists
     private JList<Cliente> jlClientes;
     private JList<Entregador> jlEntregadores;
@@ -130,7 +132,7 @@ public class TelaLogin {
         JPanel painelAdministrador = new JPanel();
         painelAdministrador.setSize(350, 300);
 
-        JPanel painelLogin = criaPainelComumLogin();
+        JPanel painelLogin = criaPainelAdministradorLogin();
         painelLogin.setLayout(new BoxLayout(painelLogin, BoxLayout.Y_AXIS));
         painelLogin.setBorder(BorderFactory.createRaisedBevelBorder());
         
@@ -158,13 +160,20 @@ public class TelaLogin {
         return painelAdministrador;
     }
 
+    public String getUsuarioCliente() {
+        return tfUsuarioClientes.getText();
+    }
+    
+    public String getSenhaCliente() {
+        return tfSenhaClientes.getText();
+    }
     
     private JPanel criarPainelEntradaCliente() {
         
         // Cria um painel de Cliente
         JPanel painelCliente = new JPanel();
         
-        JPanel painelComumLogin = criaPainelComumLogin();
+        JPanel painelComumLogin = criaPainelClientesLogin();
         painelComumLogin.setSize(250, HEIGHT);
         painelComumLogin.setLayout(new BoxLayout(painelComumLogin, BoxLayout.Y_AXIS));
         painelComumLogin.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -175,9 +184,9 @@ public class TelaLogin {
         
         // Cria botao de Login
         JButton botaoLogin = new JButton("Entrar");
-                
-        // Abre tela cliente
-        botaoLogin.addActionListener(new BotaoLoginCliente(tela, new TelaCliente()));
+        
+        // Verifica login e abre tela cliente
+        botaoLogin.addActionListener(new BotaoLoginCliente(tela, new TelaCliente(),this));
 
         // Adiciona botao ao painel do botao
         painelBotaoLogin.add(botaoLogin);
@@ -205,7 +214,7 @@ public class TelaLogin {
         JPanel painelEntregador = new JPanel();
         
         // Adiciona painel de login no painel do entragador
-        JPanel painelComumLogin = criaPainelComumLogin();
+        JPanel painelComumLogin = criaPainelEntregadoresLogin();
         painelComumLogin.setSize(250, HEIGHT);
         painelComumLogin.setLayout(new BoxLayout(painelComumLogin, BoxLayout.Y_AXIS));
         painelComumLogin.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -466,7 +475,7 @@ public class TelaLogin {
         return areaCadastro;
     }
     
-    private JPanel criaPainelComumLogin() {
+    private JPanel criaPainelClientesLogin() {
         
         // Painel de login
         JPanel areaLogin = new JPanel();
@@ -501,10 +510,10 @@ public class TelaLogin {
         areaUsuario.setBorder(BorderFactory.createTitledBorder("Usuário"));
         
         // Input de usuario
-        tfUsuario = new JTextField(15);
+        tfUsuarioClientes = new JTextField(15);
 
         // Adiciona Input na Area
-        areaUsuario.add(tfUsuario);
+        areaUsuario.add(tfUsuarioClientes);
         
 // -----------------------------------------------------------------------------               
 
@@ -515,10 +524,135 @@ public class TelaLogin {
         areaSenha.setBorder(BorderFactory.createTitledBorder("Senha"));
         
         // Input de usuario
-        tfSenha = new JTextField(15);
+        tfSenhaClientes = new JTextField(15);
 
         // Adiciona Input na Area
-        areaSenha.add(tfSenha);
+        areaSenha.add(tfSenhaClientes);
+        
+// -----------------------------------------------------------------------------               
+
+        // Adiciona areas na area de login
+        areaLogin.add(areaUsuario);
+        areaLogin.add(areaSenha);
+        
+        return areaLogin;
+    }
+    private JPanel criaPainelEntregadoresLogin() {
+        
+        // Painel de login
+        JPanel areaLogin = new JPanel();
+        areaLogin.setLayout(new GridLayout(0,1, H_GAP,V_GAP));
+        
+// -----------------------------------------------------------------------------               
+
+        JPanel areaTextoLogin = new JPanel();
+        
+        JLabel textoLogin = new JLabel("Login");
+        
+        // Define a fonte do texto com um tamanho específico
+        Font fonte = new Font("Arial", Font.PLAIN, 20);
+        textoLogin.setFont(fonte);
+        
+        // Define borda superior e inferior do texto
+        textoLogin.setBorder(new EmptyBorder(8, 0, 8, 0));
+        textoLogin.setHorizontalTextPosition (JLabel.CENTER);
+
+        // Adiciona texto a areaDeTexto
+        areaTextoLogin.add(textoLogin);
+        
+        // Adiciona area de texto a area de login
+        areaLogin.add(areaTextoLogin);
+               
+// -----------------------------------------------------------------------------               
+        
+        // Area de iserção de usuario
+        JPanel areaUsuario = new JPanel();
+        
+        // Titulo da Area
+        areaUsuario.setBorder(BorderFactory.createTitledBorder("Usuário"));
+        
+        // Input de usuario
+        tfUsuarioEntregador = new JTextField(15);
+
+        // Adiciona Input na Area
+        areaUsuario.add(tfUsuarioEntregador);
+        
+// -----------------------------------------------------------------------------               
+
+        // Area de iserção de usuario
+        JPanel areaSenha = new JPanel();
+        
+        // Titulo da Area
+        areaSenha.setBorder(BorderFactory.createTitledBorder("Senha"));
+        
+        // Input de usuario
+        tfSenhaEntregador = new JTextField(15);
+
+        // Adiciona Input na Area
+        areaSenha.add(tfSenhaEntregador);
+        
+// -----------------------------------------------------------------------------               
+
+        // Adiciona areas na area de login
+        areaLogin.add(areaUsuario);
+        areaLogin.add(areaSenha);
+        
+        return areaLogin;
+    }
+    
+    private JPanel criaPainelAdministradorLogin() {
+        
+        // Painel de login
+        JPanel areaLogin = new JPanel();
+        areaLogin.setLayout(new GridLayout(0,1, H_GAP,V_GAP));
+        
+// -----------------------------------------------------------------------------               
+
+        JPanel areaTextoLogin = new JPanel();
+        
+        JLabel textoLogin = new JLabel("Login");
+        
+        // Define a fonte do texto com um tamanho específico
+        Font fonte = new Font("Arial", Font.PLAIN, 20);
+        textoLogin.setFont(fonte);
+        
+        // Define borda superior e inferior do texto
+        textoLogin.setBorder(new EmptyBorder(8, 0, 8, 0));
+        textoLogin.setHorizontalTextPosition (JLabel.CENTER);
+
+        // Adiciona texto a areaDeTexto
+        areaTextoLogin.add(textoLogin);
+        
+        // Adiciona area de texto a area de login
+        areaLogin.add(areaTextoLogin);
+               
+// -----------------------------------------------------------------------------               
+        
+        // Area de iserção de usuario
+        JPanel areaUsuario = new JPanel();
+        
+        // Titulo da Area
+        areaUsuario.setBorder(BorderFactory.createTitledBorder("Usuário"));
+        
+        // Input de usuario
+        tfUsuarioAdministrador = new JTextField(15);
+
+        // Adiciona Input na Area
+        areaUsuario.add(tfUsuarioAdministrador);
+        
+// -----------------------------------------------------------------------------               
+
+        // Area de iserção de usuario
+        JPanel areaSenha = new JPanel();
+        
+        // Titulo da Area
+        areaSenha.setBorder(BorderFactory.createTitledBorder("Senha"));
+        
+        // Input de usuario
+        tfSenhaAdministrador = new JTextField(15);
+
+        // Adiciona Input na Area
+        areaSenha.add(tfSenhaAdministrador);
         
 // -----------------------------------------------------------------------------               
 
@@ -535,23 +669,17 @@ public class TelaLogin {
         
         try {
             if (tfNomeCliente.getText().length() != 0 && tfUsuarioCadastroCliente.getText().length() != 0 && tfEmailCliente.getText().length() != 0 && tfTelefoneCliente.getText().length() != 0 && tfCpfCliente.getText().length() != 0 && tfSenhaCadastroCliente.getText().length() != 0) {
-                Cpf cpf = new Cpf();
-                cpf.parser(tfCpfCliente.getText());
                 
-                System.out.println(cpf);
-
-                Telefone telefone = new Telefone();
-                telefone.parser(tfTelefoneCliente.getText());
+                Cliente novoCliente = new Cliente(tfNomeCliente.getText(), Cpf.parser(tfCpfCliente.getText()), Telefone.parser(tfTelefoneCliente.getText()), new Email(tfEmailCliente.getText()), tfUsuarioCadastroCliente.getText(), tfSenhaCadastroCliente.getText());
                 
-                System.out.println(telefone);
+                List<Cliente> clientes = new ArrayList<>();
 
-                Cliente novoCliente = new Cliente(tfNomeCliente.getText(), cpf, telefone, new Email(tfEmailCliente.getText()), tfUsuarioCadastroCliente.getText(), tfSenhaCadastroCliente.getText());
-
-                System.out.println(novoCliente);
-                System.out.println(modelClientes);
+                for (int i = 0; i < modelClientes.size(); i++) {
+                    clientes.add(modelClientes.get(i));
+                }
                 
                 // Verifica se o cliente já existe no model
-                if (!verificaJaCadastrado(modelClientes, novoCliente)) {
+                if (!clientes.contains(novoCliente)) {
                     modelClientes.addElement(novoCliente);
                 } else {
                     JOptionPane.showMessageDialog(tela, "Cliente já existe!");
@@ -594,20 +722,20 @@ public class TelaLogin {
         
         try {
             if (tfNomeEntregador.getText().length() != 0 && tfUsuarioCadastroEntregador.getText().length() != 0 && tfEmailEntregador.getText().length() != 0 && tfTelefoneEntregador.getText().length() != 0 && tfCpfEntregador.getText().length() != 0 && tfSenhaCadastroEntregador.getText().length() != 0) {
+                
+                Entregador novoEntregador = new Entregador(tfNomeEntregador.getText(), Cpf.parser(tfCpfEntregador.getText()), new Email(tfEmailEntregador.getText()), Telefone.parser(tfTelefoneEntregador.getText()), tfUsuarioCadastroEntregador.getText(), tfSenhaCadastroEntregador.getText());
 
-                Cpf cpf = new Cpf();
-                cpf.parser(tfCpfEntregador.getText());
+                List<Entregador> entregador = new ArrayList<>();
 
-                Telefone telefone = new Telefone();
-                telefone.parser(tfTelefoneEntregador.getText());
-
-                Entregador novoEntregador = new Entregador(tfNomeEntregador.getText(), cpf, new Email(tfEmailEntregador.getText()), telefone, tfUsuarioCadastroEntregador.getText(), tfSenhaCadastroEntregador.getText());
-
+                for (int i = 0; i < modelEntregador.size(); i++) {
+                    entregador.add(modelEntregador.get(i));
+                }
+                
                 // Verifica se o entregador já existe no model
-                if (!verificaJaCadastrado(modelEntregador, novoEntregador)) {
+                if (!entregador.contains(novoEntregador)) {
                     modelEntregador.addElement(novoEntregador);
                 } else {
-                    JOptionPane.showMessageDialog(tela, "Cliente já existe!");
+                    JOptionPane.showMessageDialog(tela, "Entregador já existe!");
                 }
             } else {
                 JOptionPane.showMessageDialog(tela, "Preencha todos os campos!");
@@ -639,16 +767,5 @@ public class TelaLogin {
         }
 
         return entregadores;
-    }
-    
-    private static <T> boolean verificaJaCadastrado(DefaultListModel<T> model, T usuario) {
-        for (int i = 0; i < model.getSize(); i++) {
-            T clienteExistente = model.getElementAt(i);
-            
-            if (clienteExistente.equals(usuario)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

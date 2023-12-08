@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.sistema.ufjf.model;
 
 import com.mycompany.sistema.ufjf.exeptions.TelefoneException;
-/**
- *
- * @author sihuanb
- */
+import java.util.Objects;
+
 public class Telefone {
     private int ddd;
     private String numero;
@@ -66,5 +60,20 @@ public class Telefone {
         return "Telefone{" + "ddd=" + ddd + ", numero=" + numero + '}';
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Telefone otherTelefone = (Telefone) obj;
+        return ddd == otherTelefone.ddd && Objects.equals(numero, otherTelefone.numero);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(ddd, numero);
+    }
 }

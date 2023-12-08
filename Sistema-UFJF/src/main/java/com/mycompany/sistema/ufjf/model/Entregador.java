@@ -1,5 +1,6 @@
 package com.mycompany.sistema.ufjf.model;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Entregador extends Usuario {
@@ -17,13 +18,19 @@ public class Entregador extends Usuario {
     public Entregador(String nome,Cpf cpf, Email email, Telefone numeroDeTelefone, String usuario, String senha) {
         super(usuario, senha);
         this.nome = nome;
-        this.identificadorEntregador = 2;
+        this.identificadorEntregador = criaIdentificador();
         this.cpf = cpf;
         this.email = email;
         this.numeroDeTelefone = numeroDeTelefone;
         this.quantidadeDeEntregas = 0;
     }
 
+    //retorna identifacor aleatorio (mas ainda não esta armazenando os que ja foram criados - usar a persistencia)
+    public int criaIdentificador() {
+        Random random = new Random();
+        return random.nextInt(9000) + 1000;
+    }
+    
     // Getters
     public String getNome() {
         return nome;
@@ -89,6 +96,21 @@ public class Entregador extends Usuario {
         return "Entregador{" + "nome=" + nome + ", identificadorEntregador=" + identificadorEntregador + ", numeroDeTelefone=" + numeroDeTelefone + '}';
     }
     
-    
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Entregador entregador = (Entregador)obj;
+        
+        return Objects.equals(cpf, entregador.cpf)&& Objects.equals(usuario, entregador.usuario);    
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, cpf, numeroDeTelefone, email, usuario);
+    }
 }

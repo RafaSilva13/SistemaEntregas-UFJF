@@ -1,13 +1,11 @@
 package com.mycompany.sistema.ufjf.model;
 
 import com.mycompany.sistema.ufjf.exeptions.EmailException;
+import java.util.Objects;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-/**
- *
- * @author sihuanb
- */
+
 public class Email {
     private String email;
     private String login;
@@ -55,6 +53,20 @@ public class Email {
         return "Email{" + "email=" + email + '}';
     }
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Email otherEmail = (Email) obj;
+        return Objects.equals(email, otherEmail.email);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
 }

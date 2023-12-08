@@ -5,6 +5,7 @@
 package com.mycompany.sistema.ufjf.model;
 
 import com.mycompany.sistema.ufjf.exeptions.CpfException;
+import java.util.Objects;
 /**
  *
  * @author sihuanb
@@ -35,5 +36,22 @@ public class Cpf {
         } else {
             throw new CpfException("Cpf não válido!");
         }
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Cpf otherCpf = (Cpf) obj;
+        return Objects.equals(cPFSemPontos, otherCpf.cPFSemPontos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cPFSemPontos);
     }
 }

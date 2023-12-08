@@ -1,5 +1,6 @@
 package com.mycompany.sistema.ufjf.model;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Cliente extends Usuario {
@@ -16,15 +17,20 @@ public class Cliente extends Usuario {
     
     public Cliente(String nome, Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha){
         super(usuario, senha);
-        this.identificadorCliente = 1;
+        this.identificadorCliente = criaIdentificador();
         this.nome = nome;
         this.quantidadeDePedidos = 0;
         this.cpf = cpf;
         this.numeroDeTelefone = numeroDeTelefone;
         this.email = email;
-        
     }
 
+    //Cria um numero aleatorio de identificador e falta salá-lo no json
+    public int criaIdentificador(){
+        Random random = new Random();
+        return random.nextInt(9000) + 1000;
+    }
+    
     //Acredito que verifica se os dados esão no json e se sim, faz login, se não, não faz
     @Override
     public boolean fazLogin(String usuario, String senha) {
@@ -96,5 +102,23 @@ public class Cliente extends Usuario {
     @Override
     public String toString() {
         return "Cliente{" + "nome=" + nome + ", cpf=" + cpf.toString() + ", numeroDeTelefone=" + numeroDeTelefone.toString() + ", email=" + email + ", usuario=" + usuario + '}';
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Cliente cliente = (Cliente)obj;
+        
+        return Objects.equals(cpf, cliente.cpf)&& Objects.equals(usuario, cliente.usuario);    
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, cpf, numeroDeTelefone, email, usuario);
     }
 }
