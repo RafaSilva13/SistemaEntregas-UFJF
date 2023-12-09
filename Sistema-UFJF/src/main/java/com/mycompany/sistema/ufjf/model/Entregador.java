@@ -85,10 +85,9 @@ public class Entregador extends Usuario {
         System.out.println("Quantidade de entregas feitas por " + this.nome + " é : " + this.quantidadeDeEntregas);
     }
 
-
     @Override
     public boolean fazLogin(String usuario, String senha) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return this.usuario.equals(usuario) && this.senha.equals(senha);
     }
 
     @Override

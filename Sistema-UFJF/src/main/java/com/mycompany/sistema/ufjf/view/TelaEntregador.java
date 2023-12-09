@@ -2,6 +2,7 @@ package com.mycompany.sistema.ufjf.view;
 
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosEntregador;
+import com.mycompany.sistema.ufjf.model.Entregador;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -40,7 +41,11 @@ public class TelaEntregador {
     private JLabel tfCapacidadeCargaVeiculo;
     private JLabel lblAnoFabricacaoVeiculo;
 
-    public void exibirTelaEntregador() {
+    private Entregador usuarioLogado;
+    
+    public void exibirTelaEntregador(Entregador entregador) {
+        
+        this.usuarioLogado = entregador;
         
         // Cria uma nova janela
         tela = new JFrame("Area Entregador");

@@ -168,6 +168,14 @@ public class TelaLogin {
         return tfSenhaClientes.getText();
     }
     
+    public String getUsuarioEntregador() {
+        return tfUsuarioEntregador.getText();
+    }
+    
+    public String getSenhaEntregador() {
+        return tfSenhaEntregador.getText();
+    }
+    
     private JPanel criarPainelEntradaCliente() {
         
         // Cria um painel de Cliente
@@ -227,7 +235,7 @@ public class TelaLogin {
         JButton botaoLogin = new JButton("Entrar");
                 
         // Abre tela entregador
-        botaoLogin.addActionListener(new BotaoLoginEntregador(tela, new TelaEntregador()));
+        botaoLogin.addActionListener(new BotaoLoginEntregador(tela, new TelaEntregador(),this));
         
         // Adiciona botao ao painel do botao
         painelBotaoLogin.add(botaoLogin);
@@ -680,7 +688,17 @@ public class TelaLogin {
                 
                 // Verifica se o cliente já existe no model
                 if (!clientes.contains(novoCliente)) {
+                    
                     modelClientes.addElement(novoCliente);
+                    JOptionPane.showMessageDialog(tela, "Cadastro realizado com sucesso!");
+                    
+                    tfNomeCliente.setText("");
+                    tfUsuarioCadastroCliente.setText("");
+                    tfEmailCliente.setText("");
+                    tfTelefoneCliente.setText("");
+                    tfCpfCliente.setText("");
+                    tfSenhaCadastroCliente.setText("");
+                    
                 } else {
                     JOptionPane.showMessageDialog(tela, "Cliente já existe!");
                 }
@@ -733,7 +751,18 @@ public class TelaLogin {
                 
                 // Verifica se o entregador já existe no model
                 if (!entregador.contains(novoEntregador)) {
+                    
                     modelEntregador.addElement(novoEntregador);
+                    
+                    JOptionPane.showMessageDialog(tela, "Cadastro realizado com sucesso!");
+                    
+                    tfNomeEntregador.setText("");
+                    tfUsuarioCadastroEntregador.setText("");
+                    tfEmailEntregador.setText("");
+                    tfTelefoneEntregador.setText("");
+                    tfCpfEntregador.setText("");
+                    tfSenhaCadastroEntregador.setText("");
+                            
                 } else {
                     JOptionPane.showMessageDialog(tela, "Entregador já existe!");
                 }
