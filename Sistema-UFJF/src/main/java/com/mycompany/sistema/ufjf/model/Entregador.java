@@ -51,6 +51,10 @@ public class Entregador extends Usuario {
     public Telefone getNumeroDeTelefone() {
         return numeroDeTelefone;
     }
+    
+    public String getSenha() {
+        return senha;
+    }
 
     // Setters
     public void setNome(String nome) {
@@ -92,7 +96,7 @@ public class Entregador extends Usuario {
 
     @Override
     public String toString() {
-        return "Entregador{" + "nome=" + nome + ", identificadorEntregador=" + identificadorEntregador + ", numeroDeTelefone=" + numeroDeTelefone + '}';
+        return nome + "     " + usuario + "     " + cpf.toString() + "      " + numeroDeTelefone.toString() + "     " + email;
     }
     
     @Override
@@ -105,7 +109,7 @@ public class Entregador extends Usuario {
         }
         Entregador entregador = (Entregador)obj;
         
-        return Objects.equals(cpf, entregador.cpf)&& Objects.equals(usuario, entregador.usuario);    
+        return Objects.equals(cpf, entregador.cpf) || Objects.equals(usuario, entregador.usuario);    
     }
 
     @Override

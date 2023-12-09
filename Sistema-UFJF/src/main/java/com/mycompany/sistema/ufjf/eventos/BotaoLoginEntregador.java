@@ -18,8 +18,8 @@ public class BotaoLoginEntregador implements ActionListener {
     private Entregador entregadorLogado;
     
     public BotaoLoginEntregador(JFrame telaAtual, TelaEntregador tela, TelaLogin telaLogin) {
-        this.telaAtual = telaAtual;
         this.tela = tela;
+        this.telaAtual = telaAtual;
         this.telaLogin = telaLogin;
     }
     

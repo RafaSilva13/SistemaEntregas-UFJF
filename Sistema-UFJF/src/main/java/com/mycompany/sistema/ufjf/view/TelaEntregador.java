@@ -36,10 +36,6 @@ public class TelaEntregador {
     private JTextField tfUsuarioEntregador;
     private JTextField tfSenhaEntregador;
     private JLabel tfCpfEntregador;
-    private JLabel tfPlacaVeiculo;
-    private JLabel tfModeloVeiculo;
-    private JLabel tfCapacidadeCargaVeiculo;
-    private JLabel lblAnoFabricacaoVeiculo;
 
     private Entregador usuarioLogado;
     
@@ -204,6 +200,16 @@ public class TelaEntregador {
         // Adicina email e senha ao painel
         panelDireito.add(areaEmailEntregador);
         panelDireito.add(areaSenhaEntregador);
+        
+// -----------------------------------------------------------------------------     
+
+        // Preenche dados do cliente
+        tfNomeEntregador.setText(this.usuarioLogado.getNome());
+        tfUsuarioEntregador.setText(this.usuarioLogado.getUsuario());
+        tfCpfEntregador.setText(this.usuarioLogado.getCpf().toString());
+        tfEmailEntregador.setText(this.usuarioLogado.getEmail().toString());
+        tfTelefoneEntregador.setText(this.usuarioLogado.getNumeroDeTelefone().toString());
+        tfSenhaEntregador.setText(this.usuarioLogado.getSenha().toString());
         
 // -----------------------------------------------------------------------------               
 

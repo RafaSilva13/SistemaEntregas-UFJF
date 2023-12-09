@@ -15,6 +15,9 @@ import com.mycompany.sistema.ufjf.model.Entregador;
 import com.mycompany.sistema.ufjf.model.Email;
 import com.mycompany.sistema.ufjf.model.Telefone;
 import com.mycompany.sistema.ufjf.model.Cpf;
+import com.mycompany.sistema.ufjf.persistence.ClientePersistence;
+import com.mycompany.sistema.ufjf.persistence.EntregadorPersistence;
+import com.mycompany.sistema.ufjf.persistence.Persistence;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -125,6 +128,38 @@ public class TelaLogin {
         
         tela.pack();
     }
+
+    public String getUsuarioCliente() {
+        return tfUsuarioClientes.getText();
+    }
+    
+    public String getSenhaCliente() {
+        return tfSenhaClientes.getText();
+    }
+    
+    public String getUsuarioEntregador() {
+        return tfUsuarioEntregador.getText();
+    }
+    
+    public String getSenhaEntregador() {
+        return tfSenhaEntregador.getText();
+    }
+    
+    public String getUsuarioAdministrador() {
+        return tfUsuarioAdministrador.getText();
+    }
+    
+    public String getSenhaAdministrador() {
+        return tfSenhaAdministrador.getText();
+    }
+    
+    public JList getJListClientes() {
+        return jlClientes;
+    }
+    
+    public JList getJListEntregadores() {
+        return jlEntregadores;
+    }
  
     private JPanel criarPainelEntradaAdministrador() {
         
@@ -144,7 +179,7 @@ public class TelaLogin {
         JButton botaoLogin = new JButton("Entrar");
         
         // Abre tela administrador
-        botaoLogin.addActionListener(new BotaoLoginAdministrador(tela, new TelaAdministrador()));
+        botaoLogin.addActionListener(new BotaoLoginAdministrador(tela, new TelaAdministrador(), this));
         
         // Adiciona botao ao painel do botao
         painelBotaoLogin.add(botaoLogin);
@@ -158,22 +193,6 @@ public class TelaLogin {
         painelAdministrador.add(painelLogin);
         
         return painelAdministrador;
-    }
-
-    public String getUsuarioCliente() {
-        return tfUsuarioClientes.getText();
-    }
-    
-    public String getSenhaCliente() {
-        return tfSenhaClientes.getText();
-    }
-    
-    public String getUsuarioEntregador() {
-        return tfUsuarioEntregador.getText();
-    }
-    
-    public String getSenhaEntregador() {
-        return tfSenhaEntregador.getText();
     }
     
     private JPanel criarPainelEntradaCliente() {
@@ -690,6 +709,10 @@ public class TelaLogin {
                 if (!clientes.contains(novoCliente)) {
                     
                     modelClientes.addElement(novoCliente);
+                    
+                    Persistence<Cliente> clientePersistence = new ClientePersistence();
+                    clientePersistence.save(listaClientes());
+                    
                     JOptionPane.showMessageDialog(tela, "Cadastro realizado com sucesso!");
                     
                     tfNomeCliente.setText("");
@@ -753,6 +776,9 @@ public class TelaLogin {
                 if (!entregador.contains(novoEntregador)) {
                     
                     modelEntregador.addElement(novoEntregador);
+                    
+                    Persistence<Entregador> entregadorPersistence = new EntregadorPersistence();
+                    entregadorPersistence.save(listaEntregadores());
                     
                     JOptionPane.showMessageDialog(tela, "Cadastro realizado com sucesso!");
                     

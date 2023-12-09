@@ -58,7 +58,7 @@ public class TelaCliente {
     public void exibirTelaClientes(Cliente cliente) {
         
         this.usuarioLogado = cliente;
-        
+                
         // Cria uma nova janela
         tela = new JFrame("Area Cliente");
         
@@ -211,6 +211,16 @@ public class TelaCliente {
         panelDireito.add(areaEmailCliente);
         panelDireito.add(areaSenhaCliente);
         
+// -----------------------------------------------------------------------------   
+
+        // Preenche dados do cliente
+        tfNomeCliente.setText(this.usuarioLogado.getNome());
+        tfUsuarioCliente.setText(this.usuarioLogado.getUsuario());
+        tfCpfCliente.setText(this.usuarioLogado.getCpf().toString());
+        tfEmailCliente.setText(this.usuarioLogado.getEmail().toString());
+        tfTelefoneCliente.setText(this.usuarioLogado.getNumeroDeTelefone().toString());
+        tfSenhaCliente.setText(this.usuarioLogado.getSenha());
+
 // -----------------------------------------------------------------------------               
 
         // Cria botão de salvar alteracoes e adiciona em um painel

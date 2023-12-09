@@ -20,11 +20,6 @@ public class Cpf {
     }
     
     public Cpf(){}
-
-    @Override
-    public String toString() {
-        return "Cpf{" + "cPFString=" + cPFString + ", cPFSemPontos=" + cPFSemPontos + '}';
-    }
     
     public static Cpf parser(String cpf1) throws CpfException {
         
@@ -53,5 +48,10 @@ public class Cpf {
     @Override
     public int hashCode() {
         return Objects.hash(cPFSemPontos);
+    }
+
+    @Override
+    public String toString() {
+        return cPFString;
     }
 }

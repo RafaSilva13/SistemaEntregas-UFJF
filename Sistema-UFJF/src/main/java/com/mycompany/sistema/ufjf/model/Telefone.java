@@ -14,22 +14,6 @@ public class Telefone {
     
     public Telefone(){}
 
-    public int getDdd() {
-        return ddd;
-    }
-
-    public void setDdd(int ddd) {
-        this.ddd = ddd;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-    
     // Método estático parser para criar um objeto Telefone a partir de uma String
     public static Telefone parser(String telefone) throws TelefoneException {
         // Remover caracteres não numéricos da string do telefone
@@ -54,10 +38,35 @@ public class Telefone {
             //e.getMe
         }
     }
+    
+    public int getDdd() {
+        return ddd;
+    }
 
-    @Override
-    public String toString() {
-        return "Telefone{" + "ddd=" + ddd + ", numero=" + numero + '}';
+    public void setDdd(int ddd) {
+        this.ddd = ddd;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+    
+     public static String formatarNumero(String numero) {
+        StringBuilder reversed = new StringBuilder(numero).reverse();
+        StringBuilder formatted = new StringBuilder();
+
+        for (int i = 0; i < reversed.length(); i++) {
+            formatted.append(reversed.charAt(i));
+            if (i == 3) {
+                formatted.append('-');
+            }
+        }
+
+        return formatted.reverse().toString();
     }
     
     @Override
@@ -75,5 +84,10 @@ public class Telefone {
     @Override
     public int hashCode() {
         return Objects.hash(ddd, numero);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + ddd + ")" + formatarNumero(numero);
     }
 }

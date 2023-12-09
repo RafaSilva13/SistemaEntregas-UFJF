@@ -70,6 +70,10 @@ public class Cliente extends Usuario {
         return email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+    
     //SETTERS
     public void setNome(String nome) {
         this.nome = nome;
@@ -101,7 +105,7 @@ public class Cliente extends Usuario {
 
     @Override
     public String toString() {
-        return "Cliente{" + "nome=" + nome + ", cpf=" + cpf.toString() + ", numeroDeTelefone=" + numeroDeTelefone.toString() + ", email=" + email + ", usuario=" + usuario + '}';
+        return nome + "     " + usuario + "     " + cpf.toString() + "      " + numeroDeTelefone.toString() + "     " + email;
     }
     
     @Override
@@ -114,7 +118,7 @@ public class Cliente extends Usuario {
         }
         Cliente cliente = (Cliente)obj;
         
-        return Objects.equals(cpf, cliente.cpf)&& Objects.equals(usuario, cliente.usuario);    
+        return Objects.equals(cpf, cliente.cpf) || Objects.equals(usuario, cliente.usuario);    
     }
 
     @Override

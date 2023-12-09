@@ -3,14 +3,20 @@ package com.mycompany.sistema.ufjf.view;
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.OpcaoDadosGeraisAdministrador;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosAdministrador;
+import com.mycompany.sistema.ufjf.eventos.RemoverUsuario;
 import com.mycompany.sistema.ufjf.eventos.SelecionarContatoCliente;
 import com.mycompany.sistema.ufjf.eventos.SelecionarContatoEntregador;
 import com.mycompany.sistema.ufjf.model.Cliente;
 import com.mycompany.sistema.ufjf.model.Entrega;
 import com.mycompany.sistema.ufjf.model.Entregador;
+import com.mycompany.sistema.ufjf.persistence.ClientePersistence;
+import com.mycompany.sistema.ufjf.persistence.EntregadorPersistence;
+import com.mycompany.sistema.ufjf.persistence.Persistence;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -45,9 +51,12 @@ public class TelaAdministrador {
     private JList<Cliente> jlCliente;
     private JList<Entregador> jlEntregador;
     private JList<Entrega> jlPedidos;
+//    
+//    private JList<Cliente> jlClientes;
+//    private JList<Entregador> jlEntregadores;
     
-    public void exibirTelaAdministrador() {
-
+    public void exibirTelaAdministrador(JList<Cliente> cliente, JList<Entregador> entregador) {
+        
         // Cria uma nova janela
         tela = new JFrame("Area Administrador");
 
@@ -59,6 +68,9 @@ public class TelaAdministrador {
 
         principal = new JPanel();
         principal.setLayout(new BorderLayout());
+        
+        this.jlCliente = cliente;
+        this.jlEntregador = entregador;
         
         this.exibirDadosGerais();
 
@@ -105,7 +117,7 @@ public class TelaAdministrador {
         return menuBar;
     }
     
-    public void exibirDadosGerais () {
+    public void exibirDadosGerais() {
         
         // Remoção o painelUsuarioDadosUsuario atual
         principal.removeAll();
@@ -154,23 +166,6 @@ public class TelaAdministrador {
             }
         });
         
-        if (selectedItem != null && selectedItem != "") {
-            if (selectedItem.equals("Clientes")) {
-                DefaultListModel<Cliente> model = new DefaultListModel<>();
-                jlCliente = new JList<>(model);
-                jlCliente.addListSelectionListener(new SelecionarContatoCliente(this));
-
-                painelUsuario.add(new JScrollPane(jlCliente), BorderLayout.CENTER);
-
-            } else if (selectedItem.equals("Entregadores")) {
-                DefaultListModel<Entregador> model = new DefaultListModel<>();
-                jlEntregador = new JList<>(model);
-                jlEntregador.addListSelectionListener(new SelecionarContatoEntregador(this));
-
-                painelUsuario.add(new JScrollPane(jlEntregador), BorderLayout.CENTER);
-            }
-        }
-
 //------------------------------------------------------------------------------
 
         JPanel painelUsuarioDadosUsuario = new JPanel();
@@ -221,7 +216,27 @@ public class TelaAdministrador {
 //------------------------------------------------------------------------------
         
         JButton btnRemover = new JButton("Remover");
-//        btnRemover.addActionListener(new RemoverContato(this));
+        
+//------------------------------------------------------------------------------
+        
+        if (selectedItem != null && selectedItem != "") {
+            if (selectedItem.equals("Clientes")) {
+                DefaultListModel<Cliente> model = new DefaultListModel<>();
+                jlCliente.addListSelectionListener(new SelecionarContatoCliente(this));
+
+                painelUsuario.add(new JScrollPane(jlCliente), BorderLayout.CENTER);
+                btnRemover.addActionListener(new RemoverUsuario(this, selectedItem));
+
+            } else if (selectedItem.equals("Entregadores")) {
+                DefaultListModel<Entregador> model = new DefaultListModel<>();
+                jlEntregador.addListSelectionListener(new SelecionarContatoEntregador(this));
+
+                painelUsuario.add(new JScrollPane(jlEntregador), BorderLayout.CENTER);
+                btnRemover.addActionListener(new RemoverUsuario(this, selectedItem));
+            }
+        }
+
+//------------------------------------------------------------------------------
 
         JPanel botoes = new JPanel();
         botoes.add(btnRemover);
@@ -272,6 +287,56 @@ public class TelaAdministrador {
             tfEmail.setText(entregador.getEmail().toString());
             tfTelefone.setText(entregador.getNumeroDeTelefone().toString());
             tfCpf.setText(entregador.getCpf().toString());
+        }
+    }
+    
+    public List<Cliente> listaClientes(){
+        DefaultListModel<Cliente> modelClientes = (DefaultListModel<Cliente>)jlCliente.getModel();
+        List<Cliente> clientes = new ArrayList<>();
+
+        for (int i = 0; i < modelClientes.size(); i++) {
+            clientes.add(modelClientes.get(i));
+        }
+
+        return clientes;
+    }
+    
+    public List<Entregador> listaEntregadores(){
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregador.getModel();
+        List<Entregador> entregadores = new ArrayList<>();
+
+        for (int i = 0; i < modelEntregador.size(); i++) {
+            entregadores.add(modelEntregador.get(i));
+        }
+
+        return entregadores;
+    }
+    
+    public void removerUsuario(String tipoUsuario) {
+        if (tipoUsuario.equals("Clientes")) {
+            
+            System.out.println(listaClientes());
+            
+            int selectedIndex = jlCliente.getSelectedIndex();
+
+            if(selectedIndex != -1){
+                DefaultListModel<Cliente> model = (DefaultListModel<Cliente>)jlCliente.getModel();
+                model.remove(selectedIndex);
+                
+                Persistence<Cliente> clientePersistence = new ClientePersistence();
+                clientePersistence.save(listaClientes());
+            }
+        } else if (tipoUsuario.equals("Entregadores")) {
+            
+            int selectedIndex = jlEntregador.getSelectedIndex();
+
+            if(selectedIndex != -1){
+                DefaultListModel<Entregador> model = (DefaultListModel<Entregador>)jlEntregador.getModel();
+                model.remove(selectedIndex);
+                
+                Persistence<Entregador> entregadorPersistence = new EntregadorPersistence();
+                entregadorPersistence.save(listaEntregadores());
+            }
         }
     }
     
