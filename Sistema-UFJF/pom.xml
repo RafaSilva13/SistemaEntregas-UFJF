@@ -11,4 +11,18 @@
         <maven.compiler.target>21</maven.compiler.target>
         <exec.mainClass>com.mycompany.sistema.ufjf.SistemaUFJF</exec.mainClass>
     </properties>
+    
+    <dependencies>
+        <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.13.1</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>2.10</version>
+        </dependency>
+    </dependencies>
 </project>
