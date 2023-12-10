@@ -1,7 +1,6 @@
 package com.mycompany.sistema.ufjf.view;
 
 import com.mycompany.sistema.ufjf.eventos.AdicionarEntregadorNoPacote;
-import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.FinalizarEntregaPacote;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasEntregador;
 import com.mycompany.sistema.ufjf.eventos.OpcaoEntregasEntregador;
@@ -112,14 +111,10 @@ public class TelaEntregador {
         JMenuItem item2 = new JMenuItem("Entregas");
         item1.addActionListener(new OpcaoEntregasEntregador(this));
 
-        JMenuItem item3 = new JMenuItem("Sair");
-        item3.addActionListener(new BotaoSairParaLogin(tela, new TelaLogin()));
-
         // Adicione opções no menu
         menu.add(item1);
-        menu.add(item2);
         menu.addSeparator();
-        menu.add(item3);    
+        menu.add(item2);
 
         // Adiciona menu na barra de menus
         menuBar.add(menu);
@@ -341,6 +336,26 @@ public class TelaEntregador {
         principal.revalidate();
         principal.repaint();
         
+    }
+     
+    public void carregaEntregadores (List<Entregador> entregadores) {
+
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregador.getModel();
+
+        for (Entregador e: entregadores) {
+            modelEntregador.addElement(e);
+        }
+    }
+    
+    public List<Entregador> listaEntregadores (){
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregador.getModel();
+        List<Entregador> entregador = new ArrayList<>();
+
+        for (int i = 0; i < modelEntregador.size(); i++) {
+            entregador.add(modelEntregador.get(i));
+        }
+
+        return entregador;
     }
      
     public void carregaEntregas(List<Entrega> entregas){

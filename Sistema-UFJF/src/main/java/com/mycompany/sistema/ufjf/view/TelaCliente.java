@@ -2,8 +2,6 @@ package com.mycompany.sistema.ufjf.view;
 
 import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesGrandes;
 import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesPequenos;
-import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
-import com.mycompany.sistema.ufjf.eventos.GerenciaClientes;
 import com.mycompany.sistema.ufjf.eventos.GerenciaClientesTelaClientes;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosCliente;
@@ -19,8 +17,6 @@ import com.mycompany.sistema.ufjf.model.Entrega;
 import com.mycompany.sistema.ufjf.model.PacoteGrande;
 import com.mycompany.sistema.ufjf.model.PacotePequeno;
 import com.mycompany.sistema.ufjf.model.Telefone;
-import com.mycompany.sistema.ufjf.persistence.EntregaPersistence;
-import com.mycompany.sistema.ufjf.persistence.Persistence;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -136,14 +132,10 @@ public class TelaCliente {
         JMenuItem item2 = new JMenuItem("Pedidos");
         item2.addActionListener(new OpcaoPedidosCliente(this));
 
-        JMenuItem item3 = new JMenuItem("Sair");
-        item3.addActionListener(new BotaoSairParaLogin(tela, new TelaLogin()));
-
         // Adicione opções no menu
         menu.add(item1);
-        menu.add(item2);
         menu.addSeparator();
-        menu.add(item3);
+        menu.add(item2);
 
         // Adiciona menu na barra de menus
         menuBar.add(menu);
@@ -537,7 +529,7 @@ public class TelaCliente {
         return formularioPacoteGrande;
     }
     
-    public List<Entrega> listaEntregas(){
+    public List<Entrega> listaEntregas() {
         
         DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
         List<Entrega> minhaEntregas = new ArrayList<>();
@@ -601,7 +593,9 @@ public class TelaCliente {
                 tfDestinoPacotePequeno.setText("");
                 tfAlturaPacotePequeno.setText("");
                 tfLarguraPacotePequeno.setText("");
-                tfOpcaoFragilPacotePequeno.setSelected(false);                    
+                tfOpcaoFragilPacotePequeno.setSelected(false);
+                
+                exibirPedidosCliente();
             } else {
                 JOptionPane.showMessageDialog(tela, "Pedido já existe!");
             }
@@ -638,6 +632,8 @@ public class TelaCliente {
                 tfDestinoPacoteGrande.setText("");
                 tfAlturaPacoteGrande.setText("");
                 tfLarguraPacoteGrande.setText("");
+
+                exibirPedidosCliente();
             } else {
                 JOptionPane.showMessageDialog(tela, "Pedido já existe!");
             }

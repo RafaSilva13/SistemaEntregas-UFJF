@@ -33,7 +33,7 @@ public class BotaoLoginAdministrador implements ActionListener {
         if (usuario.length() != 0 && senha.length() != 0) {
             if (administrador.fazLogin(usuario, senha)) {
                 telaAtual.dispose();
-                tela.exibirTelaAdministrador(telaLogin.getJListClientes(), telaLogin.getJListEntregadores());
+                tela.exibirTelaAdministrador();
             } else {
                 JOptionPane.showMessageDialog(telaAtual, "Senha ou usuário incorreto!");
             }
