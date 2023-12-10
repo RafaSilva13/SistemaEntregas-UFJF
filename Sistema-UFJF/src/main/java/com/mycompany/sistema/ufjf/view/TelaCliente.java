@@ -6,6 +6,7 @@ import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosCliente;
+import com.mycompany.sistema.ufjf.eventos.salvarAlteracoesCliente;
 import com.mycompany.sistema.ufjf.exeptions.CpfException;
 import com.mycompany.sistema.ufjf.exeptions.EmailException;
 import com.mycompany.sistema.ufjf.exeptions.TelefoneException;
@@ -13,7 +14,6 @@ import com.mycompany.sistema.ufjf.model.Cliente;
 import com.mycompany.sistema.ufjf.model.Cpf;
 import com.mycompany.sistema.ufjf.model.Email;
 import com.mycompany.sistema.ufjf.model.Entrega;
-import com.mycompany.sistema.ufjf.model.Pacote;
 import com.mycompany.sistema.ufjf.model.PacoteGrande;
 import com.mycompany.sistema.ufjf.model.PacotePequeno;
 import com.mycompany.sistema.ufjf.model.Telefone;
@@ -253,10 +253,9 @@ public class TelaCliente {
         
         JButton botaoSalvarAlteracoes = new JButton("Salvar Alterações");
 
-        // Chama a função de editar
-//        botaoSalvarAlteracoes.addActionListener(new salvarAlteracoesCliente(this));
+        // Chama a função de editarsalvarAlteracoesCliente
+        botaoSalvarAlteracoes.addActionListener(new salvarAlteracoesCliente(this));
 
-        
         painelBotaoMeusDados.add(botaoSalvarAlteracoes);
 
 // -----------------------------------------------------------------------------               
@@ -538,7 +537,7 @@ public class TelaCliente {
 
             PacotePequeno novoPedido = new PacotePequeno(Float.parseFloat(tfPesoPacotePequeno.getText()), tfOrigemPacotePequeno.getText(), tfDestinoPacotePequeno.getText(), Float.parseFloat(tfAlturaPacotePequeno.getText()), Float.parseFloat(tfLarguraPacotePequeno.getText()), "Pacote Pequeno", tfOpcaoFragilPacotePequeno.isSelected());
 
-            Entrega novaEntrega = new Entrega(null, usuarioLogado, false, novoPedido);
+            Entrega novaEntrega = new Entrega(usuarioLogado, "Aguardando Entregador", novoPedido);
 
             List<Entrega> entregas = new ArrayList<>();
 
@@ -578,7 +577,7 @@ public class TelaCliente {
 
             PacoteGrande novoPedido = new PacoteGrande(Float.parseFloat(tfPesoPacoteGrande.getText()), tfOrigemPacoteGrande.getText(), tfDestinoPacoteGrande.getText(), Float.parseFloat(tfAlturaPacoteGrande.getText()), Float.parseFloat(tfLarguraPacoteGrande.getText()), "Pacote Grande");
 
-            Entrega novaEntrega = new Entrega(null, usuarioLogado, false, novoPedido);
+            Entrega novaEntrega = new Entrega(usuarioLogado, "Aguardando Entregador", novoPedido);
 
             List<Entrega> entregas = new ArrayList<>();
 

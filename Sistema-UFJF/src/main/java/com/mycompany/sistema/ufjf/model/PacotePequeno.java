@@ -56,7 +56,7 @@ public class PacotePequeno extends Pacote{
     
     @Override
     public String toString() {
-        return "Peso: " + peso + "; \n Origem: " + origem + "; \n Destino: " + destino + "; \n Altura: " + altura + "; \n Largura: " + largura + "; \n Valor: " + valor + "; \n Tipo: " + tipo + "; \n Fragil: " + fragil + ";";
+        return "Tipo: " + tipo + "; Peso: " + peso + ";  Origem: " + origem + ";  Destino: " + destino + ";  Altura: " + altura + ";  Largura: " + largura + "; Valor: " + valor + "; Fragil: " + fragil + ";";
     }
     
     public void adicionarRestricaoVeiculo (boolean opcao) { 

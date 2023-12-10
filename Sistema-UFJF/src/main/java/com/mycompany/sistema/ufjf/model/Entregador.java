@@ -15,10 +15,10 @@ public class Entregador extends Usuario implements MeioDeTransporte {
     private MeioDeTransporte meioDeTransporte;
     private VeiculoEntrega veiculo;
     
-    public void Entregador() {
+    public Entregador() {
     }
 
-    public Entregador(String nome,Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha, MeioDeTransporte meioDeTransporte, VeiculoEntrega veiculo) {
+    public Entregador(String nome, Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha, MeioDeTransporte meioDeTransporte, VeiculoEntrega veiculo) {
         super(usuario, senha);
         this.nome = nome;
         this.identificadorEntregador = criaIdentificador();
@@ -103,14 +103,18 @@ public class Entregador extends Usuario implements MeioDeTransporte {
         return this.usuario.equals(usuario) && this.senha.equals(senha);
     }
     
+    public String realizarEntrega() {
+        return "Meio de transporte: " + this.getClass().getSimpleName();
+    }
+    
     @Override
     public String entregar() {
-        return meioDeTransporte.entregar();
+        return realizarEntrega();
     }
 
     @Override
     public String toString() {
-        return nome + "     " + usuario + "     " + cpf.toString() + "      " + numeroDeTelefone.toString() + "     " + email;
+        return "Nome: " + nome + "; Usuário: " + usuario + "; CPF: " + cpf.toString() + "; Telefone: " + numeroDeTelefone.toString() + "; Email: " + email + ";";
     }
     
     @Override

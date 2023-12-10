@@ -10,15 +10,11 @@ public class Entrega {
     private Entregador entregador;
     private Cliente cliente;
     private double valorEntrega;
-    private boolean statusEntrega;
+    private String statusEntrega;
     private Pacote pacote;
 
-    public Entrega(Entregador entregador, Cliente cliente, boolean statusEntrega, Pacote pacote) {
+    public Entrega(Cliente cliente, String statusEntrega, Pacote pacote) {
         this.identificadorEntrega = retornaCodigoIdentificador();
-        
-        if (entregador != null) {
-           this.entregador = entregador;        
-        }
         this.cliente = cliente;
         this.valorEntrega = retornaValorEntrega();
         this.statusEntrega = statusEntrega;
@@ -44,9 +40,9 @@ public class Entrega {
     
     public String toString(){
         
-        String nomeEntregador = entregador.getNome() == null ? "" : entregador.getNome();
+        String nomeEntregador = (entregador != null && entregador.getNome() != null) ? entregador.getNome() : "";
         
-        return identificadorEntrega + " Entregador: " + nomeEntregador + "; Cliente: " + cliente.getNome() + "; Valor:" + valorEntrega + "; Status:" + statusEntrega + "; Pacote: <" + pacote + ">";
+        return "Pedido: " + identificadorEntrega + "; Entregador: " + nomeEntregador + "; Cliente: " + cliente.getNome() + "; Valor:" + valorEntrega + "; Status:" + statusEntrega + "; Pacote: <" + pacote + ">";
     }
     
     public void cadastraEntregador(Entregador entregador){
@@ -82,11 +78,11 @@ public class Entrega {
         return this.pacote.getDestino();
     }
 
-    public boolean isStatusEntrega() {
+    public String getStatusEntrega() {
         return statusEntrega;
     }
 
-    public void setStatusEntrega(boolean statusEntrega) {
+    public void setStatusEntrega(String statusEntrega) {
         this.statusEntrega = statusEntrega;
     }
 

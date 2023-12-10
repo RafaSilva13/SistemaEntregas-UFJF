@@ -105,7 +105,7 @@ public class Cliente extends Usuario {
 
     @Override
     public String toString() {
-        return nome + "     " + usuario + "     " + cpf.toString() + "      " + numeroDeTelefone.toString() + "     " + email;
+        return "Nome: " + nome + "; Usuário: " + usuario + "; CPF: " + cpf.toString() + "; Telefone: " + numeroDeTelefone.toString() + "; Email: " + email + ";";
     }
     
     @Override

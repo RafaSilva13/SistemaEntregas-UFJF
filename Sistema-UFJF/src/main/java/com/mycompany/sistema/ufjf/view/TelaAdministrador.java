@@ -1,6 +1,8 @@
 package com.mycompany.sistema.ufjf.view;
 
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
+import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasAdministrador;
+import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoDadosGeraisAdministrador;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosAdministrador;
 import com.mycompany.sistema.ufjf.eventos.RemoverUsuario;
@@ -51,15 +53,13 @@ public class TelaAdministrador {
 
     private JList<Cliente> jlCliente;
     private JList<Entregador> jlEntregador;
-    private JList<Entrega> jlPedidos;
-//    
-//    private JList<Cliente> jlClientes;
-//    private JList<Entregador> jlEntregadores;
+    private JList<Entrega> jlEntregas;
     
     public void exibirTelaAdministrador(JList<Cliente> cliente, JList<Entregador> entregador) {
         
         // Cria uma nova janela
         tela = new JFrame("Area Administrador");
+        tela.addWindowListener(new GerenciaEntregasAdministrador(this));
 
         // Define o excerramento do programa ao fechar a janela
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -142,7 +142,6 @@ public class TelaAdministrador {
             listModel.addElement(item);
         }
 
-        
         // Criando a JList com o DefaultListModel
         JList<String> menuList = new JList<>(listModel);
 
@@ -328,6 +327,28 @@ public class TelaAdministrador {
         return entregadores;
     }
     
+    public void carregaEntregas(List<Entrega> entregas){
+
+        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
+
+        for (Entrega e: entregas) {
+            modelEntregas.addElement(e);
+        }
+    }
+    
+    public List<Entrega> listaEntregas(){
+        
+        DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
+        List<Entrega> minhaEntregas = new ArrayList<>();
+
+        for (int i = 0; i < model.size(); i++) {
+            minhaEntregas.add(model.get(i));
+        }
+
+        return minhaEntregas;
+    }
+    
+    
     public void removerUsuario(String tipoUsuario) {
         if (tipoUsuario.equals("Clientes")) {            
             int selectedIndex = jlCliente.getSelectedIndex();
@@ -367,9 +388,9 @@ public class TelaAdministrador {
         painel.setLayout(new BorderLayout());
         
         DefaultListModel<Entrega> model = new DefaultListModel<>();
-        jlPedidos = new JList<>(model);
+        jlEntregas = new JList<>(model);
 
-        painel.add(new JScrollPane(jlPedidos), BorderLayout.CENTER);
+        painel.add(new JScrollPane(jlEntregas), BorderLayout.CENTER);
         
         areaPedidos.add(painel, BorderLayout.CENTER);
 
