@@ -2,7 +2,6 @@ package com.mycompany.sistema.ufjf.view;
 
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasAdministrador;
-import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoDadosGeraisAdministrador;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosAdministrador;
 import com.mycompany.sistema.ufjf.eventos.RemoverUsuario;
