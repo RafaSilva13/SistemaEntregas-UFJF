@@ -326,6 +326,8 @@ public class TelaCliente {
                 selectedIndex = i;
             }
         }
+        
+        System.out.println(selectedIndex);
 
         if(selectedIndex != -1){
 
@@ -335,12 +337,24 @@ public class TelaCliente {
 
             try {
                 cliente.setNome(tfNomeCliente.getText());
-                cliente.setUsuario(tfEmailCliente.getText());
-                cliente.setEmail(new Email(tfUsuarioCliente.getText()));
+                cliente.setUsuario(tfUsuarioCliente.getText());
+                cliente.setEmail(new Email(tfEmailCliente.getText()));
                 cliente.setCpf(new Cpf().parser(tfCpfCliente.getText()));
                 cliente.setNumeroDeTelefone(new Telefone().parser(tfTelefoneCliente.getText()));
                 
                 model.add(selectedIndex, cliente);
+                        
+                List<Entrega> entregas = listaEntregas();
+
+                for (Entrega e : entregas) {
+                    Cliente clienteLocal = e.getCliente();
+
+                    if (usuarioLogado.equals(clienteLocal)) {
+                        e.setCliente(cliente);
+                    }
+                }
+                
+                usuarioLogado = cliente;
                 
                 JOptionPane.showMessageDialog(tela, "Usuario alterado!");
             } catch (EmailException e) {
