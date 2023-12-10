@@ -1,22 +1,39 @@
 package com.mycompany.sistema.ufjf.view;
 
+import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesPequenos;
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosEntregador;
+import com.mycompany.sistema.ufjf.exeptions.CpfException;
+import com.mycompany.sistema.ufjf.exeptions.EmailException;
+import com.mycompany.sistema.ufjf.exeptions.TelefoneException;
+import com.mycompany.sistema.ufjf.model.Cliente;
+import com.mycompany.sistema.ufjf.model.Cpf;
+import com.mycompany.sistema.ufjf.model.Email;
+import com.mycompany.sistema.ufjf.model.Entrega;
 import com.mycompany.sistema.ufjf.model.Entregador;
+import com.mycompany.sistema.ufjf.model.Telefone;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
@@ -36,9 +53,16 @@ public class TelaEntregador {
     private JTextField tfUsuarioEntregador;
     private JTextField tfSenhaEntregador;
     private JLabel tfCpfEntregador;
+    
+    private JTextField tfPlacaModeloVeiculo;
+    private JTextField tfCapacidadeCargaVeiculo;
+    private JTextField tfAnoFabricacaoVeiculo;
+
+    private JList<Entrega> jlEntregas;
+    private JList<Entregador> jlEntregador;
 
     private Entregador usuarioLogado;
-    
+
     public void exibirTelaEntregador(Entregador entregador) {
         
         this.usuarioLogado = entregador;
@@ -56,16 +80,7 @@ public class TelaEntregador {
         principal = new JPanel();
         principal.setLayout(new BorderLayout());
         
-        // Lista teste
-        String[] pessoas = { "Eu", "Você", "Ele", "Ela"};
-
-        // Cria um componente de lista
-        JList lista = new JList(pessoas);
-        lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        // Cria um painel de rolagem e adiciona ao painel principal
-        JScrollPane scroll= new JScrollPane(lista);
-        principal.add(scroll);
+        this.exibirPedidosEntregador();
         
         // Adiciona o painel geral a janela
         tela.add(principal);
@@ -153,9 +168,16 @@ public class TelaEntregador {
         tfCpfEntregador = new JLabel();
         areaCpfEntregador.add(tfCpfEntregador);
         
+        // Cria um painel para conter a área de placa
+        JPanel areaPlacaEntregador = new JPanel();
+        areaPlacaEntregador.setBorder(BorderFactory.createTitledBorder("Placa/Modelo Veiculo"));
+        tfPlacaModeloVeiculo = new JTextField(12);
+        areaPlacaEntregador.add(tfPlacaModeloVeiculo);
+        
         // Adicina nome e cpf ao painel
         panelEsquerdo.add(areaNomeEntregador);
         panelEsquerdo.add(areaCpfEntregador);
+        panelEsquerdo.add(areaPlacaEntregador);
         
 // -----------------------------------------------------------------------------              
 
@@ -174,10 +196,17 @@ public class TelaEntregador {
         areaTelefoneEntregador.setBorder(BorderFactory.createTitledBorder("Telefone"));
         tfTelefoneEntregador = new JTextField(12);
         areaTelefoneEntregador.add(tfTelefoneEntregador);
+        
+        // Cria um painel para conter a área de capacidade de carga
+        JPanel areaCapacidadeCargaEntregador = new JPanel();
+        areaCapacidadeCargaEntregador.setBorder(BorderFactory.createTitledBorder("CapacidadeDeCarga"));
+        tfCapacidadeCargaVeiculo = new JTextField(12);
+        areaCapacidadeCargaEntregador.add(tfCapacidadeCargaVeiculo);
        
         // Adicina usuario e telefone ao painel
         panelCentral.add(areaUsuarioEntregador);
         panelCentral.add(areaTelefoneEntregador);
+        panelCentral.add(areaCapacidadeCargaEntregador);
 
 // -----------------------------------------------------------------------------               
 
@@ -196,20 +225,30 @@ public class TelaEntregador {
         areaEmailEntregador.setBorder(BorderFactory.createTitledBorder("Email"));
         tfEmailEntregador = new JTextField(12);
         areaEmailEntregador.add(tfEmailEntregador);
+        
+        // Cria um painel para conter a área de placa
+        JPanel areaAnoFabricacaoEntregador = new JPanel();
+        areaAnoFabricacaoEntregador.setBorder(BorderFactory.createTitledBorder("Ano Fabricaão"));
+        tfAnoFabricacaoVeiculo = new JTextField(12);
+        areaAnoFabricacaoEntregador.add(tfAnoFabricacaoVeiculo);
 
         // Adicina email e senha ao painel
         panelDireito.add(areaEmailEntregador);
         panelDireito.add(areaSenhaEntregador);
+        panelDireito.add(areaAnoFabricacaoEntregador);
         
 // -----------------------------------------------------------------------------     
 
-        // Preenche dados do cliente
+        // Preenche dados do entregador
         tfNomeEntregador.setText(this.usuarioLogado.getNome());
         tfUsuarioEntregador.setText(this.usuarioLogado.getUsuario());
         tfCpfEntregador.setText(this.usuarioLogado.getCpf().toString());
         tfEmailEntregador.setText(this.usuarioLogado.getEmail().toString());
         tfTelefoneEntregador.setText(this.usuarioLogado.getNumeroDeTelefone().toString());
-        tfSenhaEntregador.setText(this.usuarioLogado.getSenha().toString());
+        tfSenhaEntregador.setText(this.usuarioLogado.getSenha());
+        tfPlacaModeloVeiculo.setText(this.usuarioLogado.retornaVeiculo().getPlacaModelo().toString());
+        tfCapacidadeCargaVeiculo.setText(this.usuarioLogado.retornaVeiculo().getCapacidadeCarga());
+        tfAnoFabricacaoVeiculo.setText(this.usuarioLogado.retornaVeiculo().getAnoDeFabricacao());
         
 // -----------------------------------------------------------------------------               
 
@@ -249,10 +288,114 @@ public class TelaEntregador {
         principal.revalidate();
         principal.repaint();
     }
+    
+     public void exibirPedidosEntregador() {
+        
+        // Remoção o painelUsuarioDadosUsuario atual
+        principal.removeAll();
+        
+        JPanel areaPedidos  = new JPanel();
+        areaPedidos.setLayout(new BorderLayout());
+        
+        JPanel painelPedidos = new JPanel();
+        
+//------------------------------------------------------------------------------
+        
+        painelPedidos.setBorder(BorderFactory.createTitledBorder("Pedidos"));
+        painelPedidos.setPreferredSize(new Dimension(518, HEIGHT));
+        painelPedidos.setLayout(new BorderLayout());
+        
+        DefaultListModel<Entrega> model = new DefaultListModel<>();
+        jlEntregas = new JList<>(model);
 
-    private void salvarAlteracoes() {
-        // Lógica para salvar as alterações aqui
-        // Você pode acessar os valores dos campos usando, por exemplo, tfNomeEntregador.getText()
+        painelPedidos.add(new JScrollPane(jlEntregas), BorderLayout.CENTER);
+        
+//------------------------------------------------------------------------------
+        
+        JButton btnAdicionarEntregadorAPacote = new JButton("Selecionar Pedido");
+        
+//        btnAdicionarPacotePequeno.addActionListener(new AdicionarPacotesPequenos(this));
+
+        JPanel botoes = new JPanel();
+        botoes.add(btnAdicionarEntregadorAPacote);
+        
+//------------------------------------------------------------------------------
+
+        areaPedidos.add(painelPedidos, BorderLayout.WEST);
+        areaPedidos.add(botoes, BorderLayout.CENTER);
+
+        // Adiciona os pedidos a janela
+        principal.add(areaPedidos);
+        
+        // Atualiza tela
+        principal.revalidate();
+        principal.repaint();
+        
+    }
+     
+    public void carregaEntregas(List<Entrega> entregas){
+
+        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
+
+        for (Entrega e: entregas) {
+            modelEntregas.addElement(e);
+        }
+    }
+    
+    public List<Entrega> listaEntregas(){
+        
+        DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
+        List<Entrega> minhaEntregas = new ArrayList<>();
+
+        for (int i = 0; i < model.size(); i++) {
+            minhaEntregas.add(model.get(i));
+        }
+
+        return minhaEntregas;
+    }
+    
+    public void salvarAlteracoes(){
+
+        int selectedIndex = -1;
+        
+        DefaultListModel<Entregador> model = (DefaultListModel<Entregador>)jlEntregador.getModel();
+        
+        List<Entregador> entregadores = new ArrayList<>();
+
+        for (int i = 0; i < model.size(); i++) {
+            entregadores.add(model.get(i));
+        }
+        
+        for (int i = 0; i < entregadores.size(); i++) {
+            if (entregadores.get(i).equals(usuarioLogado)) {
+                selectedIndex = i;
+            }
+        }
+
+        if(selectedIndex != -1){
+
+            Entregador entregador = model.get(selectedIndex);
+
+            model.remove(selectedIndex);
+
+            try {
+                entregador.setNome(tfNomeEntregador.getText());
+                entregador.setUsuario(tfEmailEntregador.getText());
+                entregador.setEmail(new Email(tfUsuarioEntregador.getText()));
+                entregador.setCpf(new Cpf().parser(tfCpfEntregador.getText()));
+                entregador.setNumeroDeTelefone(new Telefone().parser(tfTelefoneEntregador.getText()));
+                
+                model.add(selectedIndex, entregador);
+                
+                JOptionPane.showMessageDialog(tela, "Usuario alterado!");
+            } catch (EmailException e) {
+                JOptionPane.showMessageDialog(tela, "O email " + tfEmailEntregador.getText() +" é invalido!");
+            } catch (TelefoneException e) {
+                JOptionPane.showMessageDialog(tela, "O telefone " + tfTelefoneEntregador.getText() +" é invalido!");
+            } catch (CpfException e) {
+                JOptionPane.showMessageDialog(tela, "O CPF " + tfCpfEntregador.getText() +" é invalido!");
+            }
+        }
     }
 }
 

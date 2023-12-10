@@ -1,7 +1,9 @@
 package com.mycompany.sistema.ufjf.view;
 
-import com.mycompany.sistema.ufjf.eventos.AdicionarCliente;
+import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesGrandes;
+import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesPequenos;
 import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
+import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosCliente;
 import com.mycompany.sistema.ufjf.exeptions.CpfException;
@@ -11,7 +13,12 @@ import com.mycompany.sistema.ufjf.model.Cliente;
 import com.mycompany.sistema.ufjf.model.Cpf;
 import com.mycompany.sistema.ufjf.model.Email;
 import com.mycompany.sistema.ufjf.model.Entrega;
+import com.mycompany.sistema.ufjf.model.Pacote;
+import com.mycompany.sistema.ufjf.model.PacoteGrande;
+import com.mycompany.sistema.ufjf.model.PacotePequeno;
 import com.mycompany.sistema.ufjf.model.Telefone;
+import com.mycompany.sistema.ufjf.persistence.EntregaPersistence;
+import com.mycompany.sistema.ufjf.persistence.Persistence;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -31,7 +38,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.JCheckBox;
 import javax.swing.border.EmptyBorder;
 
 public class TelaCliente {
@@ -49,8 +58,21 @@ public class TelaCliente {
     private JTextField tfUsuarioCliente;
     private JTextField tfSenhaCliente;
     private JLabel tfCpfCliente;
-
-    private JList<Entrega> jlPedidos;
+    
+    private JTextField tfPesoPacotePequeno;
+    private JTextField tfOrigemPacotePequeno;
+    private JTextField tfDestinoPacotePequeno;
+    private JTextField tfAlturaPacotePequeno;
+    private JTextField tfLarguraPacotePequeno;
+    private JCheckBox tfOpcaoFragilPacotePequeno;
+    
+    private JTextField tfPesoPacoteGrande;
+    private JTextField tfOrigemPacoteGrande;
+    private JTextField tfDestinoPacoteGrande;
+    private JTextField tfAlturaPacoteGrande;
+    private JTextField tfLarguraPacoteGrande;
+    
+    private JList<Entrega> jlEntregas;
     private JList<Cliente> jlCliente;
     
     private Cliente usuarioLogado;
@@ -62,6 +84,8 @@ public class TelaCliente {
         // Cria uma nova janela
         tela = new JFrame("Area Cliente");
         
+        tela.addWindowListener(new GerenciaEntregasCliente(this));
+
         // Define o excerramento do programa ao fechar a janela
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -260,11 +284,23 @@ public class TelaCliente {
         
     public void salvarAlteracoes(){
 
-        int selectedIndex = jlCliente.getSelectedIndex();
+        int selectedIndex = -1;
+        
+        DefaultListModel<Cliente> model = (DefaultListModel<Cliente>)jlCliente.getModel();
+        
+        List<Cliente> clientes = new ArrayList<>();
+
+        for (int i = 0; i < model.size(); i++) {
+            clientes.add(model.get(i));
+        }
+        
+        for (int i = 0; i < clientes.size(); i++) {
+            if (clientes.get(i).equals(usuarioLogado)) {
+                selectedIndex = i;
+            }
+        }
 
         if(selectedIndex != -1){
-
-            DefaultListModel<Cliente> model = (DefaultListModel<Cliente>)jlCliente.getModel();
 
             Cliente cliente = model.get(selectedIndex);
 
@@ -274,16 +310,12 @@ public class TelaCliente {
                 cliente.setNome(tfNomeCliente.getText());
                 cliente.setUsuario(tfEmailCliente.getText());
                 cliente.setEmail(new Email(tfUsuarioCliente.getText()));
-                
-                Cpf cpf = new Cpf();
-                cpf.parser(tfCpfCliente.getText());
-                cliente.setCpf(cpf);
-                
-                Telefone telefone = new Telefone();
-                telefone.parser(tfTelefoneCliente.getText());
-                cliente.setNumeroDeTelefone(telefone);
+                cliente.setCpf(new Cpf().parser(tfCpfCliente.getText()));
+                cliente.setNumeroDeTelefone(new Telefone().parser(tfTelefoneCliente.getText()));
                 
                 model.add(selectedIndex, cliente);
+                
+                JOptionPane.showMessageDialog(tela, "Usuario alterado!");
             } catch (EmailException e) {
                 JOptionPane.showMessageDialog(tela, "O email " + tfEmailCliente.getText() +" é invalido!");
             } catch (TelefoneException e) {
@@ -293,9 +325,7 @@ public class TelaCliente {
             }
         }
 
-
         tela.pack();
-
     }
     
     public void exibirPedidosCliente() {
@@ -306,17 +336,31 @@ public class TelaCliente {
         JPanel areaPedidos  = new JPanel();
         areaPedidos.setLayout(new BorderLayout());
         
-        JPanel painel = new JPanel();
-        painel.setBorder(BorderFactory.createTitledBorder("Entregas"));
-        painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        painel.setLayout(new BorderLayout());
+        JPanel painelPedidos = new JPanel();
+        
+//------------------------------------------------------------------------------
+        
+        painelPedidos.setBorder(BorderFactory.createTitledBorder("Pedidos"));
+        painelPedidos.setPreferredSize(new Dimension(518, HEIGHT));
+        painelPedidos.setLayout(new BorderLayout());
         
         DefaultListModel<Entrega> model = new DefaultListModel<>();
-        jlPedidos = new JList<>(model);
+        jlEntregas = new JList<>(model);
 
-        painel.add(new JScrollPane(jlPedidos), BorderLayout.CENTER);
+        painelPedidos.add(new JScrollPane(jlEntregas), BorderLayout.CENTER);
         
-        areaPedidos.add(painel, BorderLayout.CENTER);
+//------------------------------------------------------------------------------
+        
+        JTabbedPane barraOpcaoPacote = new JTabbedPane();
+        barraOpcaoPacote.setPreferredSize(new Dimension(WIDTH/3, HEIGHT));
+        barraOpcaoPacote.setBorder (BorderFactory.createEmptyBorder());
+        barraOpcaoPacote.addTab("Pacote Pequeno", criaFormularioPacotePequeno());
+        barraOpcaoPacote.addTab("Pacote Grande", criaFormularioPacoteGrando());
+        
+//------------------------------------------------------------------------------
+
+        areaPedidos.add(painelPedidos, BorderLayout.WEST);
+        areaPedidos.add(barraOpcaoPacote, BorderLayout.EAST);
 
         // Adiciona os pedidos a janela
         principal.add(areaPedidos);
@@ -327,17 +371,250 @@ public class TelaCliente {
         
     }
     
-    public List<Entrega> listaEntregas(Cliente clienteAtual){
-        DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlPedidos.getModel();
+    public JPanel criaFormularioPacotePequeno() {
+        
+        JPanel formularioPacotePequeno = new JPanel();
+        formularioPacotePequeno.setBorder (BorderFactory.createEmptyBorder());
+        
+        JPanel painelPacotePequenoLabel = new JPanel();
+        painelPacotePequenoLabel.setLayout(new GridLayout(0, 1, H_GAP,V_GAP));
+        
+        JLabel lblPeso = new JLabel("Peso:");
+        lblPeso.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacotePequenoLabel.add(lblPeso);
+        
+        JLabel lblOrigem = new JLabel("Origem:");
+        lblOrigem.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacotePequenoLabel.add(lblOrigem);
+        
+        JLabel lblDestino = new JLabel("Destino:");
+        lblDestino.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacotePequenoLabel.add(lblDestino);
+        
+        JLabel lblAltura = new JLabel("Altura:");
+        lblAltura.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacotePequenoLabel.add(lblAltura);
+        
+        JLabel lblLargura = new JLabel("Largura:");
+        lblLargura.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacotePequenoLabel.add(lblLargura);
+        
+        JLabel lblFragil = new JLabel("Fragil:");
+        lblFragil.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacotePequenoLabel.add(lblFragil);
+        
+        JPanel painelPacotePequenoField = new JPanel();
+        painelPacotePequenoField.setLayout(new GridLayout(0,1, H_GAP,V_GAP));
+        
+        tfPesoPacotePequeno = new JTextField(15);
+        tfOrigemPacotePequeno = new JTextField(15);
+        tfDestinoPacotePequeno = new JTextField(15);
+        tfAlturaPacotePequeno = new JTextField(15);
+        tfLarguraPacotePequeno = new JTextField(15);
+        tfOpcaoFragilPacotePequeno = new JCheckBox();
+
+//------------------------------------------------------------------------------
+        
+        painelPacotePequenoField.add(tfPesoPacotePequeno);
+        painelPacotePequenoField.add(tfOrigemPacotePequeno);
+        painelPacotePequenoField.add(tfDestinoPacotePequeno);
+        painelPacotePequenoField.add(tfAlturaPacotePequeno);
+        painelPacotePequenoField.add(tfLarguraPacotePequeno);
+        painelPacotePequenoField.add(tfOpcaoFragilPacotePequeno);
+        
+        formularioPacotePequeno.add(painelPacotePequenoLabel);
+        formularioPacotePequeno.add(painelPacotePequenoField);
+        
+        JButton btnAdicionarPacotePequeno = new JButton("Criar Pedido");
+        
+        btnAdicionarPacotePequeno.addActionListener(new AdicionarPacotesPequenos(this));
+
+        JPanel botoes = new JPanel();
+        botoes.add(btnAdicionarPacotePequeno);
+
+        formularioPacotePequeno.add(botoes, BorderLayout.SOUTH);
+
+        return formularioPacotePequeno;
+    }
+    
+    public JPanel criaFormularioPacoteGrando() {
+        
+        JPanel formularioPacoteGrande = new JPanel();
+        formularioPacoteGrande.setBorder (BorderFactory.createEmptyBorder());
+        
+        JPanel painelPacoteGrandeLabel = new JPanel();
+        painelPacoteGrandeLabel.setLayout(new GridLayout(0, 1, H_GAP,V_GAP));
+        
+        JLabel lblPeso = new JLabel("Peso:");
+        lblPeso.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacoteGrandeLabel.add(lblPeso);
+        
+        JLabel lblOrigem = new JLabel("Origem:");
+        lblOrigem.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacoteGrandeLabel.add(lblOrigem);
+        
+        JLabel lblDestino = new JLabel("Destino:");
+        lblDestino.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacoteGrandeLabel.add(lblDestino);
+        
+        JLabel lblAltura = new JLabel("Altura:");
+        lblAltura.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacoteGrandeLabel.add(lblAltura);
+        
+        JLabel lblLargura = new JLabel("Largura:");
+        lblLargura.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelPacoteGrandeLabel.add(lblLargura);
+        
+        JPanel painelPacoteGrandeField = new JPanel();
+        painelPacoteGrandeField.setLayout(new GridLayout(0,1, H_GAP,V_GAP));
+        
+        tfPesoPacoteGrande = new JTextField(15);
+        tfOrigemPacoteGrande = new JTextField(15);
+        tfDestinoPacoteGrande = new JTextField(15);
+        tfAlturaPacoteGrande = new JTextField(15);
+        tfLarguraPacoteGrande = new JTextField(15);
+
+//------------------------------------------------------------------------------
+        
+        painelPacoteGrandeField.add(tfPesoPacoteGrande);
+        painelPacoteGrandeField.add(tfOrigemPacoteGrande);
+        painelPacoteGrandeField.add(tfDestinoPacoteGrande);
+        painelPacoteGrandeField.add(tfAlturaPacoteGrande);
+        painelPacoteGrandeField.add(tfLarguraPacoteGrande);
+        
+        formularioPacoteGrande.add(painelPacoteGrandeLabel);
+        formularioPacoteGrande.add(painelPacoteGrandeField);
+         
+        JButton btnAdicionarPacoteGrande = new JButton("Criar Pedido");
+        
+        btnAdicionarPacoteGrande.addActionListener(new AdicionarPacotesGrandes(this));
+
+        JPanel botoes = new JPanel();
+        botoes.add(btnAdicionarPacoteGrande);
+
+        formularioPacoteGrande.add(botoes, BorderLayout.SOUTH);
+        
+        return formularioPacoteGrande;
+    }
+    
+    public List<Entrega> listaEntregas(){
+        
+        DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
         List<Entrega> minhaEntregas = new ArrayList<>();
 
         for (int i = 0; i < model.size(); i++) {
-            if (model.equals(clienteAtual)) {
-                minhaEntregas.add(model.get(i));
-            }
+            minhaEntregas.add(model.get(i));
         }
 
         return minhaEntregas;
     }
+    
+    public List<Entrega> listaEntregasCliente(Cliente clienteAtual){
+        
+        DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
+        List<Entrega> minhaEntregas = new ArrayList<>();
+        List<Entrega> entregas = new ArrayList<>();
 
+        for (int i = 0; i < model.size(); i++) {
+            entregas.add(model.get(i));
+        }
+
+        for (Entrega entrega : entregas) {
+            Cliente cliente = entrega.getCliente();
+            
+            if (cliente.equals(clienteAtual)) {
+                minhaEntregas.add(entrega);
+            }
+        }
+        
+        return minhaEntregas;
+    }
+    
+    public void addPacotePequeno() {
+
+        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
+        
+        if (tfPesoPacotePequeno.getText().length() != 0 && tfOrigemPacotePequeno.getText().length() != 0 && tfDestinoPacotePequeno.getText().length() != 0 && tfAlturaPacotePequeno.getText().length() != 0 && tfLarguraPacotePequeno.getText().length() != 0) {
+
+            PacotePequeno novoPedido = new PacotePequeno(Float.parseFloat(tfPesoPacotePequeno.getText()), tfOrigemPacotePequeno.getText(), tfDestinoPacotePequeno.getText(), Float.parseFloat(tfAlturaPacotePequeno.getText()), Float.parseFloat(tfLarguraPacotePequeno.getText()), "Pacote Pequeno", tfOpcaoFragilPacotePequeno.isSelected());
+
+            Entrega novaEntrega = new Entrega(null, usuarioLogado, false, novoPedido);
+
+            List<Entrega> entregas = new ArrayList<>();
+
+            for (int i = 0; i < modelEntregas.size(); i++) {
+                entregas.add(modelEntregas.get(i));
+            }
+
+            // Verifica se a entrega já existe no model
+            if (!entregas.contains(novaEntrega)) {
+
+                modelEntregas.addElement(novaEntrega);
+
+                Persistence<Entrega> entregaPersistence = new EntregaPersistence();
+                entregaPersistence.save(listaEntregas());
+
+                JOptionPane.showMessageDialog(tela, "Cadastro realizado com sucesso!");
+
+                tfPesoPacotePequeno.setText("");
+                tfOrigemPacotePequeno.setText("");
+                tfDestinoPacotePequeno.setText("");
+                tfAlturaPacotePequeno.setText("");
+                tfLarguraPacotePequeno.setText("");
+                tfOpcaoFragilPacotePequeno.setSelected(false);                    
+            } else {
+                JOptionPane.showMessageDialog(tela, "Pedido já existe!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(tela, "Preencha todos os campos!");
+        }
+    }
+    
+    public void addPacoteGrande() {
+
+        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
+        
+        if (tfPesoPacoteGrande.getText().length() != 0 && tfOrigemPacoteGrande.getText().length() != 0 && tfDestinoPacoteGrande.getText().length() != 0 && tfAlturaPacoteGrande.getText().length() != 0 && tfLarguraPacoteGrande.getText().length() != 0) {
+
+            PacoteGrande novoPedido = new PacoteGrande(Float.parseFloat(tfPesoPacoteGrande.getText()), tfOrigemPacoteGrande.getText(), tfDestinoPacoteGrande.getText(), Float.parseFloat(tfAlturaPacoteGrande.getText()), Float.parseFloat(tfLarguraPacoteGrande.getText()), "Pacote Grande");
+
+            Entrega novaEntrega = new Entrega(null, usuarioLogado, false, novoPedido);
+
+            List<Entrega> entregas = new ArrayList<>();
+
+            for (int i = 0; i < modelEntregas.size(); i++) {
+                entregas.add(modelEntregas.get(i));
+            }
+
+            // Verifica se a entrega já existe no model
+            if (!entregas.contains(novaEntrega)) {
+
+                modelEntregas.addElement(novaEntrega);
+
+                Persistence<Entrega> entregaPersistence = new EntregaPersistence();
+                entregaPersistence.save(listaEntregas());
+
+                JOptionPane.showMessageDialog(tela, "Cadastro realizado com sucesso!");
+
+                tfPesoPacoteGrande.setText("");
+                tfOrigemPacoteGrande.setText("");
+                tfDestinoPacoteGrande.setText("");
+                tfAlturaPacoteGrande.setText("");
+                tfLarguraPacoteGrande.setText("");
+            } else {
+                JOptionPane.showMessageDialog(tela, "Pedido já existe!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(tela, "Preencha todos os campos!");
+        }
+    }
+    
+    public void carregaEntregas(List<Entrega> entregas){
+
+        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
+
+        for (Entrega e: entregas) {
+            modelEntregas.addElement(e);
+        }
+    }
 }

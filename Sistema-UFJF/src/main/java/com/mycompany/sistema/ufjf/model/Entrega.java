@@ -1,6 +1,7 @@
 package com.mycompany.sistema.ufjf.model;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Entrega {
@@ -9,18 +10,19 @@ public class Entrega {
     private Entregador entregador;
     private Cliente cliente;
     private double valorEntrega;
-    private String endereco;
     private boolean statusEntrega;
-    private List<Pacote> pacotes;
+    private Pacote pacote;
 
-    public Entrega(Entregador entregador, Cliente cliente, String endereco, boolean statusEntrega, List<Pacote> pacotes) {
+    public Entrega(Entregador entregador, Cliente cliente, boolean statusEntrega, Pacote pacote) {
         this.identificadorEntrega = retornaCodigoIdentificador();
-        this.entregador = entregador;
+        
+        if (entregador != null) {
+           this.entregador = entregador;        
+        }
         this.cliente = cliente;
         this.valorEntrega = retornaValorEntrega();
-        this.endereco = endereco;
         this.statusEntrega = statusEntrega;
-        this.pacotes = pacotes;
+        this.pacote = pacote;
     }
     
     private double retornaValorEntrega(){
@@ -40,16 +42,13 @@ public class Entrega {
         return random.nextInt(9000) + 1000;
     }
     
-    public void exibeInformacoesEntrega(){
-        System.out.println("Identificador da entrega : " + this.identificadorEntrega);
-        System.out.println(this.entregador); //Ja sobscrevi o toString().
-        System.out.println(this.cliente);
-        System.out.println("Valor da entrega : R$ " + this.valorEntrega);
-        System.out.println("Endereço de entrega: " + this.endereco);
-        System.out.println("Pedido ja foi entregue? : " + this.statusEntrega);
+    public String toString(){
+        
+        String nomeEntregador = entregador.getNome() == null ? "" : entregador.getNome();
+        
+        return identificadorEntrega + " Entregador: " + nomeEntregador + "; Cliente: " + cliente.getNome() + "; Valor:" + valorEntrega + "; Status:" + statusEntrega + "; Pacote: <" + pacote + ">";
     }
     
-    //NÃO ENTENDI O QUE ACONTECE AQUI, É ISSO?:
     public void cadastraEntregador(Entregador entregador){
         this.entregador = entregador;
     }
@@ -80,11 +79,7 @@ public class Entrega {
     }
 
     public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+        return this.pacote.getDestino();
     }
 
     public boolean isStatusEntrega() {
@@ -95,17 +90,37 @@ public class Entrega {
         this.statusEntrega = statusEntrega;
     }
 
-    public List<Pacote> getPacotes() {
-        return pacotes;
+    public Pacote getPacotes() {
+        return pacote;
     }
 
-    public void setPacotes(List<Pacote> pacotes) {
-        this.pacotes = pacotes;
+    public void setPacotes(Pacote pacotes) {
+        this.pacote = pacotes;
     }
 
     public double getValorEntrega() {
         return valorEntrega;
     }
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Entrega otherEntrega = (Entrega) obj;
+        return identificadorEntrega == otherEntrega.identificadorEntrega &&
+                Double.compare(otherEntrega.valorEntrega, valorEntrega) == 0 &&
+                statusEntrega == otherEntrega.statusEntrega &&
+                Objects.equals(entregador, otherEntrega.entregador) &&
+                Objects.equals(cliente, otherEntrega.cliente) &&
+                Objects.equals(pacote, otherEntrega.pacote);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identificadorEntrega, entregador, cliente, valorEntrega, statusEntrega, pacote);
+    }
 }

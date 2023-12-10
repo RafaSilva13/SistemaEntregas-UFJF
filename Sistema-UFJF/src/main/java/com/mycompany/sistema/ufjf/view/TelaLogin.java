@@ -8,13 +8,16 @@ import com.mycompany.sistema.ufjf.eventos.BotaoLoginEntregador;
 import com.mycompany.sistema.ufjf.eventos.GerenciaClientes;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregadores;
 import com.mycompany.sistema.ufjf.exeptions.CpfException;
+import com.mycompany.sistema.ufjf.exeptions.DataException;
 import com.mycompany.sistema.ufjf.exeptions.EmailException;
 import com.mycompany.sistema.ufjf.exeptions.TelefoneException;
+import com.mycompany.sistema.ufjf.exeptions.VeiculoEntregaException;
 import com.mycompany.sistema.ufjf.model.Cliente;
 import com.mycompany.sistema.ufjf.model.Entregador;
 import com.mycompany.sistema.ufjf.model.Email;
 import com.mycompany.sistema.ufjf.model.Telefone;
 import com.mycompany.sistema.ufjf.model.Cpf;
+import com.mycompany.sistema.ufjf.model.VeiculoEntrega;
 import com.mycompany.sistema.ufjf.persistence.ClientePersistence;
 import com.mycompany.sistema.ufjf.persistence.EntregadorPersistence;
 import com.mycompany.sistema.ufjf.persistence.Persistence;
@@ -79,6 +82,11 @@ public class TelaLogin {
     private JTextField tfTelefoneEntregador;
     private JTextField tfCpfEntregador;
 
+    // JTextField Veiculo
+    private JTextField tfPlacaModeloVeiculo;
+    private JTextField tfCapacidadeCargaVeiculo;
+    private JTextField tfAnoFabricacaoVeiculo;
+    
     // JLists
     private JList<Cliente> jlClientes;
     private JList<Entregador> jlEntregadores;
@@ -189,9 +197,10 @@ public class TelaLogin {
         
 // -----------------------------------------------------------------------------
 
-        // Adiciona paineis ao painel atual
+        // Adiciona paineis ao painel atual e centraliza o atual
         painelAdministrador.add(painelLogin);
-        
+        painelAdministrador.setBorder(new EmptyBorder(25, 0, 25, 0));
+
         return painelAdministrador;
     }
     
@@ -231,6 +240,8 @@ public class TelaLogin {
         // Adiciona paineis ao painel atual    
         painelCliente.add(painelComumLogin, BorderLayout.WEST);
         painelCliente.add(painelComumCadastro,BorderLayout.EAST);
+        
+        painelCliente.setBorder(new EmptyBorder(25, 0, 25, 0));
         
         return painelCliente;
     }
@@ -430,9 +441,16 @@ public class TelaLogin {
         tfCpfEntregador = new JTextField(12);
         areaCpfEntregador.add(tfCpfEntregador);
         
+        // Cria um painel para conter a área de placa
+        JPanel areaPlacaEntregador = new JPanel();
+        areaPlacaEntregador.setBorder(BorderFactory.createTitledBorder("Placa/Modelo Veiculo"));
+        tfPlacaModeloVeiculo = new JTextField(12);
+        areaPlacaEntregador.add(tfPlacaModeloVeiculo);
+        
         // Adicina nome e cpf ao painel
         panelEsquerdo.add(areaNomeEntregador);
         panelEsquerdo.add(areaCpfEntregador);
+        panelEsquerdo.add(areaPlacaEntregador);
         
 // -----------------------------------------------------------------------------              
 
@@ -451,10 +469,17 @@ public class TelaLogin {
         areaTelefoneEntregador.setBorder(BorderFactory.createTitledBorder("Telefone"));
         tfTelefoneEntregador = new JTextField(12);
         areaTelefoneEntregador.add(tfTelefoneEntregador);
+        
+        // Cria um painel para conter a área de capacidade de carga
+        JPanel areaCapacidadeCargaEntregador = new JPanel();
+        areaCapacidadeCargaEntregador.setBorder(BorderFactory.createTitledBorder("Capacidade De Carga"));
+        tfCapacidadeCargaVeiculo = new JTextField(12);
+        areaCapacidadeCargaEntregador.add(tfCapacidadeCargaVeiculo);
        
         // Adicina usuario e telefone ao painel
         panelCentral.add(areaUsuarioEntregador);
         panelCentral.add(areaTelefoneEntregador);
+        panelCentral.add(areaCapacidadeCargaEntregador);
 
 // -----------------------------------------------------------------------------               
 
@@ -473,10 +498,17 @@ public class TelaLogin {
         areaEmailEntregador.setBorder(BorderFactory.createTitledBorder("Email"));
         tfEmailEntregador = new JTextField(12);
         areaEmailEntregador.add(tfEmailEntregador);
+        
+        // Cria um painel para conter a área de placa
+        JPanel areaAnoFabricacaoEntregador = new JPanel();
+        areaAnoFabricacaoEntregador.setBorder(BorderFactory.createTitledBorder("Data Fabricação"));
+        tfAnoFabricacaoVeiculo = new JTextField(12);
+        areaAnoFabricacaoEntregador.add(tfAnoFabricacaoVeiculo);
 
         // Adicina senha e email ao painel
         panelDireito.add(areaEmailEntregador);
         panelDireito.add(areaSenhaEntregador);
+        panelDireito.add(areaAnoFabricacaoEntregador);
         
 // -----------------------------------------------------------------------------               
 
@@ -762,9 +794,13 @@ public class TelaLogin {
         DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregadores.getModel();
         
         try {
-            if (tfNomeEntregador.getText().length() != 0 && tfUsuarioCadastroEntregador.getText().length() != 0 && tfEmailEntregador.getText().length() != 0 && tfTelefoneEntregador.getText().length() != 0 && tfCpfEntregador.getText().length() != 0 && tfSenhaCadastroEntregador.getText().length() != 0) {
+            if (tfNomeEntregador.getText().length() != 0 && tfUsuarioCadastroEntregador.getText().length() != 0 && tfEmailEntregador.getText().length() != 0 && tfTelefoneEntregador.getText().length() != 0 && tfCpfEntregador.getText().length() != 0 && tfSenhaCadastroEntregador.getText().length() != 0 && tfPlacaModeloVeiculo.getText().length() != 0&& tfCapacidadeCargaVeiculo.getText().length() != 0&& tfAnoFabricacaoVeiculo.getText().length() != 0) {
                 
-                Entregador novoEntregador = new Entregador(tfNomeEntregador.getText(), Cpf.parser(tfCpfEntregador.getText()), new Email(tfEmailEntregador.getText()), Telefone.parser(tfTelefoneEntregador.getText()), tfUsuarioCadastroEntregador.getText(), tfSenhaCadastroEntregador.getText());
+                VeiculoEntrega veiculo = new VeiculoEntrega(tfPlacaModeloVeiculo.getText(), Float.parseFloat(tfCapacidadeCargaVeiculo.getText()), tfAnoFabricacaoVeiculo.getText());
+                
+                System.out.println(veiculo);
+                
+                Entregador novoEntregador = new Entregador(tfNomeEntregador.getText(), Cpf.parser(tfCpfEntregador.getText()), Telefone.parser(tfTelefoneEntregador.getText()),  new Email(tfEmailEntregador.getText()), tfUsuarioCadastroEntregador.getText(), tfSenhaCadastroEntregador.getText(), veiculo, veiculo);
 
                 List<Entregador> entregador = new ArrayList<>();
 
@@ -788,6 +824,9 @@ public class TelaLogin {
                     tfTelefoneEntregador.setText("");
                     tfCpfEntregador.setText("");
                     tfSenhaCadastroEntregador.setText("");
+                    tfPlacaModeloVeiculo.setText("");
+                    tfCapacidadeCargaVeiculo.setText("");
+                    tfAnoFabricacaoVeiculo.setText("");
                             
                 } else {
                     JOptionPane.showMessageDialog(tela, "Entregador já existe!");
@@ -801,6 +840,10 @@ public class TelaLogin {
             JOptionPane.showMessageDialog(tela, "O telefone " + tfTelefoneEntregador.getText() +" é invalido!");
         } catch (CpfException e) {
             JOptionPane.showMessageDialog(tela, "O CPF " + tfCpfEntregador.getText() +" é invalido!");
+        }catch (DataException e) {
+            JOptionPane.showMessageDialog(tela, e.getMessage());
+        } catch (VeiculoEntregaException e) {
+            JOptionPane.showMessageDialog(tela, e.getMessage());
         }
     }
     

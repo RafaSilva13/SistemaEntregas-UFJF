@@ -2,8 +2,9 @@ package com.mycompany.sistema.ufjf.model;
 
 import java.util.Objects;
 import java.util.Random;
+import com.mycompany.sistema.ufjf.model.MeioDeTransporte;
 
-public class Entregador extends Usuario {
+public class Entregador extends Usuario implements MeioDeTransporte {
     
     private int identificadorEntregador;
     private String nome;
@@ -11,11 +12,13 @@ public class Entregador extends Usuario {
     private Email email;
     private Telefone numeroDeTelefone;
     private int quantidadeDeEntregas;
+    private MeioDeTransporte meioDeTransporte;
+    private VeiculoEntrega veiculo;
     
     public void Entregador() {
     }
-    
-    public Entregador(String nome,Cpf cpf, Email email, Telefone numeroDeTelefone, String usuario, String senha) {
+
+    public Entregador(String nome,Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha, MeioDeTransporte meioDeTransporte, VeiculoEntrega veiculo) {
         super(usuario, senha);
         this.nome = nome;
         this.identificadorEntregador = criaIdentificador();
@@ -23,6 +26,8 @@ public class Entregador extends Usuario {
         this.email = email;
         this.numeroDeTelefone = numeroDeTelefone;
         this.quantidadeDeEntregas = 0;
+        this.meioDeTransporte = meioDeTransporte;
+        this.veiculo = veiculo;
     }
 
     //retorna identifacor aleatorio (mas ainda não esta armazenando os que ja foram criados - usar a persistencia)
@@ -54,6 +59,10 @@ public class Entregador extends Usuario {
     
     public String getSenha() {
         return senha;
+    }
+    
+    public VeiculoEntrega retornaVeiculo () {
+        return veiculo;
     }
 
     // Setters
@@ -92,6 +101,11 @@ public class Entregador extends Usuario {
     @Override
     public boolean fazLogin(String usuario, String senha) {
         return this.usuario.equals(usuario) && this.senha.equals(senha);
+    }
+    
+    @Override
+    public String entregar() {
+        return meioDeTransporte.entregar();
     }
 
     @Override

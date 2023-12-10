@@ -29,6 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -175,11 +176,26 @@ public class TelaAdministrador {
         JPanel formulario = new JPanel();
         JPanel painelUsuarioDadosUsuarioLabel = new JPanel();
         painelUsuarioDadosUsuarioLabel.setLayout(new GridLayout(0, 1, H_GAP,V_GAP));
-        painelUsuarioDadosUsuarioLabel.add(new JLabel("Nome:"));
-        painelUsuarioDadosUsuarioLabel.add(new JLabel("Usuário:"));
-        painelUsuarioDadosUsuarioLabel.add(new JLabel("Email:"));
-        painelUsuarioDadosUsuarioLabel.add(new JLabel("CPF:"));
-        painelUsuarioDadosUsuarioLabel.add(new JLabel("Telefone:"));
+        
+        JLabel lblNome = new JLabel("Nome:");
+        lblNome.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelUsuarioDadosUsuarioLabel.add(lblNome);
+        
+        JLabel lblUsuario = new JLabel("Usuário:");
+        lblUsuario.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelUsuarioDadosUsuarioLabel.add(lblUsuario);
+        
+        JLabel lblEmail = new JLabel("Email:");
+        lblEmail.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelUsuarioDadosUsuarioLabel.add(lblEmail);
+        
+        JLabel lblCpf = new JLabel("CPF:");
+        lblCpf.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelUsuarioDadosUsuarioLabel.add(lblCpf);
+        
+        JLabel lblTelefone = new JLabel("Telefone:");
+        lblTelefone.setBorder(new EmptyBorder(2, 0, 2, 0));
+        painelUsuarioDadosUsuarioLabel.add(lblTelefone);
 
 //------------------------------------------------------------------------------
         
@@ -313,10 +329,7 @@ public class TelaAdministrador {
     }
     
     public void removerUsuario(String tipoUsuario) {
-        if (tipoUsuario.equals("Clientes")) {
-            
-            System.out.println(listaClientes());
-            
+        if (tipoUsuario.equals("Clientes")) {            
             int selectedIndex = jlCliente.getSelectedIndex();
 
             if(selectedIndex != -1){

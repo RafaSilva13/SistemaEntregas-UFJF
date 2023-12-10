@@ -1,37 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.sistema.ufjf.model;
 
-/**
- *
- * @author sihuanb
- */
-public class PacoteGrande implements Pacote{
+import java.util.Random;
+
+public class PacoteGrande extends Pacote {
     private int identificadorDoPacote;
     private float peso;
     private String destino;
-    private String altura;
-    private String largura;
-    private String endereco;
+    private Float altura;
+    private Float largura;
+    private String origem;
     private float valor;
     private String tipo;
     private boolean restricaoVeiculosPequenos;
 
-    public PacoteGrande(int identificadorDoPacote, float peso, String destino, String altura, String largura, String endereco, String tipo) {
-        this.identificadorDoPacote = identificadorDoPacote;
+    public PacoteGrande(float peso, String origem, String destino, Float altura, Float largura, String tipo) {
+        this.identificadorDoPacote = criaIdentificador();
         this.peso = peso;
+        this.origem = origem;
         this.destino = destino;
         this.altura = altura;
         this.largura = largura;
-        this.endereco = endereco;
         this.tipo = tipo;
     }
     
-
-   
-    
+    //Cria um numero aleatorio de identificador e falta salá-lo no json
+    public int criaIdentificador(){
+        Random random = new Random();
+        return random.nextInt(9000) + 1000;
+    }
 
     @Override
     public void calcularCustoPacote() {
@@ -51,11 +47,20 @@ public class PacoteGrande implements Pacote{
         return this.identificadorDoPacote;
     }
     
+    @Override
+    public String getDestino() {
+        return destino;
+    }
+    
+    @Override
+    public String toString() {
+        return "Peso: " + peso + "; \n Destino: " + destino + "; \n Altura: " + altura + "; \n Largura: " + largura + "; \n Origem: " + origem + "; \n Valor: " + valor + "; \n Tipo: " + tipo + "; \n Restrição para veiculos pequenos: " + restricaoVeiculosPequenos + ";";
+    }
+    
     public void adicionarRestricaoVeiculo () { 
         //se peso maior que 100 kg restringe veiculos pequenos
         if (peso > 100) {
             this.restricaoVeiculosPequenos = true;
         }
     } 
-    
 }
