@@ -38,11 +38,12 @@ public class Entrega {
         return random.nextInt(9000) + 1000;
     }
     
+    @Override
     public String toString(){
         
-        String nomeEntregador = (entregador != null && entregador.getNome() != null) ? entregador.getNome() : "";
+        String nomeEntregador = (entregador != null && entregador.getNome() != null) ? entregador.getNome() : "-";
         
-        return "Pedido: " + identificadorEntrega + "; Entregador: " + nomeEntregador + "; Cliente: " + cliente.getNome() + "; Valor:" + valorEntrega + "; Status:" + statusEntrega + "; Pacote: <" + pacote + ">";
+        return "Pedido: " + identificadorEntrega + " ; Entregador: " + nomeEntregador + " ; Cliente: " + cliente.getNome() + " ; Valor: R$" + valorEntrega + " ; Status: " + statusEntrega + " ; Pacote: <" + pacote + ">";
     }
     
     public void cadastraEntregador(Entregador entregador){

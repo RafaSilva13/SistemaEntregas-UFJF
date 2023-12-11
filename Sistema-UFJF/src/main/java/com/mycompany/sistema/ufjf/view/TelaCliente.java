@@ -2,7 +2,7 @@ package com.mycompany.sistema.ufjf.view;
 
 import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesGrandes;
 import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesPequenos;
-import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
+import com.mycompany.sistema.ufjf.eventos.GerenciaClientesTelaClientes;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosCliente;
@@ -17,8 +17,6 @@ import com.mycompany.sistema.ufjf.model.Entrega;
 import com.mycompany.sistema.ufjf.model.PacoteGrande;
 import com.mycompany.sistema.ufjf.model.PacotePequeno;
 import com.mycompany.sistema.ufjf.model.Telefone;
-import com.mycompany.sistema.ufjf.persistence.EntregaPersistence;
-import com.mycompany.sistema.ufjf.persistence.Persistence;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -73,6 +71,7 @@ public class TelaCliente {
     private JTextField tfLarguraPacoteGrande;
     
     private JList<Entrega> jlEntregas;
+    private JList<Entrega> jlEntregasCliente;
     private JList<Cliente> jlCliente;
     
     private Cliente usuarioLogado;
@@ -84,6 +83,13 @@ public class TelaCliente {
         // Cria uma nova janela
         tela = new JFrame("Area Cliente");
         
+        DefaultListModel<Entrega> model = new DefaultListModel<>();
+        jlEntregas = new JList<>(model);
+        
+        DefaultListModel<Cliente> model2 = new DefaultListModel<>();
+        jlCliente = new JList<>(model2);
+        
+        tela.addWindowListener(new GerenciaClientesTelaClientes(this));
         tela.addWindowListener(new GerenciaEntregasCliente(this));
 
         // Define o excerramento do programa ao fechar a janela
@@ -94,9 +100,7 @@ public class TelaCliente {
 
         principal = new JPanel();
         principal.setLayout(new BorderLayout());
-        
-        this.exibirPedidosCliente();
-        
+                
         // Adiciona o painel geral a janela
         tela.add(principal);
         
@@ -128,14 +132,10 @@ public class TelaCliente {
         JMenuItem item2 = new JMenuItem("Pedidos");
         item2.addActionListener(new OpcaoPedidosCliente(this));
 
-        JMenuItem item3 = new JMenuItem("Sair");
-        item3.addActionListener(new BotaoSairParaLogin(tela, new TelaLogin()));
-
         // Adicione opções no menu
         menu.add(item1);
-        menu.add(item2);
         menu.addSeparator();
-        menu.add(item3);
+        menu.add(item2);
 
         // Adiciona menu na barra de menus
         menuBar.add(menu);
@@ -280,6 +280,26 @@ public class TelaCliente {
         principal.revalidate();
         principal.repaint();
     }
+    
+    public void carregaClientes(List<Cliente> clientes){
+
+        DefaultListModel<Cliente> modelClientes = (DefaultListModel<Cliente>)jlCliente.getModel();
+
+        for (Cliente c: clientes) {
+            modelClientes.addElement(c);
+        }
+    }
+    
+    public List<Cliente> listaClientes(){
+        DefaultListModel<Cliente> modelClientes = (DefaultListModel<Cliente>)jlCliente.getModel();
+        List<Cliente> clientes = new ArrayList<>();
+
+        for (int i = 0; i < modelClientes.size(); i++) {
+            clientes.add(modelClientes.get(i));
+        }
+
+        return clientes;
+    }
         
     public void salvarAlteracoes(){
 
@@ -298,6 +318,8 @@ public class TelaCliente {
                 selectedIndex = i;
             }
         }
+        
+        System.out.println(selectedIndex);
 
         if(selectedIndex != -1){
 
@@ -307,12 +329,24 @@ public class TelaCliente {
 
             try {
                 cliente.setNome(tfNomeCliente.getText());
-                cliente.setUsuario(tfEmailCliente.getText());
-                cliente.setEmail(new Email(tfUsuarioCliente.getText()));
+                cliente.setUsuario(tfUsuarioCliente.getText());
+                cliente.setEmail(new Email(tfEmailCliente.getText()));
                 cliente.setCpf(new Cpf().parser(tfCpfCliente.getText()));
                 cliente.setNumeroDeTelefone(new Telefone().parser(tfTelefoneCliente.getText()));
                 
                 model.add(selectedIndex, cliente);
+                        
+                List<Entrega> entregas = listaEntregas();
+
+                for (Entrega e : entregas) {
+                    Cliente clienteLocal = e.getCliente();
+
+                    if (usuarioLogado.equals(clienteLocal)) {
+                        e.setCliente(cliente);
+                    }
+                }
+                
+                usuarioLogado = cliente;
                 
                 JOptionPane.showMessageDialog(tela, "Usuario alterado!");
             } catch (EmailException e) {
@@ -323,8 +357,6 @@ public class TelaCliente {
                 JOptionPane.showMessageDialog(tela, "O CPF " + tfCpfCliente.getText() +" é invalido!");
             }
         }
-
-        tela.pack();
     }
     
     public void exibirPedidosCliente() {
@@ -338,15 +370,16 @@ public class TelaCliente {
         JPanel painelPedidos = new JPanel();
         
 //------------------------------------------------------------------------------
-        
+        DefaultListModel<Entrega> model = new DefaultListModel<>();
+        jlEntregasCliente = new JList<>(model);
+
+        carregaEntregasCliente(this.usuarioLogado);
+
         painelPedidos.setBorder(BorderFactory.createTitledBorder("Pedidos"));
         painelPedidos.setPreferredSize(new Dimension(518, HEIGHT));
         painelPedidos.setLayout(new BorderLayout());
         
-        DefaultListModel<Entrega> model = new DefaultListModel<>();
-        jlEntregas = new JList<>(model);
-
-        painelPedidos.add(new JScrollPane(jlEntregas), BorderLayout.CENTER);
+        painelPedidos.add(new JScrollPane(jlEntregasCliente), BorderLayout.CENTER);
         
 //------------------------------------------------------------------------------
         
@@ -496,7 +529,7 @@ public class TelaCliente {
         return formularioPacoteGrande;
     }
     
-    public List<Entrega> listaEntregas(){
+    public List<Entrega> listaEntregas() {
         
         DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
         List<Entrega> minhaEntregas = new ArrayList<>();
@@ -508,25 +541,28 @@ public class TelaCliente {
         return minhaEntregas;
     }
     
-    public List<Entrega> listaEntregasCliente(Cliente clienteAtual){
-        
-        DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
-        List<Entrega> minhaEntregas = new ArrayList<>();
-        List<Entrega> entregas = new ArrayList<>();
+    public void carregaEntregas(List<Entrega> entregas) {
 
-        for (int i = 0; i < model.size(); i++) {
-            entregas.add(model.get(i));
+        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
+
+        for (Entrega e: entregas) {
+            modelEntregas.addElement(e);
         }
-
-        for (Entrega entrega : entregas) {
-            Cliente cliente = entrega.getCliente();
-            
+    }
+    
+    public void carregaEntregasCliente(Cliente clienteAtual){
+                
+        DefaultListModel<Entrega> minhaEntregas = (DefaultListModel<Entrega>)jlEntregasCliente.getModel();
+        
+        List<Entrega> entregas = listaEntregas();
+       
+        for (Entrega e : entregas) {
+            Cliente cliente = e.getCliente();
+                        
             if (cliente.equals(clienteAtual)) {
-                minhaEntregas.add(entrega);
+                minhaEntregas.addElement(e);
             }
         }
-        
-        return minhaEntregas;
     }
     
     public void addPacotePequeno() {
@@ -550,9 +586,6 @@ public class TelaCliente {
 
                 modelEntregas.addElement(novaEntrega);
 
-                Persistence<Entrega> entregaPersistence = new EntregaPersistence();
-                entregaPersistence.save(listaEntregas());
-
                 JOptionPane.showMessageDialog(tela, "Cadastro realizado com sucesso!");
 
                 tfPesoPacotePequeno.setText("");
@@ -560,7 +593,9 @@ public class TelaCliente {
                 tfDestinoPacotePequeno.setText("");
                 tfAlturaPacotePequeno.setText("");
                 tfLarguraPacotePequeno.setText("");
-                tfOpcaoFragilPacotePequeno.setSelected(false);                    
+                tfOpcaoFragilPacotePequeno.setSelected(false);
+                
+                exibirPedidosCliente();
             } else {
                 JOptionPane.showMessageDialog(tela, "Pedido já existe!");
             }
@@ -590,9 +625,6 @@ public class TelaCliente {
 
                 modelEntregas.addElement(novaEntrega);
 
-                Persistence<Entrega> entregaPersistence = new EntregaPersistence();
-                entregaPersistence.save(listaEntregas());
-
                 JOptionPane.showMessageDialog(tela, "Cadastro realizado com sucesso!");
 
                 tfPesoPacoteGrande.setText("");
@@ -600,6 +632,8 @@ public class TelaCliente {
                 tfDestinoPacoteGrande.setText("");
                 tfAlturaPacoteGrande.setText("");
                 tfLarguraPacoteGrande.setText("");
+
+                exibirPedidosCliente();
             } else {
                 JOptionPane.showMessageDialog(tela, "Pedido já existe!");
             }
@@ -608,12 +642,4 @@ public class TelaCliente {
         }
     }
     
-    public void carregaEntregas(List<Entrega> entregas){
-
-        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
-
-        for (Entrega e: entregas) {
-            modelEntregas.addElement(e);
-        }
-    }
 }

@@ -12,13 +12,12 @@ public class Entregador extends Usuario implements MeioDeTransporte {
     private Email email;
     private Telefone numeroDeTelefone;
     private int quantidadeDeEntregas;
-    private MeioDeTransporte meioDeTransporte;
     private VeiculoEntrega veiculo;
     
     public Entregador() {
     }
 
-    public Entregador(String nome, Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha, MeioDeTransporte meioDeTransporte, VeiculoEntrega veiculo) {
+    public Entregador(String nome, Cpf cpf, Telefone numeroDeTelefone, Email email, String usuario, String senha, VeiculoEntrega veiculo) {
         super(usuario, senha);
         this.nome = nome;
         this.identificadorEntregador = criaIdentificador();
@@ -26,7 +25,6 @@ public class Entregador extends Usuario implements MeioDeTransporte {
         this.email = email;
         this.numeroDeTelefone = numeroDeTelefone;
         this.quantidadeDeEntregas = 0;
-        this.meioDeTransporte = meioDeTransporte;
         this.veiculo = veiculo;
     }
 
@@ -90,10 +88,6 @@ public class Entregador extends Usuario implements MeioDeTransporte {
         return identificadorEntregador;
     }
     
-    public void listarPedidosEntregues(){
-        //PUXA AS ENTREGAS DA CLASSE ENTREGA
-    }
-     
     public void verificarQuantidadeDeEntregas(){
         System.out.println("Quantidade de entregas feitas por " + this.nome + " é : " + this.quantidadeDeEntregas);
     }

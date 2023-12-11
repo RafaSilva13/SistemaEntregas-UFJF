@@ -1,8 +1,8 @@
 package com.mycompany.sistema.ufjf.view;
 
 import com.mycompany.sistema.ufjf.eventos.AdicionarEntregadorNoPacote;
-import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
 import com.mycompany.sistema.ufjf.eventos.FinalizarEntregaPacote;
+import com.mycompany.sistema.ufjf.eventos.GerenciaEntregadoresTelaEntregador;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasEntregador;
 import com.mycompany.sistema.ufjf.eventos.OpcaoEntregasEntregador;
 import com.mycompany.sistema.ufjf.eventos.OpcaoMeusDadosEntregador;
@@ -18,6 +18,7 @@ import com.mycompany.sistema.ufjf.model.Telefone;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -57,6 +58,7 @@ public class TelaEntregador {
     private JTextField tfAnoFabricacaoVeiculo;
 
     private JList<Entrega> jlEntregas;
+    private JList<Entrega> jlEntregasEntregador;
     private JList<Entregador> jlEntregador;
 
     private Entregador usuarioLogado;
@@ -67,11 +69,19 @@ public class TelaEntregador {
     public void exibirTelaEntregador(Entregador entregador) {
         
         this.usuarioLogado = entregador;
-        
+                
         // Cria uma nova janela
         tela = new JFrame("Area Entregador");
-        tela.addWindowListener(new GerenciaEntregasEntregador(this));
         
+        DefaultListModel<Entrega> model = new DefaultListModel<>();
+        jlEntregas = new JList<>(model);
+        
+        DefaultListModel<Entregador> model2 = new DefaultListModel<>();
+        jlEntregador = new JList<>(model2);
+        
+        tela.addWindowListener(new GerenciaEntregadoresTelaEntregador(this));
+        tela.addWindowListener(new GerenciaEntregasEntregador(this));
+                
         // Define o excerramento do programa ao fechar a janela
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -82,7 +92,7 @@ public class TelaEntregador {
         principal = new JPanel();
         principal.setLayout(new BorderLayout());
         
-        this.exibirPedidosEntregador();
+        exibirPedidosEntregador();
         
         // Adiciona o painel geral a janela
         tela.add(principal);
@@ -110,16 +120,12 @@ public class TelaEntregador {
         item1.addActionListener(new OpcaoMeusDadosEntregador(this));
 
         JMenuItem item2 = new JMenuItem("Entregas");
-        item1.addActionListener(new OpcaoEntregasEntregador(this));
-
-        JMenuItem item3 = new JMenuItem("Sair");
-        item3.addActionListener(new BotaoSairParaLogin(tela, new TelaLogin()));
+        item2.addActionListener(new OpcaoEntregasEntregador(this));
 
         // Adicione opções no menu
         menu.add(item1);
-        menu.add(item2);
         menu.addSeparator();
-        menu.add(item3);    
+        menu.add(item2);
 
         // Adiciona menu na barra de menus
         menuBar.add(menu);
@@ -308,31 +314,36 @@ public class TelaEntregador {
         
 //------------------------------------------------------------------------------
         
+        DefaultListModel<Entrega> model = new DefaultListModel<>();
+        jlEntregasEntregador = new JList<>(model);
+        
+        carregaEntregasEntregador(this.usuarioLogado);
+
         painelPedidos.setBorder(BorderFactory.createTitledBorder("Pedidos"));
         painelPedidos.setPreferredSize(new Dimension(518, HEIGHT));
         painelPedidos.setLayout(new BorderLayout());
         
-        DefaultListModel<Entrega> model = new DefaultListModel<>();
-        jlEntregas = new JList<>(model);
-
-        painelPedidos.add(new JScrollPane(jlEntregas), BorderLayout.CENTER);
+        painelPedidos.add(new JScrollPane(jlEntregasEntregador), BorderLayout.CENTER);
         
 //------------------------------------------------------------------------------
         
-        btnAdicionarEntregadorAPacote = new JButton("Selecionar Pedido");
+        btnAdicionarEntregadorAPacote = new JButton("Aceitar Pedido");
         btnAdicionarEntregadorAPacote.addActionListener(new AdicionarEntregadorNoPacote(this));
 
         btnFinalizarEntregaPacote = new JButton("Finalizar Entrega");
         btnFinalizarEntregaPacote.addActionListener(new FinalizarEntregaPacote(this));
-                
+        
         JPanel botoes = new JPanel();
+        botoes.setPreferredSize(new Dimension(220, HEIGHT));
+        botoes.setBorder(new EmptyBorder(125, 0, 0, 35));
+
         botoes.add(btnAdicionarEntregadorAPacote);
         botoes.add(btnFinalizarEntregaPacote);
         
 //------------------------------------------------------------------------------
 
         areaPedidos.add(painelPedidos, BorderLayout.WEST);
-        areaPedidos.add(botoes, BorderLayout.SOUTH);
+        areaPedidos.add(botoes, BorderLayout.EAST);
 
         // Adiciona os pedidos a janela
         principal.add(areaPedidos);
@@ -343,6 +354,49 @@ public class TelaEntregador {
         
     }
      
+    public void carregaEntregadores (List<Entregador> entregadores) {
+
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregador.getModel();
+
+        for (Entregador e: entregadores) {
+            modelEntregador.addElement(e);
+        }
+    }
+    
+    public List<Entregador> listaEntregadores (){
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregador.getModel();
+        List<Entregador> entregador = new ArrayList<>();
+
+        for (int i = 0; i < modelEntregador.size(); i++) {
+            entregador.add(modelEntregador.get(i));
+        }
+
+        return entregador;
+    }
+     
+    public void carregaEntregasEntregador(Entregador entregadorAtual){
+                
+        DefaultListModel<Entrega> minhaEntregas = (DefaultListModel<Entrega>)jlEntregasEntregador.getModel();
+        
+        List<Entrega> entregas = listaEntregas();
+       
+        for (Entrega e : entregas) {
+            Entregador entregador = e.getEntregador();
+            
+            if (entregador == null) {
+                minhaEntregas.addElement(e);
+            } else if (entregador != null && entregador.getNome() != null) {
+                if(entregador.equals(entregadorAtual)) {
+                    minhaEntregas.addElement(e);
+                    
+                    if (e.getStatusEntrega().equals("A Caminho")) {
+                        btnAdicionarEntregadorAPacote.setEnabled(false);
+                    }
+                }
+            }
+        }
+    }
+    
     public void carregaEntregas(List<Entrega> entregas){
 
         DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
@@ -353,7 +407,6 @@ public class TelaEntregador {
     }
     
     public List<Entrega> listaEntregas(){
-        
         DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
         List<Entrega> minhaEntregas = new ArrayList<>();
 
@@ -366,51 +419,84 @@ public class TelaEntregador {
     
     public void addEntregadorAPacote () {
 
-        int selectedIndex = jlEntregas.getSelectedIndex();
+        int selectedIndex = jlEntregasEntregador.getSelectedIndex();
 
         if(selectedIndex != -1){
             
-            DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
+            DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregasEntregador.getModel();
 
             Entrega entrega = model.get(selectedIndex);
-
-            model.remove(selectedIndex);
-
-            entrega.cadastraEntregador(usuarioLogado);
-            entrega.setStatusEntrega("A Caminho");
             
-            model.add(selectedIndex, entrega);
+            List<Entrega> entregas = listaEntregas();
             
-            btnAdicionarEntregadorAPacote.setEnabled(false);
-
-            JOptionPane.showMessageDialog(tela, "Entregador associado!");
-        }
-    }
-    
-    public void finalizaEntregaDoPacote () {
-        int selectedIndex = jlEntregas.getSelectedIndex();
-
-        if(selectedIndex != -1){
+            int posicaoReal = -1;
             
-            DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregas.getModel();
+            for (int i = 0; i < entregas.size(); i++) {
+                if (entrega.equals(entregas.get(i))) {
+                    posicaoReal = i;
+                }
+            }
 
-            Entrega entrega = model.get(selectedIndex);
-
-            if (entrega.getStatusEntrega() == "A Caminho") {
-                model.remove(selectedIndex);
+            if (posicaoReal != -1) {
+                model.remove(posicaoReal);
 
                 entrega.cadastraEntregador(usuarioLogado);
-                entrega.setStatusEntrega("Entregue");
+                entrega.setStatusEntrega("A Caminho");
 
                 model.add(selectedIndex, entrega);
 
                 btnAdicionarEntregadorAPacote.setEnabled(false);
 
-                JOptionPane.showMessageDialog(tela, "Entrega finalizada!"); 
+                JOptionPane.showMessageDialog(tela, "Entregador associado!");
+            } else {
+                JOptionPane.showMessageDialog(tela, "Nenhum pedido selecionado!");
             }
-            else {
-                JOptionPane.showMessageDialog(tela, "O pedido ainda não está a caminho!"); 
+        } else {
+            JOptionPane.showMessageDialog(tela, "Nenhum pedido selecionado!");
+        }
+    }
+    
+    public void finalizaEntregaDoPacote () {
+        
+        int selectedIndex = jlEntregasEntregador.getSelectedIndex();
+
+        if(selectedIndex != -1){
+            
+            DefaultListModel<Entrega> model = (DefaultListModel<Entrega>)jlEntregasEntregador.getModel();
+
+            Entrega entrega = model.get(selectedIndex);
+            
+            List<Entrega> entregas = listaEntregas();
+            
+            int posicaoReal = -1;
+            
+            for (int i = 0; i < entregas.size(); i++) {
+                if (entrega.equals(entregas.get(i))) {
+                    posicaoReal = i;
+                }
             }
+            
+            if (posicaoReal != -1) {
+                if (entrega.getStatusEntrega().equals("A Caminho")) {
+                    model.remove(posicaoReal);
+
+                    entrega.cadastraEntregador(usuarioLogado);
+                    entrega.setStatusEntrega("Entregue");
+
+                    model.add(posicaoReal, entrega);
+
+                    btnAdicionarEntregadorAPacote.setEnabled(true);
+
+                    JOptionPane.showMessageDialog(tela, "Entrega finalizada!"); 
+                }
+                else {
+                    JOptionPane.showMessageDialog(tela, "O pedido ainda não está a caminho!"); 
+                }
+            } else {
+                JOptionPane.showMessageDialog(tela, "Nenhum pedido selecionado!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(tela, "Nenhum pedido selecionado!");
         }
     }
     
@@ -440,12 +526,24 @@ public class TelaEntregador {
 
             try {
                 entregador.setNome(tfNomeEntregador.getText());
-                entregador.setUsuario(tfEmailEntregador.getText());
-                entregador.setEmail(new Email(tfUsuarioEntregador.getText()));
+                entregador.setUsuario(tfUsuarioEntregador.getText());
+                entregador.setEmail(new Email(tfEmailEntregador.getText()));
                 entregador.setCpf(new Cpf().parser(tfCpfEntregador.getText()));
                 entregador.setNumeroDeTelefone(new Telefone().parser(tfTelefoneEntregador.getText()));
                 
                 model.add(selectedIndex, entregador);
+                
+                List<Entrega> entregas = listaEntregas();
+
+                for (Entrega e : entregas) {
+                    Entregador entregadorLocal = e.getEntregador();
+
+                    if (usuarioLogado.equals(entregadorLocal)) {
+                        e.setEntregador(entregador);
+                    }
+                }
+                
+                usuarioLogado = entregador;
                 
                 JOptionPane.showMessageDialog(tela, "Usuario alterado!");
             } catch (EmailException e) {
