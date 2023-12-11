@@ -11,7 +11,6 @@ public class Entregador extends Usuario implements MeioDeTransporte {
     private Cpf cpf;
     private Email email;
     private Telefone numeroDeTelefone;
-    private int quantidadeDeEntregas;
     private VeiculoEntrega veiculo;
     
     public Entregador() {
@@ -24,7 +23,6 @@ public class Entregador extends Usuario implements MeioDeTransporte {
         this.cpf = cpf;
         this.email = email;
         this.numeroDeTelefone = numeroDeTelefone;
-        this.quantidadeDeEntregas = 0;
         this.veiculo = veiculo;
     }
 
@@ -88,17 +86,13 @@ public class Entregador extends Usuario implements MeioDeTransporte {
         return identificadorEntregador;
     }
     
-    public void verificarQuantidadeDeEntregas(){
-        System.out.println("Quantidade de entregas feitas por " + this.nome + " é : " + this.quantidadeDeEntregas);
-    }
-
     @Override
     public boolean fazLogin(String usuario, String senha) {
         return this.usuario.equals(usuario) && this.senha.equals(senha);
     }
     
     public String realizarEntrega() {
-        return "Meio de transporte: " + this.getClass().getSimpleName();
+        return "Usando veiculo de transporte: " + this.retornaVeiculo();
     }
     
     @Override
@@ -108,7 +102,7 @@ public class Entregador extends Usuario implements MeioDeTransporte {
 
     @Override
     public String toString() {
-        return "Nome: " + nome + "; Usuário: " + usuario + "; CPF: " + cpf.toString() + "; Telefone: " + numeroDeTelefone.toString() + "; Email: " + email + ";";
+        return "Nome: " + nome + "; Usuário: " + usuario + "; CPF: " + cpf.toString() + "; Telefone: " + numeroDeTelefone.toString() + "; Email: " + email + "; " +  entregar();
     }
     
     @Override
