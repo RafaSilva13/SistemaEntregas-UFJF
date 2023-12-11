@@ -25,12 +25,4 @@ public class Administrador extends Usuario{
     public boolean fazLogin(String usuario, String senha) {
         return this.usuario.equals(usuario) && this.senha.equals(senha);
     }
-    
-    public void verSaldoTotalDoAplicativo(){
-        
-    }
-
-    
-    
-    
 }

@@ -16,7 +16,7 @@ public class PacotePequeno extends Pacote{
     private Float altura;
     private Float largura;
     private String origem;
-    private float valor;
+    private double valor;
     private String tipo;
     private boolean fragil;
 
@@ -29,6 +29,7 @@ public class PacotePequeno extends Pacote{
         this.largura = largura;
         this.tipo = tipo;
         this.adicionarRestricaoVeiculo(opcaoFragil);
+        this.valor = calcularCustoPacote();
     }
     
     //Cria um numero aleatorio de identificador e falta salá-lo no json
@@ -38,16 +39,23 @@ public class PacotePequeno extends Pacote{
     }
     
     @Override
-    public void calcularCustoPacote() {
-            //coloquei o custo como (distancia + peso) * 0.2
-        this.valor = (float)(this.buscaDistanciaEndereco() + this.peso) / 5;
+    public double retornaValorEntrega() {
+        return valor;
+    }
+    
+    @Override
+    public double calcularCustoPacote() {
+        float distanciaKm = buscaDistanciaEndereco();
+        double valorFinal = distanciaKm * 0.25;
+        
+        return valorFinal;
     }
 
     @Override
     public float buscaDistanciaEndereco() {
-              //gerando numero aleatório
-        float numeroDecimal = (float) (1.0 + (Math.random() * 99.0));
-        return numeroDecimal;
+        Random random = new Random();
+	int kmAleatorio = random.nextInt(401) + 100;
+	return kmAleatorio;
     }
 
     @Override

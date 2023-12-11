@@ -21,21 +21,9 @@ public class Entrega {
     public Entrega(Cliente cliente, String statusEntrega, Pacote pacote) {
         this.identificadorEntrega = retornaCodigoIdentificador();
         this.cliente = cliente;
-        this.valorEntrega = retornaValorEntrega();
+        this.valorEntrega = pacote.retornaValorEntrega();
         this.statusEntrega = statusEntrega;
         this.pacote = pacote;
-    }
-    
-    private double retornaValorEntrega(){
-        int distanciaKm = verificaEndereco();
-        double valorFinal = distanciaKm * 0.25; //Ex: se distancia == 200 Km, valor = 50,00
-        return valorFinal;
-    }
-    
-    private int verificaEndereco(){ //retorna uma kilometragem de distancia até o endereço
-        Random random = new Random();
-        int kmAleatorio = random.nextInt(401) + 100;
-        return kmAleatorio;
     }
     
     private int retornaCodigoIdentificador(){

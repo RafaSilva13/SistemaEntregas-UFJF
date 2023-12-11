@@ -14,7 +14,6 @@ public class Cliente extends Usuario {
     private int identificadorCliente;
     private String nome;
     private Cpf cpf;
-    private int quantidadeDePedidos;
     private Telefone numeroDeTelefone;
     private Email email;
 
@@ -25,7 +24,6 @@ public class Cliente extends Usuario {
         super(usuario, senha);
         this.identificadorCliente = criaIdentificador();
         this.nome = nome;
-        this.quantidadeDePedidos = 0;
         this.cpf = cpf;
         this.numeroDeTelefone = numeroDeTelefone;
         this.email = email;
@@ -46,10 +44,6 @@ public class Cliente extends Usuario {
     public int retornaCodigoIdentificador(){
         return this.identificadorCliente;
     }
-   
-    public void verPedidos(){
-        System.out.println("Número de pedidos do cliente " + this.nome + " é : " + this.quantidadeDePedidos);
-    }
 
     //GETTERS
     public String getNome() {
@@ -62,10 +56,6 @@ public class Cliente extends Usuario {
     
     public Cpf getCpf() {
         return cpf;
-    }
-
-    public int getQuantidadeDePedidos() {
-        return quantidadeDePedidos;
     }
 
     public Telefone getNumeroDeTelefone() {
@@ -95,10 +85,6 @@ public class Cliente extends Usuario {
 
     public void setCpf(Cpf cpf) {
         this.cpf = cpf;
-    }
-
-    public void setQuantidadeDePedidos(int quantidadeDePedidos) {
-        this.quantidadeDePedidos = quantidadeDePedidos;
     }
 
     public void setNumeroDeTelefone(Telefone numeroDeTelefone) {

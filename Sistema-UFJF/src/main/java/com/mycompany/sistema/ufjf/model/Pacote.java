@@ -7,8 +7,9 @@ package com.mycompany.sistema.ufjf.model;
 */
 
 public abstract class Pacote {
-    public abstract void calcularCustoPacote();
+    public abstract double calcularCustoPacote();
     public abstract float buscaDistanciaEndereco();
     public abstract int retonaCodigoIdentificador();
+    public abstract double retornaValorEntrega();
     public abstract String getDestino();
 }
