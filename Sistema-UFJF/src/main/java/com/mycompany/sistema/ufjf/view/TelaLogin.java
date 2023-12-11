@@ -1,5 +1,11 @@
 package com.mycompany.sistema.ufjf.view;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 import com.mycompany.sistema.ufjf.eventos.AdicionarCliente;
 import com.mycompany.sistema.ufjf.eventos.AdicionarEntregador;
 import com.mycompany.sistema.ufjf.eventos.BotaoLoginAdministrador;
@@ -21,7 +27,6 @@ import com.mycompany.sistema.ufjf.model.VeiculoEntrega;
 import com.mycompany.sistema.ufjf.persistence.ClientePersistence;
 import com.mycompany.sistema.ufjf.persistence.EntregadorPersistence;
 import com.mycompany.sistema.ufjf.persistence.Persistence;
-
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;

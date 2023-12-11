@@ -1,5 +1,11 @@
 package com.mycompany.sistema.ufjf.view;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 import com.mycompany.sistema.ufjf.eventos.GerenciaClientesAdministrador;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregadoresAdministrador;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasAdministrador;
@@ -106,7 +112,7 @@ public class TelaAdministrador {
         JMenuItem item1 = new JMenuItem("Dados Gerais");
         item1.addActionListener(new OpcaoDadosGeraisAdministrador(this));
         
-        JMenuItem item2 = new JMenuItem("Pedidos");
+        JMenuItem item2 = new JMenuItem("Entregas");
         item2.addActionListener(new OpcaoPedidosAdministrador(this));
 
         // Adicione opções no menu

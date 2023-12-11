@@ -1,5 +1,11 @@
 package com.mycompany.sistema.ufjf.view;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesGrandes;
 import com.mycompany.sistema.ufjf.eventos.AdicionarPacotesPequenos;
 import com.mycompany.sistema.ufjf.eventos.GerenciaClientesTelaClientes;

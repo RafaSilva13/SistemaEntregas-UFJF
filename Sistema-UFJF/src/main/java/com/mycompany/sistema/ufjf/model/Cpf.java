@@ -1,15 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.sistema.ufjf.model;
 
 import com.mycompany.sistema.ufjf.exeptions.CpfException;
 import java.util.Objects;
-/**
- *
- * @author sihuanb
- */
+
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 public class Cpf {
     private String cPFString;
     private String cPFSemPontos;

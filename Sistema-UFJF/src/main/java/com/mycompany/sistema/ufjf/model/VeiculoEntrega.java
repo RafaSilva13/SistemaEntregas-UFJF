@@ -3,6 +3,12 @@ package com.mycompany.sistema.ufjf.model;
 import com.mycompany.sistema.ufjf.exeptions.*;
 import java.util.Random;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 public class VeiculoEntrega implements MeioDeTransporte {
     private int identificador;
     private String placaModelo;

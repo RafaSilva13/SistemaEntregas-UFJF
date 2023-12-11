@@ -2,6 +2,12 @@ package com.mycompany.sistema.ufjf.persistence;
 
 import java.io.*;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 public class ArquivoEntrega {
 
     public static String le(String filePath) {

@@ -2,12 +2,17 @@ package com.mycompany.sistema.ufjf.persistence;
 
 import com.google.gson.reflect.TypeToken;
 import com.mycompany.sistema.ufjf.model.Cliente;
-        
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
+
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
 
 public class ClientePersistence implements Persistence<Cliente> {
 

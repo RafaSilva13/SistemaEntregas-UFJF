@@ -1,5 +1,11 @@
 package com.mycompany.sistema.ufjf.view;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 import com.mycompany.sistema.ufjf.eventos.AdicionarEntregadorNoPacote;
 import com.mycompany.sistema.ufjf.eventos.FinalizarEntregaPacote;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregadoresTelaEntregador;
@@ -18,7 +24,6 @@ import com.mycompany.sistema.ufjf.model.Telefone;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -383,7 +388,7 @@ public class TelaEntregador {
         for (Entrega e : entregas) {
             Entregador entregador = e.getEntregador();
             
-            if (entregador == null) {
+            if (entregador == null ) {
                 minhaEntregas.addElement(e);
             } else if (entregador != null && entregador.getNome() != null) {
                 if(entregador.equals(entregadorAtual)) {

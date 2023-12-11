@@ -2,6 +2,12 @@ package com.mycompany.sistema.ufjf.model;
 
 import java.util.Random;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 public class PacoteGrande extends Pacote {
     private int identificadorDoPacote;
     private float peso;
@@ -11,7 +17,6 @@ public class PacoteGrande extends Pacote {
     private String origem;
     private float valor;
     private String tipo;
-    private boolean restricaoVeiculosPequenos;
 
     public PacoteGrande(float peso, String origem, String destino, Float altura, Float largura, String tipo) {
         this.identificadorDoPacote = criaIdentificador();
@@ -54,13 +59,6 @@ public class PacoteGrande extends Pacote {
     
     @Override
     public String toString() {
-        return "Peso: " + peso + "; \n Destino: " + destino + "; \n Altura: " + altura + "; \n Largura: " + largura + "; \n Origem: " + origem + "; \n Valor: " + valor + "; \n Tipo: " + tipo + "; \n Restrição para veiculos pequenos: " + restricaoVeiculosPequenos + ";";
+        return "Peso: " + peso + "; \n Destino: " + destino + "; \n Altura: " + altura + "; \n Largura: " + largura + "; \n Origem: " + origem + "; \n Valor: " + valor + "; \n Tipo: " + tipo + ";";
     }
-    
-    public void adicionarRestricaoVeiculo () { 
-        //se peso maior que 100 kg restringe veiculos pequenos
-        if (peso > 100) {
-            this.restricaoVeiculosPequenos = true;
-        }
-    } 
 }

@@ -3,6 +3,12 @@ package com.mycompany.sistema.ufjf.model;
 import java.util.Objects;
 import java.util.Random;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 public class Cliente extends Usuario {
     
     private int identificadorCliente;

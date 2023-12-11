@@ -4,6 +4,12 @@ import java.util.Objects;
 import java.util.Random;
 import com.mycompany.sistema.ufjf.model.MeioDeTransporte;
 
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
+
 public class Entregador extends Usuario implements MeioDeTransporte {
     
     private int identificadorEntregador;

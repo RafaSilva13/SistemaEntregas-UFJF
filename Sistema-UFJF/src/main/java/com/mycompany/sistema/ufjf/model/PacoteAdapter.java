@@ -3,8 +3,13 @@ package com.mycompany.sistema.ufjf.model;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.mycompany.sistema.ufjf.model.Pacote;
-
 import java.lang.reflect.Type;
+
+/*
+. Caio Fonseca Braida  -  Matrícula: 202276029
+. José Miguel de Lima   -   Matrícula: 202276008
+. Rafael Pereira da Silva  -  Matrícula: 202235013
+*/
 
 public class PacoteAdapter implements JsonSerializer<Pacote>, JsonDeserializer<Pacote> {
     @Override
