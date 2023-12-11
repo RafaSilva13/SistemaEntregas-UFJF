@@ -38,6 +38,7 @@ public class Entrega {
         return random.nextInt(9000) + 1000;
     }
     
+    @Override
     public String toString(){
         
         String nomeEntregador = (entregador != null && entregador.getNome() != null) ? entregador.getNome() : "-";
