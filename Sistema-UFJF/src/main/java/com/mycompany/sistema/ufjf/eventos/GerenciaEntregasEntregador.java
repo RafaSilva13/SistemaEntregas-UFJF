@@ -22,6 +22,7 @@ public class GerenciaEntregasEntregador implements WindowListener {
         Persistence<Entrega> entregadorPersistence = new EntregaPersistence();
         List<Entrega> all = entregadorPersistence.findAll();
         tela.carregaEntregas(all);
+        tela.exibirPedidosEntregador();
     }
 
     @Override

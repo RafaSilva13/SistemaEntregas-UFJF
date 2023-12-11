@@ -1,8 +1,8 @@
 package com.mycompany.sistema.ufjf.view;
 
-import com.mycompany.sistema.ufjf.eventos.BotaoSairParaLogin;
+import com.mycompany.sistema.ufjf.eventos.GerenciaClientesAdministrador;
+import com.mycompany.sistema.ufjf.eventos.GerenciaEntregadoresAdministrador;
 import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasAdministrador;
-import com.mycompany.sistema.ufjf.eventos.GerenciaEntregasCliente;
 import com.mycompany.sistema.ufjf.eventos.OpcaoDadosGeraisAdministrador;
 import com.mycompany.sistema.ufjf.eventos.OpcaoPedidosAdministrador;
 import com.mycompany.sistema.ufjf.eventos.RemoverUsuario;
@@ -11,9 +11,6 @@ import com.mycompany.sistema.ufjf.eventos.SelecionarContatoEntregador;
 import com.mycompany.sistema.ufjf.model.Cliente;
 import com.mycompany.sistema.ufjf.model.Entrega;
 import com.mycompany.sistema.ufjf.model.Entregador;
-import com.mycompany.sistema.ufjf.persistence.ClientePersistence;
-import com.mycompany.sistema.ufjf.persistence.EntregadorPersistence;
-import com.mycompany.sistema.ufjf.persistence.Persistence;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -55,11 +52,23 @@ public class TelaAdministrador {
     private JList<Entregador> jlEntregador;
     private JList<Entrega> jlEntregas;
     
-    public void exibirTelaAdministrador(JList<Cliente> cliente, JList<Entregador> entregador) {
+    public void exibirTelaAdministrador() {
         
         // Cria uma nova janela
         tela = new JFrame("Area Administrador");
+        
+        DefaultListModel<Entrega> model = new DefaultListModel<>();
+        jlEntregas = new JList<>(model);
+        
+        DefaultListModel<Entregador> model2 = new DefaultListModel<>();
+        jlEntregador = new JList<>(model2);
+        
+        DefaultListModel<Cliente> model3 = new DefaultListModel<>();
+        jlCliente = new JList<>(model3);
+        
         tela.addWindowListener(new GerenciaEntregasAdministrador(this));
+        tela.addWindowListener(new GerenciaClientesAdministrador(this));
+        tela.addWindowListener(new GerenciaEntregadoresAdministrador(this));
 
         // Define o excerramento do programa ao fechar a janela
         tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,9 +78,6 @@ public class TelaAdministrador {
 
         principal = new JPanel();
         principal.setLayout(new BorderLayout());
-        
-        this.jlCliente = cliente;
-        this.jlEntregador = entregador;
         
         this.exibirDadosGerais();
 
@@ -102,15 +108,11 @@ public class TelaAdministrador {
         
         JMenuItem item2 = new JMenuItem("Pedidos");
         item2.addActionListener(new OpcaoPedidosAdministrador(this));
-        
-        JMenuItem item3 = new JMenuItem("Sair");
-        item3.addActionListener(new BotaoSairParaLogin(tela, new TelaLogin()));
 
         // Adicione opções no menu
         menu.add(item1);
-        menu.add(item2);
         menu.addSeparator();
-        menu.add(item3);
+        menu.add(item2);
 
         // Adiciona menu na barra de menus
         menuBar.add(menu);
@@ -316,6 +318,15 @@ public class TelaAdministrador {
         return clientes;
     }
     
+    public void carregaClientes(List<Cliente> clientes){
+
+        DefaultListModel<Cliente> modelCliente = (DefaultListModel<Cliente>)jlCliente.getModel();
+
+        for (Cliente c: clientes) {
+            modelCliente.addElement(c);
+        }
+    }
+    
     public List<Entregador> listaEntregadores(){
         DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregador.getModel();
         List<Entregador> entregadores = new ArrayList<>();
@@ -327,12 +338,12 @@ public class TelaAdministrador {
         return entregadores;
     }
     
-    public void carregaEntregas(List<Entrega> entregas){
+    public void carregaEntregadores(List<Entregador> entregadores){
 
-        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
+        DefaultListModel<Entregador> modelEntregador = (DefaultListModel<Entregador>)jlEntregador.getModel();
 
-        for (Entrega e: entregas) {
-            modelEntregas.addElement(e);
+        for (Entregador e: entregadores) {
+            modelEntregador.addElement(e);
         }
     }
     
@@ -348,6 +359,14 @@ public class TelaAdministrador {
         return minhaEntregas;
     }
     
+    public void carregaEntregas(List<Entrega> entregas){
+
+        DefaultListModel<Entrega> modelEntregas = (DefaultListModel<Entrega>)jlEntregas.getModel();
+
+        for (Entrega e: entregas) {
+            modelEntregas.addElement(e);
+        }
+    }
     
     public void removerUsuario(String tipoUsuario) {
         if (tipoUsuario.equals("Clientes")) {            
@@ -356,9 +375,6 @@ public class TelaAdministrador {
             if(selectedIndex != -1){
                 DefaultListModel<Cliente> model = (DefaultListModel<Cliente>)jlCliente.getModel();
                 model.remove(selectedIndex);
-                
-                Persistence<Cliente> clientePersistence = new ClientePersistence();
-                clientePersistence.save(listaClientes());
             }
         } else if (tipoUsuario.equals("Entregadores")) {
             
@@ -367,9 +383,6 @@ public class TelaAdministrador {
             if(selectedIndex != -1){
                 DefaultListModel<Entregador> model = (DefaultListModel<Entregador>)jlEntregador.getModel();
                 model.remove(selectedIndex);
-                
-                Persistence<Entregador> entregadorPersistence = new EntregadorPersistence();
-                entregadorPersistence.save(listaEntregadores());
             }
         }
     }
@@ -387,9 +400,6 @@ public class TelaAdministrador {
         painel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         painel.setLayout(new BorderLayout());
         
-        DefaultListModel<Entrega> model = new DefaultListModel<>();
-        jlEntregas = new JList<>(model);
-
         painel.add(new JScrollPane(jlEntregas), BorderLayout.CENTER);
         
         areaPedidos.add(painel, BorderLayout.CENTER);

@@ -797,10 +797,8 @@ public class TelaLogin {
             if (tfNomeEntregador.getText().length() != 0 && tfUsuarioCadastroEntregador.getText().length() != 0 && tfEmailEntregador.getText().length() != 0 && tfTelefoneEntregador.getText().length() != 0 && tfCpfEntregador.getText().length() != 0 && tfSenhaCadastroEntregador.getText().length() != 0 && tfPlacaModeloVeiculo.getText().length() != 0&& tfCapacidadeCargaVeiculo.getText().length() != 0&& tfAnoFabricacaoVeiculo.getText().length() != 0) {
                 
                 VeiculoEntrega veiculo = new VeiculoEntrega(tfPlacaModeloVeiculo.getText(), Float.parseFloat(tfCapacidadeCargaVeiculo.getText()), tfAnoFabricacaoVeiculo.getText());
-                
-                System.out.println(veiculo);
-                
-                Entregador novoEntregador = new Entregador(tfNomeEntregador.getText(), Cpf.parser(tfCpfEntregador.getText()), Telefone.parser(tfTelefoneEntregador.getText()),  new Email(tfEmailEntregador.getText()), tfUsuarioCadastroEntregador.getText(), tfSenhaCadastroEntregador.getText(), veiculo, veiculo);
+                                
+                Entregador novoEntregador = new Entregador(tfNomeEntregador.getText(), Cpf.parser(tfCpfEntregador.getText()), Telefone.parser(tfTelefoneEntregador.getText()),  new Email(tfEmailEntregador.getText()), tfUsuarioCadastroEntregador.getText(), tfSenhaCadastroEntregador.getText(), veiculo);
 
                 List<Entregador> entregador = new ArrayList<>();
 

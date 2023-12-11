@@ -1,34 +1,33 @@
 package com.mycompany.sistema.ufjf.eventos;
 
-import com.mycompany.sistema.ufjf.model.Entrega;
-import com.mycompany.sistema.ufjf.persistence.EntregaPersistence;
-import com.mycompany.sistema.ufjf.view.TelaCliente;
+import com.mycompany.sistema.ufjf.model.Cliente;
+import com.mycompany.sistema.ufjf.persistence.ClientePersistence;
+import com.mycompany.sistema.ufjf.view.TelaAdministrador;
 import com.mycompany.sistema.ufjf.persistence.Persistence;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.List;
 
-public class GerenciaEntregasCliente implements WindowListener {
+public class GerenciaClientesAdministrador implements WindowListener {
 
-    private final TelaCliente tela;
+    private final TelaAdministrador tela;
 
-    public GerenciaEntregasCliente(TelaCliente tela) {
+    public GerenciaClientesAdministrador(TelaAdministrador tela) {
         this.tela = tela;
     }
 
     @Override
     public void windowOpened(WindowEvent e) {
-        Persistence<Entrega> entregadorPersistence = new EntregaPersistence();
-        List<Entrega> all = entregadorPersistence.findAll();
-        tela.carregaEntregas(all);
-        tela.exibirPedidosCliente();
+        Persistence<Cliente> clientePersistence = new ClientePersistence();
+        List<Cliente> all = clientePersistence.findAll();
+        tela.carregaClientes(all);
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
-        Persistence<Entrega> entregadorPersistence = new EntregaPersistence();
-        entregadorPersistence.save(tela.listaEntregas());
+        Persistence<Cliente> clientePersistence = new ClientePersistence();
+        clientePersistence.save(tela.listaClientes());
     }
 
     @Override
