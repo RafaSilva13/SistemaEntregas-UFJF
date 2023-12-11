@@ -29,7 +29,7 @@ public class Entrega {
     
     private int verificaEndereco(){ //retorna uma kilometragem de distancia até o endereço
         Random random = new Random();
-        int kmAleatorio = random.nextInt(1901) + 100;
+        int kmAleatorio = random.nextInt(401) + 100;
         return kmAleatorio;
     }
     
